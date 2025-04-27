@@ -4,15 +4,16 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Orenda Admin',
+  title: {
+    default: 'Orenda Admin',
+    template: '%s | Orenda Admin',
+  },
   description: 'Admin management system',
 };
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
-  variable: '--font-dm-sans',
-  display: 'swap',
-  weight: ['400', '500', '700'],
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 export default function RootLayout({
@@ -25,7 +26,7 @@ export default function RootLayout({
       <body
         className={cn(
           'flex min-h-[100dvh] w-full flex-col antialiased',
-          dmSans.variable,
+          dmSans.className,
         )}
       >
         {children}

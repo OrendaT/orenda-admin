@@ -1,5 +1,5 @@
-import { CheckIcon } from '@/assets/svgs';
-import Button from '@/components/ui/custom-button';
+import { SuccessIcon } from '@/assets/svgs';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
@@ -7,7 +7,7 @@ const AccountCreated = ({ className }: { className?: string }) => {
   return (
     <main className={cn('padding_inline', className)}>
       <div className="box_center text-center">
-        <CheckIcon className="text-orenda-purple mb-6" />
+        <SuccessIcon className="text-orenda-purple mb-6" />
 
         <h1 className="auth_page_heading clamp-[text,xl,3xl] mb-6">
           Verification Successful
