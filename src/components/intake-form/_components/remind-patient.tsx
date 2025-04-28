@@ -45,7 +45,7 @@ const RemindPatient = ({
           name="email"
           type="email"
           placeholder="Enter email"
-          className="mb-10"
+          className="mb-6"
         />
 
         <Textarea
