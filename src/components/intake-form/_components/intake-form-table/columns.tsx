@@ -77,7 +77,7 @@ export const columns: ColumnDef<IntakeFormTableData>[] = [
       return (
         <span
           className={cn(
-            'block w-fit rounded-3xl px-4 py-[0.38rem] text-xs capitalize',
+            'block w-fit rounded-3xl clamp-[px,2.5,4] clamp-[py,1,0.38rem] text-xs capitalize',
             {
               'bg-[#FFE9A4] text-[#5C4600]': value === 'pending',
               'bg-[#CFFFC9] text-[#0A5E00]': value === 'submitted',
@@ -94,7 +94,7 @@ export const columns: ColumnDef<IntakeFormTableData>[] = [
     header: 'Status Date',
     cell: ({ getValue }) => {
       let value = getValue();
-      value = value instanceof Date ? format(value, 'PPP') : value;
+      value = value instanceof Date ? format(value, 'Ppaa') : value;
       return value;
     },
   },

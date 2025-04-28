@@ -10,7 +10,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="clamp-[p,5,8] w-full bg-[#f6f6f6] pb-[1.31rem]">
+      <main className="clamp-[p,4,8] w-full bg-[#f6f6f6] pb-[1.31rem]">
         <SidebarTrigger className="md:hidden mb-4 ml-auto" />
         {children}
       </main>

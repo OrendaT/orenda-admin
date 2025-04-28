@@ -29,9 +29,9 @@ const IntakeForm = () => {
         </section>
       </div>
 
-      <section className="db_section">
-        <div className="flex items-center justify-between gap-6">
-          <h2 className="heading">Forms Accessed</h2>
+      <section className="db_section overflow-x-auto">
+        <div className="flex items-center justify-between gap-6 mb-7">
+          <h2 className="heading mb-0">Forms Accessed</h2>
 
           <Button
             className="text-orenda-purple border-orenda-purple w-fit py-1 text-sm"
