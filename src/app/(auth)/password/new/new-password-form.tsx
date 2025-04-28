@@ -99,7 +99,12 @@ const NewPasswordForm = () => {
               <div className="space-y-[1.13rem]">
                 {requirements.map(({ text, type }) => (
                   <div key={type} className="flex items-center gap-2 text-sm">
-                    <Checkbox key={type} id={type} checked={checkType(type)} />
+                    <Checkbox
+                      className="data-[state=checked]:text-orenda-purple text-orenda-purple data-[state=checked]:bg-transparent"
+                      key={type}
+                      id={type}
+                      checked={checkType(type)}
+                    />
 
                     <p>{text}</p>
                   </div>

@@ -1,9 +1,10 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { ComponentProps, useState } from 'react';
+import { ComponentProps, useId, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import FormErrorMessage from './error-message';
 
 interface InputProps extends Omit<ComponentProps<'input'>, 'prefix'> {
   label?: React.ReactNode;
@@ -23,27 +24,27 @@ const Input = ({
   afterEl,
   ...props
 }: InputProps) => {
+  const id = useId();
+
   const {
     register,
     formState: { errors },
   } = useFormContext();
-  const [currentType, setCurrentType] = useState(type);
 
+  const [currentType, setCurrentType] = useState(type);
   const togglePassword = () => {
     setCurrentType((prev) => (prev === 'password' ? 'text' : 'password'));
   };
 
   return (
     <div className={cn('w-full', className)}>
-      <label className="block text-sm font-medium" htmlFor={name}>
-        {label}
-      </label>
+      {label && (
+        <label className="label" htmlFor={id}>
+          {label}
+        </label>
+      )}
 
-      <div
-        className={cn('relative flex w-full', {
-          'mt-2': label,
-        })}
-      >
+      <div className={cn('relative flex w-full')}>
         {/* prefix */}
         {prefix && (
           <span
@@ -69,9 +70,10 @@ const Input = ({
               'rounded-r-none': afterEl,
             },
           )}
-          id={name}
+          id={id}
           type={currentType}
           {...register(name)}
+          aria-describedby={id}
           {...props}
         />
 
@@ -100,17 +102,13 @@ const Input = ({
         )}
 
         {afterEl && (
-          <div className="clamp-[my,-0.8px,-1px] border-input flex w-[2.94rem] items-center justify-center rounded-r-lg border border-l-0 bg-[#ECE3FF]">
+          <div className="clamp-[my,-0.8px,-1px] border-input bg-lavender-mist flex w-[2.94rem] items-center justify-center rounded-r-lg border border-l-0">
             {afterEl}
           </div>
         )}
       </div>
 
-      {errors[name] && (
-        <p className="text-error-red mt-1 text-sm">
-          {errors?.[name]?.message as string}
-        </p>
-      )}
+      <FormErrorMessage name={name} id={id} />
     </div>
   );
 };

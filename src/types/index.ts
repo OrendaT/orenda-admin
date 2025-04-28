@@ -26,3 +26,12 @@ export type Status =
   | 'warning'
   | 'danger'
   | 'info';
+
+export interface IntakeFormTableData {
+  id: string;
+  name: string;
+  status: 'pending' | 'submitted';
+  type: 'Intake form';
+  date: Date;
+  flagged?: boolean;
+}

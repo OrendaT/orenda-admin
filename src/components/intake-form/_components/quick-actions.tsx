@@ -61,7 +61,7 @@ const QuickActions = () => {
               <DialogTrigger asChild>
                 <Button
                   variant="outline"
-                  className="border-border flex justify-start text-sm font-normal"
+                  className="flex justify-start text-sm font-normal"
                 >
                   <span className="bg-purple-mist flex size-6 flex-shrink-0 items-center justify-center rounded-full *:size-4 *:flex-shrink-0">
                     <action.Icon className="text-orenda-purple" />

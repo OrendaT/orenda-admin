@@ -1,7 +1,9 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { useId } from 'react';
 import { useFormContext } from 'react-hook-form';
+import FormErrorMessage from './error-message';
 
 interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -17,6 +19,8 @@ const Textarea = ({
   showCount,
   ...props
 }: TextareaProps) => {
+  const id = useId();
+
   const {
     register,
     formState: { errors },
@@ -27,27 +31,30 @@ const Textarea = ({
 
   return (
     <div className={cn('w-full', className)}>
-      <label
-        className="flex items-center justify-between gap-6 text-sm font-medium"
-        htmlFor={name}
-      >
-        {label}
+      {label ||
+        (showCount && (
+          <label
+            className="label flex items-center justify-between gap-6"
+            htmlFor={id}
+          >
+            {label}
 
-        <span className="mr-2">
-          {value.length}/{props.maxLength}
-        </span>
-      </label>
+            <span className="mr-2">
+              {value.length}/{props.maxLength}
+            </span>
+          </label>
+        ))}
 
       <textarea
         className={cn(
           'clamp-[text,sm,base] block w-full rounded-lg px-4 py-2.5 outline outline-[#E7E7E7]',
           {
             'outline-error-red': errors?.[name],
-            'mt-2': label || showCount,
           },
         )}
-        id={name}
+        id={id}
         {...register(name)}
+        aria-describedby={id}
         {...props}
         style={{
           minHeight: '3rem',
@@ -56,11 +63,7 @@ const Textarea = ({
         }}
       />
 
-      {errors[name] && (
-        <p className="text-error-red mt-1 text-sm">
-          {errors?.[name]?.message as string}
-        </p>
-      )}
+      <FormErrorMessage name={name} id={id} />
     </div>
   );
 };

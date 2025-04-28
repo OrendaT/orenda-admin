@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { FormProvider, useForm } from 'react-hook-form';
 import { IoCheckmarkCircleOutline, IoCloseOutline } from 'react-icons/io5';
 import OrDivider from '../_components/or-divider';
+import { AnimatePresence, motion } from 'motion/react';
 import GoogleAuthButton from '../_components/google-auth-button';
 
 const LoginForm = () => {
@@ -18,7 +19,10 @@ const LoginForm = () => {
     },
     resolver: zodResolver(LoginSchema),
   });
-  const { handleSubmit } = methods;
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = methods;
 
   const onSubmit = handleSubmit((data) => {
     console.log(data);
@@ -26,22 +30,29 @@ const LoginForm = () => {
 
   return (
     <>
-      {false && (
-        <div className="border-l-error-red mb-10 flex items-center justify-around gap-4 rounded-lg border border-l-8 border-[#E7E7E7] p-4">
-          <div>
-            <div className="border-error-red grid size-8 place-items-center rounded-[0.32294rem] border-[1.292px] bg-[#FDE5D7]">
-              <IoCheckmarkCircleOutline className="text-error-red size-6 rounded-full bg-white" />
+      <AnimatePresence>
+        {errors.root && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.5 }}
+            className="border-l-error-red mb-10 flex items-center justify-around gap-4 rounded-lg border border-l-8 border-[#E7E7E7] p-4"
+          >
+            <div>
+              <div className="border-error-red grid size-8 place-items-center rounded-[0.32294rem] border-[1.292px] bg-[#FDE5D7]">
+                <IoCheckmarkCircleOutline className="text-error-red size-6 rounded-full bg-white" />
+              </div>
             </div>
-          </div>
-          <p className="text-sm font-medium">
-            Incorrect login details. Please check your details and try again.
-          </p>
-          <button className="cursor-pointer border-l border-[#DDD8CB] ps-3">
-            <IoCloseOutline className="size-7 text-[#0F0F0F]" />
-          </button>
-        </div>
-      )}
-
+            <p className="text-sm font-medium">
+              Incorrect login details. Please check your details and try again.
+            </p>
+            <button className="cursor-pointer border-l border-[#DDD8CB] ps-3">
+              <IoCloseOutline className="size-7 text-[#0F0F0F]" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <h1 className="auth_page_heading mb-2">Welcome back!</h1>
 
       <GoogleAuthButton />

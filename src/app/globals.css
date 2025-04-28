@@ -4,6 +4,11 @@
   minSize: 23.4375rem;
   maxSize: 80rem;
 }
+/* prettier-ignore */
+@plugin 'tailwind-scrollbar' {
+  nocompatible: true;
+  preferredStrategy: 'pseudoelements';
+}
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
@@ -48,6 +53,7 @@
   --color-orenda-green: rgba(18, 120, 1, 1);
   --color-error-red: rgba(187, 35, 19, 1);
   --color-purple-mist: rgba(249, 246, 255, 1);
+  --color-lavender-mist: rgba(236, 227, 255, 1);
 }
 
 :root {
@@ -123,8 +129,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    scrollbar-gutter: stable;
+  }
+
   body {
-    @apply bg-background text-foreground accent-[#333];
+    @apply bg-background text-foreground scrollbar-thin scrollbar-thumb-rounded-3xl scrollbar-thumb-zinc-600/60 accent-[#333];
   }
 
   button {
@@ -163,5 +174,13 @@
   }
   .card_heading {
     @apply mb-2 flex items-center gap-2 text-sm font-semibold [&_svg]:size-5;
+  }
+
+  .error_message {
+    @apply text-error-red mt-1 text-sm;
+  }
+
+  .label {
+    @apply mb-2 block text-sm font-medium;
   }
 }
