@@ -17,7 +17,7 @@ const topMenuItems: (MenuItem | false)[] = [
     id: 'intake-forms',
     title: 'Intake Forms',
     Icon: FormIcon({ className: 'mt-0.5' }),
-    href: '/intake-forms',
+    href: '/',
   },
   false && {
     id: 'provider-wall',
