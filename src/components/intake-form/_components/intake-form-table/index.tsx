@@ -37,7 +37,7 @@ const IntakeFormTable = () => {
   });
   return (
     <>
-      <Table className="mt-8 mb-7">
+      <Table className="mt-8 mb-3">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
