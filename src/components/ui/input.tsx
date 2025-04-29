@@ -12,6 +12,7 @@ interface InputProps extends Omit<ComponentProps<'input'>, 'prefix'> {
   afterEl?: React.ReactNode;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
+  inputClassName?: string;
 }
 
 const Input = ({
@@ -19,6 +20,7 @@ const Input = ({
   name,
   type,
   className,
+  inputClassName,
   prefix,
   suffix,
   afterEl,
@@ -69,6 +71,7 @@ const Input = ({
               'pe-11': suffix || type === 'password',
               'rounded-r-none': afterEl,
             },
+            inputClassName,
           )}
           id={id}
           type={currentType}

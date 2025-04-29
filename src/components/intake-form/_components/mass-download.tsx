@@ -31,8 +31,6 @@ const MassDownload = ({ close }: { close: () => void }) => {
     close();
   });
 
-  console.log(Object.values(errors ?? {}).length);
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={onSubmit} className="mt-6" noValidate>

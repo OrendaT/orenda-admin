@@ -2,13 +2,14 @@ import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
+  PaginationButton,
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { cn } from '@/lib/utils';
 import { IntakeFormTableData } from '@/types';
 import { Table } from '@tanstack/react-table';
+import { useMemo } from 'react';
 
 export function IntakeFormTablePagination({
   className,
@@ -18,35 +19,54 @@ export function IntakeFormTablePagination({
   table: Table<IntakeFormTableData>;
 }) {
   const currentPageIndex = table.getState().pagination.pageIndex;
-  const items = [currentPageIndex, currentPageIndex + 1, currentPageIndex + 2];
+
+  const indices = useMemo(() => {
+    /**
+     * Bounds:
+     * indices[0]: 0 <= index <= lastPageIndex - 2
+     * indices[1]: 1 <= index <= lastPageIndex - 1
+     * indices[2]: 2 <= index <= lastPageIndex
+     */
+
+    const previousPageIndex = currentPageIndex - 1;
+    const nextPageIndex = currentPageIndex + 1;
+    const lastPageIndex = table.getPageCount() - 1;
+
+    return [
+      Math.min(Math.max(previousPageIndex, 0), lastPageIndex - 2), // Ensure the index is within bounds
+      Math.min(Math.max(currentPageIndex, 1), lastPageIndex - 1), // Ensure the index is within bounds
+      Math.min(Math.max(nextPageIndex, 2), lastPageIndex), // Ensure the index is within bounds
+    ];
+  }, [currentPageIndex, table.getPageCount()]);
 
   return (
     <Pagination className={cn(className)}>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            aria-disabled={!table.getCanPreviousPage()}
-            href={`page=${currentPageIndex - 1}`}
+            disabled={!table.getCanPreviousPage()}
+            onClick={() => table.setPageIndex(currentPageIndex - 1)}
+            className="text-orenda-purple disabled:text-[#8E8E8E]"
           />
         </PaginationItem>
-        {items.map((item) => {
-          const pageNumber = item + 1;
+        {indices.map((index) => {
           return (
-            <PaginationItem key={pageNumber}>
-              <PaginationLink
-                href={`?page=${pageNumber}`}
+            <PaginationItem key={index}>
+              <PaginationButton
                 aria-current="page"
-                className="active"
+                isActive={currentPageIndex === index}
+                onClick={() => table.setPageIndex(index)}
               >
-                {pageNumber}
-              </PaginationLink>
+                {index + 1}
+              </PaginationButton>
             </PaginationItem>
           );
         })}
         <PaginationItem>
           <PaginationNext
-            aria-disabled={!table.getCanNextPage()}
-            href={`page=${currentPageIndex + 1}`}
+            disabled={!table.getCanNextPage()}
+            onClick={() => table.setPageIndex(currentPageIndex + 1)}
+            className="text-orenda-purple disabled:text-[#8E8E8E]"
           />
         </PaginationItem>
       </PaginationContent>

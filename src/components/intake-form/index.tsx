@@ -2,10 +2,9 @@ import FormsSubmitted from '../../components/intake-form/_components/forms-submi
 import FormsInProgress from '../../components/intake-form/_components/forms-in-progress';
 import QuickActions from '../../components/intake-form/_components/quick-actions';
 import RangeSelect from '@/components/shared/range-select';
-import { Button } from '@/components/ui/button';
-import { LuUpload } from 'react-icons/lu';
 import SearchFilter from '../../components/intake-form/_components/search-filter';
 import IntakeFormTable from './_components/intake-form-table';
+import Export from './_components/export';
 
 const IntakeForm = () => {
   return (
@@ -30,15 +29,10 @@ const IntakeForm = () => {
       </div>
 
       <section className="db_section overflow-x-auto">
-        <div className="flex items-center justify-between gap-6 mb-7">
+        <div className="mb-7 flex items-center justify-between gap-6">
           <h2 className="heading mb-0">Forms Accessed</h2>
 
-          <Button
-            className="text-orenda-purple border-orenda-purple w-fit py-1 text-sm"
-            variant="outline"
-          >
-            <LuUpload /> Export
-          </Button>
+          <Export />
         </div>
 
         <SearchFilter />

@@ -155,6 +155,14 @@
   .padding_inline {
     @apply px-4 sm:px-6 lg:px-8;
   }
+
+  .pending_form {
+    @apply bg-[#FFE9A4] text-[#5C4600];
+  }
+
+  .submitted_form {
+    @apply bg-[#CFFFC9] text-[#0A5E00];
+  }
 }
 @layer components {
   .auth_page_heading {

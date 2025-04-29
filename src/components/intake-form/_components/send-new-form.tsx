@@ -3,11 +3,12 @@
 import Input from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Status } from '@/types';
 import { LuCheck, LuCopy } from 'react-icons/lu';
+import { useClipboard } from '@/hooks/use-clipboard';
 
 const url = 'http://dash.orendaintakeform.com/2q34rwhhnbrhje';
 
@@ -63,25 +64,12 @@ export default function SendNewForm({
 }
 
 const CopyButton = ({ text }: { text: string }) => {
-  const [copied, setCopied] = useState(false);
-
-  const onClick = () => {
-    if (!copied) {
-      navigator.clipboard.writeText(text);
-      setCopied(true);
-    }
-  };
-
-  useEffect(() => {
-    if (copied) {
-      setTimeout(() => setCopied(false), 3000);
-    }
-  }, [copied]);
+  const [copied, onClick] = useClipboard(text);
 
   return (
     <Button
-      className="text-orenda-purple border-0"
-      variant="outline"
+      className="text-orenda-purple hover:bg-inherit border-0"
+      variant="ghost"
       size="icon"
       type="button"
       onClick={onClick}

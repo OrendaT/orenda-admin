@@ -14,8 +14,8 @@ import {
 import RemindPatient from './remind-patient';
 import MassDownload from './mass-download';
 import { useState } from 'react';
-import { SuccessIcon } from '@/assets/svgs';
 import { Status } from '@/types';
+import SuccessMessage from '@/components/shared/action-success-message';
 
 const QuickActions = () => {
   const [open, setOpen] = useState(false);
@@ -81,12 +81,7 @@ const QuickActions = () => {
                   </DialogHeader>
                 )}
                 {status === 'success' ? (
-                  <div className="mt-6 flex flex-col items-center justify-center gap-6">
-                    <SuccessIcon className="text-[#00B809]" />
-                    <p className="text-center text-lg font-semibold">
-                      {action.successMessage}
-                    </p>
-                  </div>
+                  <SuccessMessage message={action.successMessage} />
                 ) : (
                   action.DialogContent
                 )}

@@ -12,18 +12,8 @@ import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MdOutlineFlag } from 'react-icons/md';
-
-const actions = [
-  {
-    name: 'Preview Form',
-  },
-  {
-    name: 'Download Form',
-  },
-  {
-    name: 'Flag Form',
-  },
-];
+import DownloadForm from './options/download-form';
+import Options from './options';
 
 export const columns: ColumnDef<IntakeFormTableData>[] = [
   {
@@ -77,10 +67,10 @@ export const columns: ColumnDef<IntakeFormTableData>[] = [
       return (
         <span
           className={cn(
-            'block w-fit rounded-3xl clamp-[px,2.5,4] clamp-[py,1,0.38rem] text-xs capitalize',
+            'clamp-[px,2.5,4] clamp-[py,1,0.38rem] block w-fit rounded-3xl text-xs capitalize',
             {
-              'bg-[#FFE9A4] text-[#5C4600]': value === 'pending',
-              'bg-[#CFFFC9] text-[#0A5E00]': value === 'submitted',
+              pending_form: value === 'pending',
+              submitted_form: value === 'submitted',
             },
           )}
         >
@@ -101,24 +91,6 @@ export const columns: ColumnDef<IntakeFormTableData>[] = [
   {
     id: 'actions',
     enableHiding: false,
-    cell: () => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {actions.map(({ name }) => (
-              <DropdownMenuItem className="py-2 pr-8 text-sm" key={name}>
-                {name}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: Options,
   },
 ];
