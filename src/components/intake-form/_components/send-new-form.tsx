@@ -10,7 +10,7 @@ import { Status } from '@/types';
 import { LuCheck, LuCopy } from 'react-icons/lu';
 import { useClipboard } from '@/hooks/use-clipboard';
 
-const url = 'http://dash.orendaintakeform.com/2q34rwhhnbrhje';
+const url = 'https://orenda-intake.vercel.app/';
 
 const SendNewFormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
