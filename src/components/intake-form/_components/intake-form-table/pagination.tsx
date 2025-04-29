@@ -37,7 +37,7 @@ export function IntakeFormTablePagination({
       Math.min(Math.max(currentPageIndex, 1), lastPageIndex - 1), // Ensure the index is within bounds
       Math.min(Math.max(nextPageIndex, 2), lastPageIndex), // Ensure the index is within bounds
     ];
-  }, [currentPageIndex, table.getPageCount()]);
+  }, [currentPageIndex, table]);
 
   return (
     <Pagination className={cn(className)}>

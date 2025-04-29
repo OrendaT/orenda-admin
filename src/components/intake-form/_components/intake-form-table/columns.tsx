@@ -2,17 +2,8 @@ import { IntakeFormTableData } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Checkbox } from '@/components/ui/checkbox';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { MoreHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MdOutlineFlag } from 'react-icons/md';
-import DownloadForm from './options/download-form';
 import Options from './options';
 
 export const columns: ColumnDef<IntakeFormTableData>[] = [

@@ -12,3 +12,5 @@ const useSelectedFormsStore = create<SelectedFormsState>((set) => ({
   removeForm: (id: string) =>
     set((state) => ({ forms: state.forms.filter((_id) => _id !== id) })),
 }));
+
+export { useSelectedFormsStore };
