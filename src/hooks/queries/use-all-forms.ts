@@ -21,6 +21,5 @@ export const useAllForms = (page: string | number, search: string) => {
       });
       return res.data;
     },
-    enabled: status === 'authenticated',
   });
 };
