@@ -3,15 +3,9 @@ import { QUERY_KEYS } from './query-keys';
 import { FORMS_EP } from '@/lib/api/endpoints';
 import { AllFormsResponse } from '@/types';
 import useAxios from '@/lib/api/axios-client';
-import { useSearchParams } from 'next/navigation';
 
-export const useAllForms = () => {
+export const useAllForms = (page: string | number, search: string) => {
   const { axios, status } = useAxios();
-
-  const searchParams = useSearchParams();
-
-  const page = searchParams.get('page') ?? 1;
-  const search = searchParams.get('search') ?? '';
 
   return useQuery({
     queryKey: [QUERY_KEYS.allForms, page, search],
