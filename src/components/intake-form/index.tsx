@@ -40,9 +40,7 @@ const IntakeForm = async () => {
           <SearchFilter />
         </Suspense>
 
-        <Suspense fallback={<div>Loading...</div>}>
-          <IntakeFormTable />
-        </Suspense>
+        <IntakeFormTable />
       </section>
     </div>
   );
