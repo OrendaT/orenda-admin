@@ -1,24 +1,34 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { logOut } from '@/app/actions/auth';
 
 export default function AuthWatcher() {
   const { data: session, status } = useSession();
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const checkStatus = async () => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const maybeLogOut = async () => {
       if (
+        isMounted &&
         status === 'authenticated' &&
         session?.error === 'RefreshTokenError'
       ) {
-        await logOut();
+        try {
+          await logOut();
+        } catch (error) {
+          console.error('Failed to log out:', error);
+        }
       }
-
-      checkStatus();
     };
-  }, [session, status]);
+
+    maybeLogOut();
+  }, [isMounted, session, status]);
 
   return null;
 }
