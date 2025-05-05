@@ -5,6 +5,7 @@ import RangeSelect from '@/components/shared/range-select';
 import SearchFilter from '../../components/intake-form/_components/search-filter';
 import IntakeFormTable from './_components/intake-form-table';
 import Export from './_components/export';
+import { Suspense } from 'react';
 
 const IntakeForm = async () => {
   return (
@@ -35,10 +36,11 @@ const IntakeForm = async () => {
           <Export />
         </div>
 
-        <SearchFilter />
+        <Suspense fallback={<div>Loading...</div>}>
+          <SearchFilter />
+        </Suspense>
 
         <IntakeFormTable />
-    
       </section>
     </div>
   );
