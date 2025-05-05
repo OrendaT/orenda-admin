@@ -11,10 +11,14 @@ import { CellContext } from '@tanstack/react-table';
 import { IntakeFormTableData } from '@/types';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
+import useFlagForm from '@/hooks/mutations/use-flag-form';
 
 const Options = ({ row }: CellContext<IntakeFormTableData, unknown>) => {
   const [open, setOpen] = useState(false);
   const name = String(row.getValue('name'));
+  const { id } = row.original;
+
+  const { mutateAsync: flagForm, isPending } = useFlagForm();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -34,7 +38,11 @@ const Options = ({ row }: CellContext<IntakeFormTableData, unknown>) => {
               Download Form
             </DropdownMenuItem>
           </DialogTrigger>
-          <DropdownMenuItem className="py-2 pr-8 text-sm">
+          <DropdownMenuItem
+            onClick={() => flagForm(id)}
+            disabled={isPending}
+            className="py-2 pr-8 text-sm"
+          >
             Flag Form
           </DropdownMenuItem>
         </DropdownMenuContent>

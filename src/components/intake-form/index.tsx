@@ -6,7 +6,7 @@ import SearchFilter from '../../components/intake-form/_components/search-filter
 import IntakeFormTable from './_components/intake-form-table';
 import Export from './_components/export';
 
-const IntakeForm = () => {
+const IntakeForm = async () => {
   return (
     <div className="grid gap-4">
       <div className="flex w-full flex-col gap-4 xl:flex-row">
@@ -38,8 +38,10 @@ const IntakeForm = () => {
         <SearchFilter />
 
         <IntakeFormTable />
+    
       </section>
     </div>
   );
 };
+
 export default IntakeForm;

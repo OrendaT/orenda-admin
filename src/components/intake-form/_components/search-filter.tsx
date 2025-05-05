@@ -12,15 +12,26 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LuCircleCheckBig, LuFilter, LuSearch, LuTimer } from 'react-icons/lu';
 import { z } from 'zod';
+import { useDebouncedCallback } from 'use-debounce';
 
 const FiltersSchema = z.object({
-  status: z.enum(['pending', 'submitted']).optional(),
-  start_date: z.date({ message: 'From date is required' }),
-  end_date: z.date({ message: 'To date is required' }),
+  status: z.enum(['pending', 'submitted']).optional().nullable(),
+  from: z.date({ message: 'From date is required' }).optional(),
+  to: z.date({ message: 'To date is required' }).optional(),
+  flag: z
+    .string()
+    .optional()
+    .or(
+      z
+        .boolean()
+        .default(false)
+        .transform(() => ''),
+    ),
 });
 
 const statusFilters = [
@@ -39,6 +50,33 @@ const statusFilters = [
 ];
 
 export default function SearchFilter() {
+  const { replace } = useRouter(); // replace to set the query params
+  const pathname = usePathname();
+  const searchParams = useSearchParams(); // get current searchParams
+
+  const createQueryString = useCallback(
+    (key: string, query: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (!query) {
+        params.delete(key);
+      } else {
+        params.delete('page');
+        params.set(key, query);
+      }
+      console.log(params, params.toString());
+      return params.toString();
+    },
+    [searchParams],
+  );
+
+  const updateSearchParam = (key: string, query: string) => {
+    replace(`${pathname}?${createQueryString(key, query)}`, {
+      scroll: false,
+    });
+  };
+
+  const debouncedUpdate = useDebouncedCallback(updateSearchParam);
+
   return (
     <div className="clamp-[gap,2,0.81rem] flex w-full items-center">
       <div className="relative w-full max-w-60">
@@ -47,6 +85,12 @@ export default function SearchFilter() {
           className="border-input block w-full rounded-lg border py-1.5 ps-8 pe-2 text-sm"
           type="text"
           placeholder="Search"
+          name="search"
+          onChange={(e) => {
+            const { name, value } = e.target;
+            debouncedUpdate(name, value);
+          }}
+          defaultValue={searchParams.get('search')?.toString() || ''}
         />
       </div>
       <Filters />
@@ -56,12 +100,19 @@ export default function SearchFilter() {
 
 const Filters = () => {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const status = searchParams.get('status');
+  const from = searchParams.get('from');
+  const to = searchParams.get('to');
+  const flag = searchParams.get('flag');
 
   const methods = useForm({
     defaultValues: {
-      status: undefined,
-      start_date: undefined,
-      end_date: undefined,
+      status: searchParams.get('status') as 'pending' | 'submitted' | null,
+      from: from ? new Date(from) : undefined,
+      to: undefined,
+      flag: '',
     },
     resolver: zodResolver(FiltersSchema),
   });
@@ -73,10 +124,14 @@ const Filters = () => {
     watch,
   } = methods;
 
-  const status = watch('status');
-
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    Object.entries(data).forEach(([key, value]) => {
+      if (value) {
+        if (value instanceof Date) {
+          value = value.toISOString().split('T')[0];
+        }
+      }
+    });
     setOpen(false);
   });
 
@@ -103,7 +158,7 @@ const Filters = () => {
               {statusFilters.map(({ id, label, value, Icon }) => (
                 <label
                   className={cn(
-                    'flex cursor-pointer items-center gap-2 rounded-3xl border px-4 py-2 text-sm font-medium',
+                    'flex cursor-pointer items-center gap-2 rounded-3xl border px-4 py-1.5 text-sm font-medium',
                     status === id && id === 'pending' && 'pending_form',
                     status === id && id === 'submitted' && 'submitted_form',
                   )}
@@ -113,29 +168,63 @@ const Filters = () => {
                   {label}
 
                   {/* Hidden radio input */}
-                  <input type="radio" value={value} hidden {...register('status')} />
+                  <input
+                    type="radio"
+                    value={value}
+                    hidden
+                    {...register('status')}
+                  />
                 </label>
               ))}
             </div>
 
             <h3 className="mb-2 font-medium">Date</h3>
-            <div className="clamp-[gap,2.5,4] mb-12 flex items-stretch justify-between">
-              <FormDatePicker label="From" name="start_date" dateFormat="P" />
+            <div className="clamp-[gap,2.5,4] flex items-stretch justify-between">
+              <FormDatePicker
+                className="py-2"
+                label="From"
+                name="from"
+                dateFormat="P"
+              />
 
               <div className="grid items-center">
                 <hr
                   className={cn('clamp-[w,4,5] mt-7 block border-[#888]', {
-                    'mt-0': Object.values(errors ?? {}).length,
+                    'mt-0': errors.from || errors.to,
                   })}
                 />
               </div>
 
-              <FormDatePicker label="To" name="end_date" dateFormat="P" />
+              <FormDatePicker
+                className="py-2"
+                label="To"
+                name="to"
+                dateFormat="P"
+              />
             </div>
 
-            <Button type="submit" className="mx-auto max-w-[25rem] rounded-lg">
+            <label
+              className={cn(
+                '!mt-6 flex w-fit cursor-pointer items-center gap-2 rounded-3xl border px-4 py-2 text-sm font-medium select-none has-checked:border-red-400 has-checked:bg-red-200 has-checked:text-red-900',
+              )}
+            >
+              Flagged
+              {/* Hidden radio input */}
+              <input
+                type="checkbox"
+                value="flag"
+                hidden
+                {...register('flag')}
+              />
+            </label>
+
+            <Button
+              type="submit"
+              className="mx-auto mt-12 max-w-[25rem] rounded-lg"
+            >
               Apply
             </Button>
+
           </form>
         </FormProvider>
       </DialogContent>
