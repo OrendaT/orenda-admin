@@ -8,7 +8,7 @@ export default auth(async (req) => {
   const pathname = req.nextUrl.pathname;
   const isLoggedIn = !!req.auth;
 
-  const isAuthRoute = AUTH_ROUTES.includes(pathname);
+  const isAuthRoute = AUTH_ROUTES.some((path) => pathname.startsWith(path));
   const isPrivateRoute =
     PRIVATE_ROUTES.some((route) => pathname.startsWith(`/${route}`)) ||
     pathname === '/';
