@@ -5,11 +5,9 @@ import { QUERY_KEYS } from './query-keys';
 import { FORMS_EP } from '@/lib/api/endpoints';
 import { AllFormsResponse } from '@/types';
 import useAxios from '@/lib/api/axios-client';
-import { useAuthStore } from '@/stores/auth-store';
 
 export const useAllForms = (page?: string | number, search?: string) => {
-  const { axios } = useAxios();
-  const status = useAuthStore((state) => state.status);
+  const { axios, status } = useAxios();
 
   return useQuery({
     queryKey: [QUERY_KEYS.allForms, page, search],
