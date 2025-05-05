@@ -17,6 +17,7 @@ import {
 import { IntakeFormTablePagination } from './pagination';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
 import FormSkeleton from './form-skeleton';
+import { Suspense } from 'react';
 
 const IntakeFormTable = () => {
   const { data, isLoading, isError } = useAllForms();
@@ -89,10 +90,12 @@ const IntakeFormTable = () => {
       </Table>
 
       {table.getPageCount() > 1 && (
-        <IntakeFormTablePagination
-          className="mb-8 flex justify-end"
-          table={table}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <IntakeFormTablePagination
+            className="mb-8 flex justify-end"
+            table={table}
+          />
+        </Suspense>
       )}
     </>
   );
