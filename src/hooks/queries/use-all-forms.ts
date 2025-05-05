@@ -4,8 +4,8 @@ import { FORMS_EP } from '@/lib/api/endpoints';
 import { AllFormsResponse } from '@/types';
 import useAxios from '@/lib/api/axios-client';
 
-export const useAllForms = (page: string | number, search: string) => {
-  const { axios, status } = useAxios();
+export const useAllForms = (page?: string | number, search?: string) => {
+  const { axios } = useAxios();
 
   return useQuery({
     queryKey: [QUERY_KEYS.allForms, page, search],
@@ -17,6 +17,7 @@ export const useAllForms = (page: string | number, search: string) => {
           per_page: 6,
           page,
           search,
+        
         },
       });
       return res.data;
