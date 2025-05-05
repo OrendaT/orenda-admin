@@ -225,7 +225,6 @@ const Filters = ({
               Apply
             </Button>
 
-            <p>{JSON.stringify(errors)}</p>
           </form>
         </FormProvider>
       </DialogContent>
