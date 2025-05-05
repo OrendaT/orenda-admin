@@ -12,6 +12,12 @@ export default auth(async (req) => {
   const isPrivateRoute =
     PRIVATE_ROUTES.some((route) => pathname.startsWith(`/${route}`)) ||
     pathname === '/';
+  const isApiRoute =
+    pathname.startsWith('/api') || pathname.startsWith('/trpc');
+
+  if (isApiRoute) {
+    return NextResponse.next();
+  }
 
   if (isAuthRoute) {
     if (isLoggedIn) {
