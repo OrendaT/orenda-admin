@@ -20,8 +20,6 @@ import FormSkeleton from './form-skeleton';
 import { Suspense } from 'react';
 
 const IntakeFormTable = () => {
-
-
   const { data, isLoading, isError } = useAllForms();
 
   const table = useReactTable({
@@ -90,15 +88,14 @@ const IntakeFormTable = () => {
           )}
         </TableBody>
       </Table>
-
-      {table.getPageCount() > 1 && (
-        <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Loading...</div>}>
+        {table.getPageCount() > 1 && (
           <IntakeFormTablePagination
             className="mb-8 flex justify-end"
             table={table}
           />
-        </Suspense>
-      )}
+        )}
+      </Suspense>
     </>
   );
 };
