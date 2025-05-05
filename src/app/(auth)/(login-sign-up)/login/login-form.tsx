@@ -10,8 +10,12 @@ import { IoCheckmarkCircleOutline, IoCloseOutline } from 'react-icons/io5';
 import OrDivider from '../_components/or-divider';
 import { AnimatePresence, motion } from 'motion/react';
 import GoogleAuthButton from '../_components/google-auth-button';
+import { login } from '@/app/actions/auth';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
+  const { push } = useRouter();
   const methods = useForm<LoginSchemaType>({
     defaultValues: {
       email: '',
@@ -21,11 +25,19 @@ const LoginForm = () => {
   });
   const {
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
+    clearErrors,
+    setError,
   } = methods;
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = handleSubmit(async (data) => {
+    const res = await login(data);
+    console.log(res);
+    if (res.success) {
+      toast.success(res.message);
+      push('/');
+    }
+    if (res.error) setError('root', res.error);
   });
 
   return (
@@ -36,7 +48,6 @@ const LoginForm = () => {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
-            transition={{ duration: 0.5 }}
             className="border-l-error-red mb-10 flex items-center justify-around gap-4 rounded-lg border border-l-8 border-[#E7E7E7] p-4"
           >
             <div>
@@ -44,10 +55,12 @@ const LoginForm = () => {
                 <IoCheckmarkCircleOutline className="text-error-red size-6 rounded-full bg-white" />
               </div>
             </div>
-            <p className="text-sm font-medium">
-              Incorrect login details. Please check your details and try again.
-            </p>
-            <button className="cursor-pointer border-l border-[#DDD8CB] ps-3">
+            <p className="text-sm font-medium">{errors.root.message}</p>
+            <button
+              type="button"
+              onClick={() => clearErrors('root')}
+              className="cursor-pointer border-l border-[#DDD8CB] ps-3"
+            >
               <IoCloseOutline className="size-7 text-[#0F0F0F]" />
             </button>
           </motion.div>
@@ -78,13 +91,13 @@ const LoginForm = () => {
           </div>
 
           <Link
-            className="mt-4 block text-sm underline underline-offset-2 transition-all duration-300 hover:font-medium"
+            className="mt-4 block w-fit text-sm underline underline-offset-2 transition-all duration-300 hover:font-medium"
             href="/password/reset"
           >
             Forgot password?
           </Link>
 
-          <Button type="submit" className="mt-8">
+          <Button isLoading={isSubmitting} type="submit" className="mt-8">
             Login
           </Button>
 

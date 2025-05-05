@@ -44,6 +44,7 @@ function Button({
   asChild = false,
   isLoading,
   children,
+  disabled,
   ...props
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
@@ -54,6 +55,7 @@ function Button({
 
   return (
     <Comp
+      disabled={disabled || isLoading}
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}

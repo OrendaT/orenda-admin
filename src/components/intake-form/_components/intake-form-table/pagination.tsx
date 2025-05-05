@@ -9,7 +9,8 @@ import {
 import { cn } from '@/lib/utils';
 import { IntakeFormTableData } from '@/types';
 import { Table } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useMemo } from 'react';
 
 export function IntakeFormTablePagination({
   className,
@@ -18,7 +19,31 @@ export function IntakeFormTablePagination({
   className?: string;
   table: Table<IntakeFormTableData>;
 }) {
-  const currentPageIndex = table.getState().pagination.pageIndex;
+  const { replace } = useRouter(); // replace to set the query params
+  const pathname = usePathname();
+  const searchParams = useSearchParams(); // get current searchParams
+
+  const currentPageIndex = Number(searchParams.get('page') ?? 1) - 1;
+
+  const createQueryString = useCallback(
+    (page: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (page <= 1) {
+        params.delete('page');
+      } else {
+        params.set('page', page.toString());
+      }
+
+      return params.toString();
+    },
+    [searchParams],
+  );
+
+  const updateSearchParam = (page: number) => {
+    replace(`${pathname}?${createQueryString(page)}`, {
+      scroll: false,
+    });
+  };
 
   const indices = useMemo(() => {
     /**
@@ -33,9 +58,13 @@ export function IntakeFormTablePagination({
     const lastPageIndex = table.getPageCount() - 1;
 
     return [
-      Math.min(Math.max(previousPageIndex, 0), lastPageIndex - 2), // Ensure the index is within bounds
+      table.getPageCount() > 2
+        ? Math.min(Math.max(previousPageIndex, 0), lastPageIndex - 2)
+        : undefined, // Ensure the index is within bounds
       Math.min(Math.max(currentPageIndex, 1), lastPageIndex - 1), // Ensure the index is within bounds
-      Math.min(Math.max(nextPageIndex, 2), lastPageIndex), // Ensure the index is within bounds
+      table.getPageCount() > 1
+        ? Math.min(Math.max(nextPageIndex, 2), lastPageIndex)
+        : undefined, // Ensure the index is within bounds
     ];
   }, [currentPageIndex, table]);
 
@@ -44,28 +73,37 @@ export function IntakeFormTablePagination({
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            disabled={!table.getCanPreviousPage()}
-            onClick={() => table.setPageIndex(currentPageIndex - 1)}
+            disabled={currentPageIndex <= 0}
+            onClick={() => {
+              updateSearchParam(currentPageIndex);
+            }}
             className="text-orenda-purple disabled:text-[#8E8E8E]"
           />
         </PaginationItem>
         {indices.map((index) => {
           return (
-            <PaginationItem key={index}>
-              <PaginationButton
-                aria-current="page"
-                isActive={currentPageIndex === index}
-                onClick={() => table.setPageIndex(index)}
-              >
-                {index + 1}
-              </PaginationButton>
-            </PaginationItem>
+            index !== undefined && (
+              <PaginationItem key={index}>
+                <PaginationButton
+                  aria-current="page"
+                  isActive={currentPageIndex === index}
+                  onClick={() => {
+                    table.setPageIndex(index);
+                    updateSearchParam(index + 1);
+                  }}
+                >
+                  {index + 1}
+                </PaginationButton>
+              </PaginationItem>
+            )
           );
         })}
         <PaginationItem>
           <PaginationNext
-            disabled={!table.getCanNextPage()}
-            onClick={() => table.setPageIndex(currentPageIndex + 1)}
+            disabled={table.getPageCount() === currentPageIndex + 1}
+            onClick={() => {
+              updateSearchParam(currentPageIndex + 2);
+            }}
             className="text-orenda-purple disabled:text-[#8E8E8E]"
           />
         </PaginationItem>

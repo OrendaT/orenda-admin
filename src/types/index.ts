@@ -7,6 +7,7 @@ export type MenuItem = {
   href?: string;
   Icon: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 };
 
 export interface DashboardCardStats {
@@ -29,9 +30,20 @@ export type Status =
 
 export interface IntakeFormTableData {
   id: string;
-  name: string;
+  first_name: string;
+  last_name: string;
   status: 'pending' | 'submitted';
   type: 'Intake form';
   date: Date;
-  flagged?: boolean;
+  flag?: boolean;
+}
+
+export interface AllFormsResponse {
+  data: IntakeFormTableData[];
+  message: string;
+  page: number;
+  per_page: number;
+  total: number;
+  total_pages: number;
+  success: boolean;
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Sidebar,
   SidebarContent,
@@ -11,6 +13,8 @@ import { FormIcon, ProviderWallIcon } from '@/assets/svgs';
 import { MdLogout } from 'react-icons/md';
 import React from 'react';
 import { MenuItem } from '@/types';
+import { logOut } from '@/app/actions/auth';
+import { toast } from 'sonner';
 
 const topMenuItems: (MenuItem | false)[] = [
   true && {
@@ -27,15 +31,22 @@ const topMenuItems: (MenuItem | false)[] = [
   },
 ];
 
-const bottomMenuItems: MenuItem[] = [
-  {
-    id: 'log-out',
-    title: 'Log out',
-    Icon: MdLogout({}),
-  },
-];
-
 export function AppSidebar() {
+  const signOut = async () => {
+    await logOut();
+    toast.success('Log out successful');
+  };
+
+  const bottomMenuItems: MenuItem[] = [
+    {
+      id: 'log-out',
+      title: 'Log out',
+      Icon: MdLogout({}),
+      onClick: signOut,
+      className: 'text-red-500 hover:text-error-red hover:bg-red-50 active:bg-red-100 active:text-error-red',
+    },
+  ];
+
   return (
     <Sidebar>
       <SidebarHeader>
