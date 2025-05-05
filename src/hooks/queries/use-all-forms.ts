@@ -5,7 +5,7 @@ import { AllFormsResponse } from '@/types';
 import useAxios from '@/lib/api/axios-client';
 
 export const useAllForms = (page?: string | number, search?: string) => {
-  const { axios } = useAxios();
+  const { axios, status } = useAxios();
 
   return useQuery({
     queryKey: [QUERY_KEYS.allForms, page, search],
@@ -22,5 +22,6 @@ export const useAllForms = (page?: string | number, search?: string) => {
       });
       return res.data;
     },
+    enabled: status === 'authenticated'
   });
 };
