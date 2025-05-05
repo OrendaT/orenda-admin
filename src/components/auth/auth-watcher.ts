@@ -2,15 +2,22 @@
 
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { signOut } from 'next-auth/react';
+import { logOut } from '@/app/actions/auth';
 
 export default function AuthWatcher() {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (status === 'authenticated' && session?.error === 'RefreshTokenError') {
-      signOut({ callbackUrl: '/login' }); // or to your login page
-    }
+    const checkStatus = async () => {
+      if (
+        status === 'authenticated' &&
+        session?.error === 'RefreshTokenError'
+      ) {
+        await logOut();
+      }
+
+      checkStatus();
+    };
   }, [session, status]);
 
   return null;
