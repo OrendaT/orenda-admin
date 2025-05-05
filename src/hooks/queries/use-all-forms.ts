@@ -1,3 +1,5 @@
+'use client';
+
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from './query-keys';
 import { FORMS_EP } from '@/lib/api/endpoints';
