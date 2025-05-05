@@ -1,10 +1,8 @@
 'use client';
 
-import { intakeForms } from '@/lib/placeholder-data';
 import {
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { columns } from './columns';
@@ -16,31 +14,27 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useState } from 'react';
 import { IntakeFormTablePagination } from './pagination';
+import { useAllForms } from '@/hooks/queries/use-all-forms';
+import FormSkeleton from './form-skeleton';
 
 const IntakeFormTable = () => {
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 6,
-  });
+  const { data, isLoading, isError } = useAllForms();
 
   const table = useReactTable({
-    data: intakeForms,
+    data: data?.data ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination,
-    state: {
-      pagination,
-    },
+    manualPagination: true,
+    pageCount: data?.total_pages ?? 0,
+    autoResetPageIndex: false,
   });
   return (
     <>
       <Table className="mt-8 mb-3">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow className="hover:bg-transparent" key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
@@ -57,7 +51,20 @@ const IntakeFormTable = () => {
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {isError ? (
+            <TableRow>
+              <TableCell
+                colSpan={columns.length}
+                className="text-destructive h-24 text-center"
+              >
+                Failed to fetch data.
+              </TableCell>
+            </TableRow>
+          ) : isLoading || !data ? (
+            // Show skeleton while loading
+            <FormSkeleton />
+          ) : table.getRowModel().rows?.length > 0 ? (
+            // Show actual data rows
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -71,6 +78,7 @@ const IntakeFormTable = () => {
               </TableRow>
             ))
           ) : (
+            // Only show "No results" if not loading and no rows
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
                 No results.
@@ -80,10 +88,12 @@ const IntakeFormTable = () => {
         </TableBody>
       </Table>
 
-      <IntakeFormTablePagination
-        className="mb-8 flex justify-end"
-        table={table}
-      />
+      {table.getPageCount() > 1 && (
+        <IntakeFormTablePagination
+          className="mb-8 flex justify-end"
+          table={table}
+        />
+      )}
     </>
   );
 };

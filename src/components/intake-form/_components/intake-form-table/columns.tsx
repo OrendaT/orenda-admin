@@ -30,11 +30,12 @@ export const columns: ColumnDef<IntakeFormTableData>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'name',
+    id: 'name',
+    accessorFn: ({ first_name, last_name }) => `${first_name} ${last_name}`,
     header: 'Patient Name',
     cell: ({ getValue, row }) => {
       const value = String(getValue());
-      const isFlagged = row.original.flagged;
+      const isFlagged = row.original.flag;
 
       return (
         <div className="flex items-center gap-2">
@@ -49,6 +50,7 @@ export const columns: ColumnDef<IntakeFormTableData>[] = [
   {
     accessorKey: 'type',
     header: 'Form Type',
+    cell: 'Intake Form'
   },
   {
     accessorKey: 'status',

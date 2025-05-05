@@ -50,7 +50,7 @@ const Picker = ({
         <Button
           variant={'outline'}
           className={cn(
-            'relative justify-start pe-14 text-left font-normal',
+            'relative justify-start pe-14 text-left text-sm font-normal',
             !date && 'text-muted-foreground',
             className,
           )}

@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
+import { Toaster } from '@/components/ui/sonner';
+import Providers from '@/providers';
 
 export const metadata: Metadata = {
   title: {
@@ -29,7 +31,9 @@ export default function RootLayout({
           dmSans.className,
         )}
       >
-        {children}
+        <Providers>{children}</Providers>
+
+        <Toaster position="top-center" />
       </body>
     </html>
   );
