@@ -1,4 +1,3 @@
-// hooks/useAxios.ts
 'use client';
 
 import { useSession } from 'next-auth/react';
@@ -8,11 +7,9 @@ import api from './axios';
 const useAxios = () => {
   const { data, status } = useSession();
 
-  const axios = async <T>(
+  const axios = async <T = unknown>(
     config: AxiosRequestConfig,
   ): Promise<AxiosResponse<T>> => {
-
-
     const access_token = data?.access_token;
 
     if (access_token && !config.headers?.Authorization) {
