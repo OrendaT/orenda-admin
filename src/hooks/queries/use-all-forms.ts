@@ -3,9 +3,12 @@ import { QUERY_KEYS } from './query-keys';
 import { FORMS_EP } from '@/lib/api/endpoints';
 import { AllFormsResponse } from '@/types';
 import useAxios from '@/lib/api/axios-client';
+import { useSession } from 'next-auth/react';
 
 export const useAllForms = (page?: string | number, search?: string) => {
-  const { axios, status } = useAxios();
+  const { axios } = useAxios();
+
+  const { status } = useSession();
 
   return useQuery({
     queryKey: [QUERY_KEYS.allForms, page, search],
@@ -17,11 +20,10 @@ export const useAllForms = (page?: string | number, search?: string) => {
           per_page: 6,
           page,
           search,
-        
         },
       });
       return res.data;
     },
-    enabled: status === 'authenticated'
+    enabled: status === 'authenticated',
   });
 };
