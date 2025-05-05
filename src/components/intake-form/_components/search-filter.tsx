@@ -93,24 +93,22 @@ export default function SearchFilter() {
           defaultValue={searchParams.get('search')?.toString() || ''}
         />
       </div>
-      <Filters />
+      <Filters updateSearchParam={updateSearchParam} />
     </div>
   );
 }
 
-const Filters = () => {
+const Filters = ({
+  updateSearchParam,
+}: {
+  updateSearchParam: (key: string, value: string) => void;
+}) => {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const status = searchParams.get('status');
-  const from = searchParams.get('from');
-  const to = searchParams.get('to');
-  const flag = searchParams.get('flag');
 
   const methods = useForm({
     defaultValues: {
-      status: searchParams.get('status') as 'pending' | 'submitted' | null,
-      from: from ? new Date(from) : undefined,
+      status: undefined,
+      from: undefined,
       to: undefined,
       flag: '',
     },
@@ -124,13 +122,15 @@ const Filters = () => {
     watch,
   } = methods;
 
+  const status = watch('status');
+
   const onSubmit = handleSubmit((data) => {
     Object.entries(data).forEach(([key, value]) => {
-      if (value) {
-        if (value instanceof Date) {
-          value = value.toISOString().split('T')[0];
-        }
+      if (value instanceof Date) {
+        value = value.toISOString().split('T')[0];
       }
+
+      updateSearchParam(key, value ?? '');
     });
     setOpen(false);
   });
@@ -225,6 +225,7 @@ const Filters = () => {
               Apply
             </Button>
 
+            <p>{JSON.stringify(errors)}</p>
           </form>
         </FormProvider>
       </DialogContent>
