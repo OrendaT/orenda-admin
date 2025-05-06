@@ -10,6 +10,8 @@ export default function AuthWatcher() {
 
   useEffect(() => {
     setIsMounted(true);
+
+    return () => setIsMounted(false);
   }, []);
 
   useEffect(() => {
