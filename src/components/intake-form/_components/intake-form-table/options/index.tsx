@@ -16,7 +16,7 @@ import useFlagForm from '@/hooks/mutations/use-flag-form';
 const Options = ({ row }: CellContext<IntakeFormTableData, unknown>) => {
   const [open, setOpen] = useState(false);
   const name = String(row.getValue('name'));
-  const { id } = row.original;
+  const { id, flag } = row.original;
 
   const { mutateAsync: flagForm, isPending } = useFlagForm();
 
@@ -43,7 +43,7 @@ const Options = ({ row }: CellContext<IntakeFormTableData, unknown>) => {
             disabled={isPending}
             className="py-2 pr-8 text-sm"
           >
-            Flag Form
+            {flag? 'Unflag' : 'Flag'} Form
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
