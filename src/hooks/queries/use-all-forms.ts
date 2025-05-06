@@ -5,9 +5,11 @@ import { QUERY_KEYS } from './query-keys';
 import { FORMS_EP } from '@/lib/api/endpoints';
 import { AllFormsResponse } from '@/types';
 import useAxios from '@/lib/api/axios-client';
+import { useSession } from 'next-auth/react';
 
 export const useAllForms = (page: string = '1', search?: string) => {
-  const { axios, status } = useAxios();
+  const { axios } = useAxios();
+  const { status } = useSession();
 
   return useQuery({
     queryKey: [QUERY_KEYS.allForms, page, search],
