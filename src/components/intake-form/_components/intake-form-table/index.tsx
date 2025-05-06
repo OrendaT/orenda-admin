@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/table';
 import { IntakeFormTablePagination } from './pagination';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
-import FormSkeleton from './form-skeleton';
+import FormSkeleton from '../../../skeletons/form-table-skeleton';
 import { Suspense } from 'react';
 
 const IntakeFormTable = () => {

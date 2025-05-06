@@ -73,7 +73,7 @@ export const columns: ColumnDef<IntakeFormTableData>[] = [
     },
   },
   {
-    accessorKey: 'date',
+    accessorKey: 'updated_at',
     header: 'Status Date',
     cell: ({ getValue }) => {
       let value = getValue();
