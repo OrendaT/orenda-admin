@@ -20,7 +20,7 @@ import FormSkeleton from '../../../skeletons/form-table-skeleton';
 import { Suspense } from 'react';
 
 const IntakeFormTable = () => {
-  const { data, isLoading, isError } = useAllForms();
+  const { data, isPending, isError } = useAllForms();
 
   const table = useReactTable({
     data: data?.data ?? [],
@@ -61,7 +61,7 @@ const IntakeFormTable = () => {
                 Failed to fetch data.
               </TableCell>
             </TableRow>
-          ) : isLoading || !data ? (
+          ) : isPending ? (
             // Show skeleton while loading
             <FormSkeleton />
           ) : table.getRowModel().rows?.length > 0 ? (
