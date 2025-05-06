@@ -18,9 +18,14 @@ import { IntakeFormTablePagination } from './pagination';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
 import FormSkeleton from '../../../skeletons/form-table-skeleton';
 import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 const IntakeFormTable = () => {
-  const { data, isPending, isError } = useAllForms();
+  const searchParams = useSearchParams();
+
+  const page = searchParams.get('page') ?? '1';
+  const search = searchParams.get('search') ?? '';
+  const { data, isPending, isError } = useAllForms(page, search);
 
   const table = useReactTable({
     data: data?.data ?? [],
