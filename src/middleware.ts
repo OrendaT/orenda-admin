@@ -31,5 +31,5 @@ export default auth(async (req) => {
 });
 
 export const config = {
-  matcher: ['/((?!api|_next|.*\\.(?:.*)).*)'],
+  matcher: ['/((?!_next|.*\\.(.*)|favicon.ico).*)'],
 };
