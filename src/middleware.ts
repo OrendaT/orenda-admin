@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server';
 import { auth } from './auth';
 
 const AUTH_ROUTES = ['/login', '/sign-up', '/password/reset', '/password/new'];
@@ -11,7 +10,7 @@ export default auth(async (req) => {
   // 1) Auth pages
   if (AUTH_ROUTES.some((r) => pathname.startsWith(r))) {
     if (isLoggedIn) {
-      return NextResponse.redirect(new URL('/', req.nextUrl));
+      return Response.redirect(new URL('/', req.nextUrl));
     }
     return;
   }
@@ -23,7 +22,7 @@ export default auth(async (req) => {
     ) &&
     !isLoggedIn
   ) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl));
+    return Response.redirect(new URL('/login', req.nextUrl));
   }
 
   // 3) Everything else (including API) — just proceed
