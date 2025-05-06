@@ -8,16 +8,14 @@ export default auth(async (req) => {
   const { pathname } = req.nextUrl;
   const isLoggedIn = Boolean(req.auth);
 
-
   if (
     req.headers.get('RSC') === '1' ||
     pathname.endsWith('.rsc') ||
     pathname.startsWith('/_next/data') ||
     pathname.startsWith('/_next/')
   ) {
-    return;
+    return NextResponse.next();
   }
-
 
   // 1) Auth pages
   if (AUTH_ROUTES.some((r) => pathname.startsWith(r))) {
