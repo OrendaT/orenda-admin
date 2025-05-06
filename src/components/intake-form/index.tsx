@@ -6,6 +6,7 @@ import SearchFilter from '../../components/intake-form/_components/search-filter
 import IntakeFormTable from './_components/intake-form-table';
 import Export from './_components/export';
 import { Suspense } from 'react';
+import SearchFilterSkeleton from '../skeletons/search-filter-skeleton';
 
 const IntakeForm = async () => {
   return (
@@ -36,7 +37,7 @@ const IntakeForm = async () => {
           <Export />
         </div>
 
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<SearchFilterSkeleton />}>
           <SearchFilter />
         </Suspense>
 
