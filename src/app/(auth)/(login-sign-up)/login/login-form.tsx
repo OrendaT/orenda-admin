@@ -32,7 +32,7 @@ const LoginForm = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     const res = await login(data);
-    console.log(res);
+
     if (res.success) {
       toast.success(res.message);
       push('/');

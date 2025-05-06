@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import GoogleAuthButton from '../_components/google-auth-button';
 import OrDivider from '../_components/or-divider';
+import { register } from '@/app/actions/auth';
 
 const SignUpForm = () => {
   const [success, setSuccess] = useState(false);
@@ -22,11 +23,14 @@ const SignUpForm = () => {
     },
     resolver: zodResolver(SignUpSchema),
   });
-  const { handleSubmit } = methods;
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    setSuccess(true);
+  const onSubmit = handleSubmit(async (data) => {
+    const res = await register(data);
+    if (res.success) setSuccess(true);
   });
 
   return (
@@ -53,7 +57,7 @@ const SignUpForm = () => {
             />
           </div>
 
-          <Button type="submit" className="mt-8">
+          <Button isLoading={isSubmitting} type="submit" className="mt-8">
             Sign up
           </Button>
 
