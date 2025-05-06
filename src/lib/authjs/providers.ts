@@ -25,7 +25,6 @@ const providers = [
         }
       }
 
-      console.log(user);
       return user;
     },
   }),

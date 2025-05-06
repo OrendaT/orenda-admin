@@ -1,7 +1,14 @@
 'use server';
 
-import { LoginSchemaType } from '@/lib/schemas/auth';
+import {
+  LoginSchemaType,
+  SignUpSchema,
+  SignUpSchemaType,
+} from '@/lib/schemas/auth';
 import { signIn, signOut } from '@/auth';
+import { AUTH_EP } from '@/lib/api/endpoints';
+import api from '@/lib/api/axios';
+import { AxiosError } from 'axios';
 
 export const login = async (data: LoginSchemaType) => {
   try {
@@ -33,4 +40,38 @@ export const logOut = async () => {
     success: true,
     message: 'Log out successful',
   };
+};
+
+export const register = async (data: SignUpSchemaType) => {
+  const validatedFields = SignUpSchema.safeParse(data);
+
+  if (validatedFields.error) {
+    return {
+      success: false,
+      message: 'Failed to validated fields',
+    };
+  }
+
+    try {
+      const res = await api.request({
+        url: AUTH_EP.REGISTER,
+        method: 'POST',
+        data: validatedFields.data,
+      });
+
+      return {
+        success: true,
+        message: res.data?.message || 'Registration successful',
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        success: false,
+        message:
+          error instanceof AxiosError
+            ? error.response?.data?.message
+            : 'Failed to register',
+      };
+    }
+  
 };
