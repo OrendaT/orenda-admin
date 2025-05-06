@@ -13,7 +13,7 @@ export default auth(async (req) => {
     if (isLoggedIn) {
       return NextResponse.redirect(new URL('/', req.url));
     }
-    return NextResponse.next();
+    return;
   }
 
   // 2) Private pages
@@ -27,7 +27,7 @@ export default auth(async (req) => {
   }
 
   // 3) Everything else (including API) — just proceed
-  return NextResponse.next();
+  return;
 });
 
 export const config = {
