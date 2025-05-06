@@ -28,7 +28,11 @@ const callbacks: Callbacks = {
       return token;
     } else {
       // Subsequent logins, but the `access_token` has expired, try to refresh it
-      if (!token.refresh_token) throw new TypeError('Missing refresh_token');
+      if (!token.refresh_token) {
+        token.error = 'RefreshTokenError';
+        return token;
+      }
+      
 
       try {
         const res = await api.post(
