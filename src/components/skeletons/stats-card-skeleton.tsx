@@ -9,12 +9,12 @@ const StatsCardSkeleton = ({ className }: StatsCardSkeletonProps) => {
   return (
     <article className={cn('card', className)}>
       <h3 className="card_heading flex items-center gap-2">
-        <Skeleton className="size-4 rounded-full" />
-        <Skeleton className="h-4 w-24" />
+        <Skeleton className="size-5 rounded-full" />
+        <Skeleton className="h-5 w-1/2 rounded-md" />
       </h3>
 
-      <div className="clamp-[gap,4,8] flex items-center justify-between">
-        <Skeleton className="h-10 w-24 rounded-md" />
+      <div className="clamp-[gap,4,8] flex items-center">
+        <Skeleton className="h-20 w-26 rounded-md" />
 
         <div className="space-y-1 text-xs">
           <Skeleton className="h-6 w-20 rounded-lg" />
