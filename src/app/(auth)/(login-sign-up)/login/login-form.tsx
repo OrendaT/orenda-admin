@@ -13,9 +13,11 @@ import GoogleAuthButton from '../_components/google-auth-button';
 import { login } from '@/app/actions/auth';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const LoginForm = () => {
   const { push } = useRouter();
+  const { update } = useSession();
   const methods = useForm<LoginSchemaType>({
     defaultValues: {
       email: '',
@@ -35,6 +37,7 @@ const LoginForm = () => {
 
     if (res.success) {
       toast.success(res.message);
+      update();
       push('/');
     }
     if (res.error) setError('root', res.error);
