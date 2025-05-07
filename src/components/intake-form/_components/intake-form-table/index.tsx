@@ -19,11 +19,9 @@ import { useAllForms } from '@/hooks/queries/use-all-forms';
 import FormSkeleton from '../../../skeletons/form-table-skeleton';
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import useAxios from '@/lib/api/axios-client';
 
 const IntakeFormTable = () => {
   const searchParams = useSearchParams();
-  const { status } = useAxios();
 
   const page = searchParams.get('page') ?? '1';
   const search = searchParams.get('search') ?? '';
@@ -39,7 +37,6 @@ const IntakeFormTable = () => {
   });
   return (
     <>
-      <p>{status}</p>
       <Table className="mt-8 mb-3">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
