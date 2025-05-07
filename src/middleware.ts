@@ -4,7 +4,7 @@ import { auth } from './auth';
 //const AUTH_ROUTES = ['/login', '/sign-up', '/password/reset', '/password/new'];
 // const PRIVATE_ROUTES = ['/intake-forms', '/']; // slash means “dashboard/home”
 
-export default auth(async (req) => {
+export default auth(async () => {
   // const { pathname } = req.nextUrl;
   // const isLoggedIn = Boolean(req.auth);
 
