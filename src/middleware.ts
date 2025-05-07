@@ -5,6 +5,12 @@ const AUTH_ROUTES = ['/login', '/sign-up', '/password/reset', '/password/new'];
 const PRIVATE_ROUTES = ['/intake-forms', '/']; // slash means “dashboard/home”
 
 export const middleware = async (req: NextRequest) => {
+  const isRSC =
+    req.headers.get('RSC') === '1' && !req.nextUrl.searchParams.has('_rsc');
+  if (isRSC) {
+    return NextResponse.next(); // Skip redirects for RSC requests
+  }
+
   const { pathname } = req.nextUrl;
   const session = await auth();
   const isLoggedIn = !!session;
