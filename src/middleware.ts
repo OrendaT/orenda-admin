@@ -1,31 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { auth } from './auth';
 
 const AUTH_ROUTES = ['/login', '/sign-up', '/password/reset', '/password/new'];
 const PRIVATE_ROUTES = ['/intake-forms', '/']; // slash means “dashboard/home”
 
-export const middleware = async (req: NextRequest) => {
-  const { pathname, searchParams } = req.nextUrl;
-  const session = await auth();
-  const isLoggedIn = !!session;
-  const isRscRequest =
-    req.headers.get('rsc') === '1' || searchParams.has('_rsc');
+export default auth(async (req) => {
+  // Skip middleware entirely for RSC requests
+  if (req.headers.get('rsc') === '1' || req.nextUrl.searchParams.has('_rsc')) {
+    return NextResponse.next();
+  }
+
+  const { pathname } = req.nextUrl;
+  const isLoggedIn = Boolean(req.auth);
 
   // 1) Auth pages
   if (AUTH_ROUTES.some((route) => pathname.startsWith(route))) {
     if (isLoggedIn) {
-      const redirectUrl = new URL('/', req.url);
-
-      // If this was an RSC request, preserve that in the redirect
-      if (isRscRequest) {
-        // Preserve any existing _rsc parameter
-        const rscParam = searchParams.get('_rsc');
-        if (rscParam) {
-          redirectUrl.searchParams.set('_rsc', rscParam);
-        }
-      }
-
-      return NextResponse.redirect(redirectUrl);
+      return NextResponse.redirect(new URL('/', req.nextUrl));
     }
 
     return NextResponse.next();
@@ -38,23 +29,12 @@ export const middleware = async (req: NextRequest) => {
     ) &&
     !isLoggedIn
   ) {
-    const redirectUrl = new URL('/login', req.url);
-
-    // If this was an RSC request, preserve that in the redirect
-    if (isRscRequest) {
-      // Preserve any existing _rsc parameter
-      const rscParam = searchParams.get('_rsc');
-      if (rscParam) {
-        redirectUrl.searchParams.set('_rsc', rscParam);
-      }
-    }
-
-    return NextResponse.redirect(redirectUrl);
+    return NextResponse.redirect(new URL('/login', req.nextUrl));
   }
 
   // 3) Everything else (including API) — just proceed
   return NextResponse.next();
-};
+});
 
 export const config = {
   matcher: [
