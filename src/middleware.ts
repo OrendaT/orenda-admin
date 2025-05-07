@@ -11,7 +11,7 @@ export default auth(async (req) => {
   // 1) Auth pages
   if (AUTH_ROUTES.some((route) => pathname.startsWith(route))) {
     if (isLoggedIn) {
-      return NextResponse.next();
+      return NextResponse.redirect(new URL('/', req.nextUrl));
     }
 
     return NextResponse.next();
@@ -24,7 +24,7 @@ export default auth(async (req) => {
     ) &&
     !isLoggedIn
   ) {
-    return NextResponse.next();
+    return NextResponse.redirect(new URL('/login', req.nextUrl));
   }
 
   // 3) Everything else (including API) — just proceed
