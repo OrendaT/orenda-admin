@@ -1,17 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { auth } from './auth';
 
 const AUTH_ROUTES = ['/login', '/sign-up', '/password/reset', '/password/new'];
 const PRIVATE_ROUTES = ['/intake-forms', '/']; // slash means “dashboard/home”
 
-export default auth(async (req) => {
+export const middleware = async (req: NextRequest) => {
   const { pathname } = req.nextUrl;
-  const isLoggedIn = Boolean(req.auth);
-
-  const isRSC = req.headers.get('accept')?.includes('text/x-component');
-  if (isRSC) {
-    return NextResponse.next(); // don't redirect; let server component handle it
-  }
+  const session = await auth();
+  const isLoggedIn = !!session;
 
   // 1) Auth pages
   if (AUTH_ROUTES.some((route) => pathname.startsWith(route))) {
@@ -34,7 +30,7 @@ export default auth(async (req) => {
 
   // 3) Everything else (including API) — just proceed
   return NextResponse.next();
-});
+};
 
 export const config = {
   matcher: [
