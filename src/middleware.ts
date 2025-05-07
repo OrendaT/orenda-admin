@@ -5,20 +5,27 @@ const AUTH_ROUTES = ['/login', '/sign-up', '/password/reset', '/password/new'];
 const PRIVATE_ROUTES = ['/intake-forms', '/']; // slash means “dashboard/home”
 
 export const middleware = async (req: NextRequest) => {
-  const isRSC =
-    req.headers.get('RSC') === '1' && !req.nextUrl.searchParams.has('_rsc');
-  if (isRSC) {
-    return NextResponse.next(); // Skip redirects for RSC requests
-  }
-
-  const { pathname } = req.nextUrl;
+  const { pathname, searchParams } = req.nextUrl;
   const session = await auth();
   const isLoggedIn = !!session;
+  const isRscRequest =
+    req.headers.get('rsc') === '1' || searchParams.has('_rsc');
 
   // 1) Auth pages
   if (AUTH_ROUTES.some((route) => pathname.startsWith(route))) {
     if (isLoggedIn) {
-      return NextResponse.redirect(new URL('/', req.nextUrl));
+      const redirectUrl = new URL('/', req.url);
+
+      // If this was an RSC request, preserve that in the redirect
+      if (isRscRequest) {
+        // Preserve any existing _rsc parameter
+        const rscParam = searchParams.get('_rsc');
+        if (rscParam) {
+          redirectUrl.searchParams.set('_rsc', rscParam);
+        }
+      }
+
+      return NextResponse.redirect(redirectUrl);
     }
 
     return NextResponse.next();
@@ -31,7 +38,18 @@ export const middleware = async (req: NextRequest) => {
     ) &&
     !isLoggedIn
   ) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl));
+    const redirectUrl = new URL('/login', req.url);
+
+    // If this was an RSC request, preserve that in the redirect
+    if (isRscRequest) {
+      // Preserve any existing _rsc parameter
+      const rscParam = searchParams.get('_rsc');
+      if (rscParam) {
+        redirectUrl.searchParams.set('_rsc', rscParam);
+      }
+    }
+
+    return NextResponse.redirect(redirectUrl);
   }
 
   // 3) Everything else (including API) — just proceed
