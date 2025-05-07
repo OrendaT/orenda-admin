@@ -9,11 +9,9 @@ export default auth(async (req) => {
   const isLoggedIn = Boolean(req.auth);
 
   // 1) Auth pages
-  if (AUTH_ROUTES.some((r) => pathname.startsWith(r))) {
+  if (AUTH_ROUTES.some((route) => pathname.startsWith(route))) {
     if (isLoggedIn) {
-      const response = NextResponse.redirect(new URL('/', req.nextUrl));
-      response.headers.set('Cache-Control', 'no-store');
-      return response;
+      return NextResponse.redirect(new URL('/', req.nextUrl));
     }
 
     return NextResponse.next();
@@ -22,13 +20,11 @@ export default auth(async (req) => {
   // 2) Private pages
   if (
     PRIVATE_ROUTES.some(
-      (r) => pathname === r || pathname.startsWith(r + '/'),
+      (route) => pathname === route || pathname.startsWith(route + '/'),
     ) &&
     !isLoggedIn
   ) {
-    const response = NextResponse.redirect(new URL('/login', req.nextUrl));
-    response.headers.set('Cache-Control', 'no-store');
-    return response;
+    return NextResponse.redirect(new URL('/login', req.nextUrl));
   }
 
   // 3) Everything else (including API) — just proceed
