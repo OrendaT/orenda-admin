@@ -8,6 +8,11 @@ export default auth(async (req) => {
   const { pathname } = req.nextUrl;
   const isLoggedIn = Boolean(req.auth);
 
+  const isRSC = req.headers.get('accept')?.includes('text/x-component');
+  if (isRSC) {
+    return NextResponse.next(); // don't redirect; let server component handle it
+  }
+
   // 1) Auth pages
   if (AUTH_ROUTES.some((route) => pathname.startsWith(route))) {
     if (isLoggedIn) {
