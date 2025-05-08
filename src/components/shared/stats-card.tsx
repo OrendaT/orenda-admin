@@ -26,7 +26,7 @@ const StatsCard = ({
         <div className="space-y-1 text-xs">
           <p
             className={cn(
-              '[&_svg]:size-[0.85rem flex items-center justify-center gap-1 rounded-lg border px-3 py-1.5 font-medium shadow-xs',
+              '[&_svg]:size-[0.85rem hidden items-center justify-center gap-1 rounded-lg border px-3 py-1.5 font-medium shadow-xs',
               {
                 'border-[#CEFFC9] bg-[#F5FFF4] text-[#008C25]':
                   stats.trend === 'up',
