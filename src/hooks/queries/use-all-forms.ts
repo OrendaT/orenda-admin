@@ -6,11 +6,26 @@ import { FORMS_EP } from '@/lib/api/endpoints';
 import { AllFormsResponse } from '@/types';
 import useAxios from '@/lib/api/axios-client';
 
-export const useAllForms = (page: string = '1', search?: string) => {
+interface UseAllFormsProps {
+  page?: string;
+  search?: string;
+  filters?: {
+    flag?: string;
+    from?: string;
+    to?: string;
+    status?: string;
+  };
+}
+
+export const useAllForms = ({
+  page = '1',
+  search,
+  filters,
+}: UseAllFormsProps) => {
   const { axios, status } = useAxios();
 
   return useQuery({
-    queryKey: [QUERY_KEYS.allForms, page, search],
+    queryKey: [QUERY_KEYS.allForms, page, search, filters],
     queryFn: async () => {
       const res = await axios<AllFormsResponse>({
         url: FORMS_EP.ALL_PATIENTS,
@@ -19,6 +34,7 @@ export const useAllForms = (page: string = '1', search?: string) => {
           per_page: 6,
           page,
           search,
+          ...filters,
         },
       });
       return res.data;

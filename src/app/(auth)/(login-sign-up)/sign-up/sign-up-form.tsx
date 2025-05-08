@@ -3,7 +3,7 @@
 import AccountCreated from '@/components/auth/account-created';
 import Input from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { SignUpSchema, SignUpSchemaType } from '@/lib/schemas/auth';
+import { SignUpSchema, SignUpSchemaType } from '@/lib/schemas/auth-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useState } from 'react';

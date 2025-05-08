@@ -5,7 +5,9 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import api from './axios';
 
 const useAxios = () => {
-  const { data, status } = useSession();
+  const { data, status, update } = useSession();
+
+  if (status === 'unauthenticated') update();
 
   const axios = async <T = unknown>(
     config: AxiosRequestConfig,
@@ -22,7 +24,7 @@ const useAxios = () => {
     return api.request<T>(config);
   };
 
-  return { axios, status };
+  return { axios, status, update };
 };
 
 export default useAxios;

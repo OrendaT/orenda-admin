@@ -1,0 +1,24 @@
+import { LuCircleCheckBig, LuTimer } from 'react-icons/lu';
+
+//  INTAKE FORM FILTERS DATA
+export const initialFilters = {
+  status: undefined,
+  flag: undefined,
+  from: undefined,
+  to: undefined,
+};
+
+export const statusFilters = [
+  {
+    id: 'pending',
+    label: 'Pending',
+    value: 'pending',
+    Icon: LuTimer,
+  },
+  {
+    id: 'submitted',
+    label: 'Submitted',
+    value: 'submitted',
+    Icon: LuCircleCheckBig,
+  },
+];

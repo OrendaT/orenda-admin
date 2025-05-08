@@ -19,13 +19,30 @@ import { useAllForms } from '@/hooks/queries/use-all-forms';
 import FormSkeleton from '../../../skeletons/form-table-skeleton';
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import useAxios from '@/lib/api/axios-client';
 
 const IntakeFormTable = () => {
   const searchParams = useSearchParams();
 
   const page = searchParams.get('page') ?? '1';
-  const search = searchParams.get('search') ?? '';
-  const { data, isPending, isError } = useAllForms(page, search);
+  const search = searchParams.get('search') ?? undefined;
+  const flag = searchParams.get('flag') ?? undefined;
+  const from = searchParams.get('from') ?? undefined;
+  const to = searchParams.get('to') ?? undefined;
+  const status = searchParams.get('status') ?? undefined;
+
+  const { data, isPending, isError } = useAllForms({
+    page,
+    search,
+    filters: {
+      flag,
+      from,
+      to,
+      status,
+    },
+  });
+
+  const { status: _status } = useAxios();
 
   const table = useReactTable({
     data: data?.data ?? [],
@@ -37,6 +54,7 @@ const IntakeFormTable = () => {
   });
   return (
     <>
+      <p className="mt-4 -mb-4 text-xs">{_status}</p>
       <Table className="mt-8 mb-3">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

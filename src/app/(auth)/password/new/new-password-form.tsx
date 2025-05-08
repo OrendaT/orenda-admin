@@ -5,7 +5,10 @@ import Input from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { bothCasesPattern, numAndSpecialPattern } from '@/lib/regex';
-import { NewPasswordSchema, NewPasswordSchemaType } from '@/lib/schemas/auth';
+import {
+  NewPasswordSchema,
+  NewPasswordSchemaType,
+} from '@/lib/schemas/auth-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';

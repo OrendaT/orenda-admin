@@ -4,7 +4,7 @@ import {
   LoginSchemaType,
   SignUpSchema,
   SignUpSchemaType,
-} from '@/lib/schemas/auth';
+} from '@/lib/schemas/auth-schema';
 import { signIn, signOut } from '@/auth';
 import { AUTH_EP } from '@/lib/api/endpoints';
 import api from '@/lib/api/axios';
@@ -52,26 +52,25 @@ export const register = async (data: SignUpSchemaType) => {
     };
   }
 
-    try {
-      const res = await api.request({
-        url: AUTH_EP.REGISTER,
-        method: 'POST',
-        data: validatedFields.data,
-      });
+  try {
+    const res = await api.request({
+      url: AUTH_EP.REGISTER,
+      method: 'POST',
+      data: validatedFields.data,
+    });
 
-      return {
-        success: true,
-        message: res.data?.message || 'Registration successful',
-      };
-    } catch (error) {
-      console.error(error);
-      return {
-        success: false,
-        message:
-          error instanceof AxiosError
-            ? error.response?.data?.message
-            : 'Failed to register',
-      };
-    }
-  
+    return {
+      success: true,
+      message: res.data?.message || 'Registration successful',
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message:
+        error instanceof AxiosError
+          ? error.response?.data?.message
+          : 'Failed to register',
+    };
+  }
 };
