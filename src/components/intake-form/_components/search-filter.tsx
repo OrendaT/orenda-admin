@@ -12,42 +12,21 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  ReadonlyURLSearchParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { LuCircleCheckBig, LuFilter, LuSearch, LuTimer } from 'react-icons/lu';
-import { z } from 'zod';
+import { LuFilter, LuSearch } from 'react-icons/lu';
 import { useDebouncedCallback } from 'use-debounce';
-
-const FiltersSchema = z.object({
-  status: z.enum(['pending', 'submitted']).optional().nullable(),
-  from: z.date({ message: 'From date is required' }).optional(),
-  to: z.date({ message: 'To date is required' }).optional(),
-  flag: z
-    .string()
-    .optional()
-    .or(
-      z
-        .boolean()
-        .default(false)
-        .transform(() => ''),
-    ),
-});
-
-const statusFilters = [
-  {
-    id: 'pending',
-    label: 'Pending',
-    value: 'pending',
-    Icon: LuTimer,
-  },
-  {
-    id: 'submitted',
-    label: 'Submitted',
-    value: 'submitted',
-    Icon: LuCircleCheckBig,
-  },
-];
+import { format } from 'date-fns';
+import { NavigateOptions } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import useWaitFor from '@/hooks/use-wait-for';
+import { FiltersSchema } from '@/lib/schemas/filters-schema';
+import { initialFilters, statusFilters } from '@/lib/app-data';
 
 export default function SearchFilter() {
   const { replace } = useRouter(); // replace to set the query params
@@ -93,24 +72,40 @@ export default function SearchFilter() {
           defaultValue={searchParams.get('search')?.toString() || ''}
         />
       </div>
-      <Filters updateSearchParam={updateSearchParam} />
+      <Filters
+        searchParams={searchParams}
+        pathname={pathname}
+        replace={replace}
+      />
     </div>
   );
 }
 
 const Filters = ({
-  updateSearchParam,
+  searchParams,
+  pathname,
+  replace,
 }: {
-  updateSearchParam: (key: string, value: string) => void;
+  searchParams: ReadonlyURLSearchParams;
+  pathname: string;
+  replace: (href: string, options?: NavigateOptions) => void;
 }) => {
   const [open, setOpen] = useState(false);
 
+  const _status = searchParams.get('status') as
+    | 'pending'
+    | 'submitted'
+    | undefined;
+  const _from = searchParams.get('from');
+  const _to = searchParams.get('to');
+  const _flag = searchParams.get('flag');
+
   const methods = useForm({
     defaultValues: {
-      status: undefined,
-      from: undefined,
-      to: undefined,
-      flag: '',
+      status: _status,
+      from: _from ? new Date(_from) : undefined,
+      to: _to ? new Date(_to) : undefined,
+      flag: _flag === 'true' ? true : undefined,
     },
     resolver: zodResolver(FiltersSchema),
   });
@@ -120,20 +115,37 @@ const Filters = ({
     formState: { errors },
     register,
     watch,
+    reset,
   } = methods;
 
-  const status = watch('status');
+  const { isPending, waitFor } = useWaitFor();
 
-  const onSubmit = handleSubmit((data) => {
-    Object.entries(data).forEach(([key, value]) => {
-      if (value instanceof Date) {
-        value = value.toISOString().split('T')[0];
-      }
+  const onSubmit = handleSubmit(async (data) => {
+    const queryData = Object.fromEntries(
+      Object.entries(data).filter(([, value]) => Boolean(value)),
+    );
 
-      updateSearchParam(key, value ?? '');
-    });
+    const { from, to } = queryData;
+
+    if (from && to) {
+      queryData.from = format(from as Date, 'MM-dd-yyyy');
+      queryData.to = format(to as Date, 'MM-dd-yyyy');
+    }
+
+    const query = new URLSearchParams(
+      queryData as Record<string, string>,
+    ).toString();
+
+    await waitFor(() => {
+      replace(`${pathname}?${query}`, {
+        scroll: false,
+      });
+    }, 420);
+
     setOpen(false);
   });
+
+  const [status, from, to] = watch(['status', 'from', 'to']);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -185,6 +197,13 @@ const Filters = ({
                 label="From"
                 name="from"
                 dateFormat="P"
+                disabled={(date) => {
+                  if (to) {
+                    return date > to || date > new Date();
+                  } else {
+                    return date > new Date();
+                  }
+                }}
               />
 
               <div className="grid items-center">
@@ -200,6 +219,13 @@ const Filters = ({
                 label="To"
                 name="to"
                 dateFormat="P"
+                disabled={(date) => {
+                  if (from) {
+                    return date > new Date() || date < from;
+                  } else {
+                    return date > new Date();
+                  }
+                }}
               />
             </div>
 
@@ -212,19 +238,30 @@ const Filters = ({
               {/* Hidden radio input */}
               <input
                 type="checkbox"
-                value="flag"
+                value="true"
                 hidden
                 {...register('flag')}
               />
             </label>
 
-            <Button
-              type="submit"
-              className="mx-auto mt-12 max-w-[25rem] rounded-lg"
-            >
-              Apply
-            </Button>
+            <div className="mt-12 flex items-center justify-between gap-4">
+              <Button
+                className="relative w-fit ring-0 hover:bg-none"
+                variant="ghost"
+                type="button"
+                onClick={() => reset(initialFilters)}
+              >
+                Clear Filters
+              </Button>
 
+              <Button
+                type="submit"
+                className="max-w-28 rounded-lg"
+                isLoading={isPending}
+              >
+                Apply
+              </Button>
+            </div>
           </form>
         </FormProvider>
       </DialogContent>

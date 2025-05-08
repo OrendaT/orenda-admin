@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { DashboardCardStats } from '@/types';
+import { formatDistanceToNowStrict } from 'date-fns';
 import { LuArrowDown, LuArrowUp } from 'react-icons/lu';
 
 interface StatsCardProps {
@@ -37,7 +38,7 @@ const StatsCard = ({
             <TrendIcon strokeWidth={2.3} />
             {stats.percentage}%
           </p>
-          <p className="text-[#8E8E8E]">{stats.range}</p>
+          <p className="text-[#8E8E8E]">Last {formatDistanceToNowStrict(stats.range)}</p>
         </div>
       </div>
     </article>

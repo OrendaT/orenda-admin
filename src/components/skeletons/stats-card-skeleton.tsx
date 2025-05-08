@@ -1,16 +1,22 @@
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
+import { DashboardCardStats } from '@/types';
 
 interface StatsCardSkeletonProps {
+  name: string;
+  Icon: DashboardCardStats['NameIcon'];
   className?: string;
 }
 
-const StatsCardSkeleton = ({ className }: StatsCardSkeletonProps) => {
+const StatsCardSkeleton = ({
+  name,
+  Icon,
+  className,
+}: StatsCardSkeletonProps) => {
   return (
     <article className={cn('card', className)}>
-      <h3 className="card_heading flex items-center gap-2">
-        <Skeleton className="size-5 rounded-full" />
-        <Skeleton className="h-5 w-1/2 rounded-md" />
+      <h3 className="card_heading">
+        <Icon /> {name}
       </h3>
 
       <div className="clamp-[gap,4,8] flex items-center">

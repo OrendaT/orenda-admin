@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Select,
   SelectContent,
@@ -5,11 +7,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { usePreviousDateStore } from '@/stores/previous-date-store';
 
 const RangeSelect = () => {
+  const days = usePreviousDateStore((state) => state.days);
+  const setDays = usePreviousDateStore((state) => state.setDays);
+
+  const onSelect = (value: string) => {
+    setDays(value);
+  };
+
   return (
-    <Select defaultValue='7'>
-      <SelectTrigger className="font-medium min-w-32">
+    <Select onValueChange={onSelect} defaultValue={days}>
+      <SelectTrigger className="min-w-32 font-medium">
         <SelectValue placeholder="Select a range" />
       </SelectTrigger>
 

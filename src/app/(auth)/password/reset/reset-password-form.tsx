@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 
 import Input from '@/components/ui/input';
-import { LoginSchema } from '@/lib/schemas/auth';
+import { LoginSchema } from '@/lib/schemas/auth-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CheckMail from '@/components/auth/check-mail';
 import { useState } from 'react';

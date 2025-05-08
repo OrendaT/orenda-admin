@@ -1,6 +1,6 @@
 import Credentials from 'next-auth/providers/credentials';
 import Google, { GoogleProfile } from 'next-auth/providers/google';
-import { LoginSchema } from '../schemas/auth';
+import { LoginSchema } from '../schemas/auth-schema';
 import api from '../api/axios';
 import { AUTH_EP } from '../api/endpoints';
 import { AxiosError } from 'axios';
