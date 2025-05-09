@@ -48,6 +48,7 @@ const IntakeFormTable = () => {
     data: data?.data ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getRowId: (row) => row.id,
     manualPagination: true,
     pageCount: data?.total_pages ?? 0,
     autoResetPageIndex: false,

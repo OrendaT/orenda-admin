@@ -43,12 +43,12 @@ const Options = ({ row }: CellContext<IntakeFormTableData, unknown>) => {
             disabled={isPending}
             className="py-2 pr-8 text-sm"
           >
-            {flag? 'Unflag' : 'Flag'} Form
+            {flag ? 'Unflag' : 'Flag'} Form
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <DownloadForm name={name} open={open} />
+      <DownloadForm name={name} open={open} forms={[id]} />
     </Dialog>
   );
 };

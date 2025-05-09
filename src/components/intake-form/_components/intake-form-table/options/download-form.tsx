@@ -8,13 +8,16 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import Input from '@/components/ui/input';
+import useExport from '@/hooks/mutations/use-export';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 import { Status } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LuPencil } from 'react-icons/lu';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const DownloadFormSchema = z.object({
@@ -26,13 +29,17 @@ const url = 'www.google.com';
 const DownloadForm = ({
   name = '',
   open,
+  forms,
 }: {
   name?: string;
   open: boolean;
+  forms: string[];
 }) => {
   const [allowEdit, setAllowEdit] = useState(!name);
   const [status, setStatus] = useState<Status>('default');
   const [copied, onClick] = useClipboard(url);
+  const { mutateAsync: _export, isPending } = useExport();
+  const { status: authStatus } = useSession();
 
   const methods = useForm({
     defaultValues: { name },
@@ -52,10 +59,26 @@ const DownloadForm = ({
   });
 
   useEffect(() => {
+    const exportForm = async () => {
+      try {
+        console.log(forms);
+        const res = await _export({ patients: forms });
+        console.log(res);
+      } catch (error) {
+        console.error(error);
+        if (!forms.length) {
+          toast.error('No forms selected');
+        }
+      }
+    };
+
     if (!open) {
       setStatus('default');
+    } else {
+      setAllowEdit(!name);
+      if (authStatus === 'authenticated') exportForm();
     }
-  }, [open]);
+  }, [open, _export, authStatus, forms, name]);
 
   return (
     <DialogContent className="pb-12">
@@ -91,7 +114,7 @@ const DownloadForm = ({
             </div>
             <div className="mt-12 flex items-center justify-between gap-4">
               <Button
-                disabled={!url}
+                disabled={!url || isPending}
                 className="relative w-fit ring-0 hover:bg-none"
                 onClick={onClick}
                 variant="ghost"
@@ -106,6 +129,7 @@ const DownloadForm = ({
               </Button>
 
               <Button
+                isLoading={isPending}
                 type="submit"
                 className="max-w-[9.81rem] rounded-lg sm:ml-auto"
               >

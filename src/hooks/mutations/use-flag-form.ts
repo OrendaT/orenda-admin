@@ -10,7 +10,7 @@ const useFlagForm = () => {
   return useMutation({
     mutationFn: async (id: string) =>
       await axios({
-        url: FORMS_EP.FLAG_PATIENT(id),
+        url: FORMS_EP.FLAG(id),
         method: 'PATCH',
       }),
     onSuccess: () => {

@@ -16,9 +16,9 @@ export const AUTH_EP = {
 
 export const FORMS_EP = {
   ALL_PATIENTS: BASE.PATIENTS,
-  EXPORT_PATIENTS: `${BASE.PATIENTS}/export`,
+  EXPORT: `${BASE.PATIENTS}/export`,
   PATIENT: (id: string) => `${BASE.PATIENTS}/${id}`,
-  FLAG_PATIENT: (id: string) => `${BASE.PATIENTS}/${id}/flag`,
+  FLAG: (id: string) => `${BASE.PATIENTS}/${id}/flag`,
   CREDIT_CARD: (id: string) => `${BASE.PATIENTS}/${id}/credit-card`,
-  MASS_DOWNLOAD: `${BASE.PATIENTS}/mass-download`
+  MASS_DOWNLOAD: `${BASE.PATIENTS}/mass-download`,
 };
