@@ -5,9 +5,13 @@ import DownloadForm from './intake-form-table/options/download-form';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { LuUpload } from 'react-icons/lu';
+import { useSelectedFormsStore } from '@/stores/selected-forms-store';
 
 const Export = () => {
   const [open, setOpen] = useState(false);
+
+  const forms = useSelectedFormsStore((state) => state.forms);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -19,7 +23,7 @@ const Export = () => {
         </Button>
       </DialogTrigger>
 
-      <DownloadForm open={open} />
+      <DownloadForm open={open} forms={forms} />
     </Dialog>
   );
 };

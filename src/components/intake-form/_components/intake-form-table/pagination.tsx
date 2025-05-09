@@ -77,6 +77,7 @@ export function IntakeFormTablePagination({
           <PaginationPrevious
             disabled={currentPageIndex <= 0}
             onClick={() => {
+              table.setPageIndex(currentPageIndex - 1);
               updateSearchParam(currentPageIndex);
             }}
             className="text-orenda-purple disabled:text-[#8E8E8E]"
@@ -104,6 +105,7 @@ export function IntakeFormTablePagination({
           <PaginationNext
             disabled={table.getPageCount() === currentPageIndex + 1}
             onClick={() => {
+              table.setPageIndex(currentPageIndex + 1);
               updateSearchParam(currentPageIndex + 2);
             }}
             className="text-orenda-purple disabled:text-[#8E8E8E]"
