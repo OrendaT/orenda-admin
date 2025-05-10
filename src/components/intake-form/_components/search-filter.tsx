@@ -42,7 +42,6 @@ export default function SearchFilter() {
         params.delete('page');
         params.set(key, query);
       }
-      console.log(params, params.toString());
       return params.toString();
     },
     [searchParams],

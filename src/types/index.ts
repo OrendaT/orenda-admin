@@ -47,3 +47,21 @@ export interface AllFormsResponse {
   total_pages: number;
   success: boolean;
 }
+
+export interface UseAllFormsProps {
+  page?: string;
+  search?: string;
+  filters?: {
+    flag?: string;
+    from?: string;
+    to?: string;
+    status?: string;
+  };
+}
+
+export interface TaskStatusResponse {
+  error: boolean | null;
+  ready: boolean;
+  successful: boolean;
+  url: string;
+}

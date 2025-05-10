@@ -12,9 +12,11 @@ import { IntakeFormTableData } from '@/types';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
 import useFlagForm from '@/hooks/mutations/use-flag-form';
+import PreviewForm from './preview-form';
 
 const Options = ({ row }: CellContext<IntakeFormTableData, unknown>) => {
   const [open, setOpen] = useState(false);
+  const [module, setModule] = useState<'download' | 'preview'>();
   const name = String(row.getValue('name'));
   const { id, flag } = row.original;
 
@@ -30,11 +32,19 @@ const Options = ({ row }: CellContext<IntakeFormTableData, unknown>) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem className="py-2 pr-8 text-sm">
-            Preview Form
-          </DropdownMenuItem>
           <DialogTrigger asChild>
-            <DropdownMenuItem className="py-2 pr-8 text-sm">
+            <DropdownMenuItem
+              onClick={() => setModule('preview')}
+              className="py-2 pr-8 text-sm"
+            >
+              Preview Form
+            </DropdownMenuItem>
+          </DialogTrigger>
+          <DialogTrigger asChild>
+            <DropdownMenuItem
+              onClick={() => setModule('download')}
+              className="py-2 pr-8 text-sm"
+            >
               Download Form
             </DropdownMenuItem>
           </DialogTrigger>
@@ -48,7 +58,11 @@ const Options = ({ row }: CellContext<IntakeFormTableData, unknown>) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <DownloadForm name={name} open={open} forms={[id]} />
+      {module === 'download' && (
+        <DownloadForm name={name} open={open} forms={[id]} />
+      )}
+
+      {module === 'preview' && <PreviewForm id={id} />}
     </Dialog>
   );
 };

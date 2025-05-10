@@ -16,6 +16,7 @@ import MassDownload from './mass-download';
 import { useState } from 'react';
 import { Status } from '@/types';
 import SuccessMessage from '@/components/shared/action-success-message';
+import { cn } from '@/lib/utils';
 
 const QuickActions = () => {
   const [open, setOpen] = useState(false);
@@ -41,7 +42,7 @@ const QuickActions = () => {
       name: 'Mass download',
       description: 'Download forms between specific dates',
       Icon: LuDownload,
-      DialogContent: <MassDownload close={() => setOpen(false)} />,
+      DialogContent: <MassDownload setOpen={setOpen} />,
     },
   ];
 
@@ -70,16 +71,19 @@ const QuickActions = () => {
                 </Button>
               </DialogTrigger>
               <DialogContent className="pt-6 pb-[3.38rem]">
-                {status === 'default' && (
-                  <DialogHeader>
-                    <DialogTitle>{action.name}</DialogTitle>
-                    {action.description && (
-                      <DialogDescription className="text-primary">
-                        {action.description}
-                      </DialogDescription>
+                <DialogHeader className={cn(status === 'success' && 'sr-only')}>
+                  <DialogTitle>{action.name}</DialogTitle>
+
+                  <DialogDescription
+                    className={cn(
+                      'text-primary',
+                      !action.description && 'sr-only',
                     )}
-                  </DialogHeader>
-                )}
+                  >
+                    {action?.description}
+                  </DialogDescription>
+                </DialogHeader>
+
                 {status === 'success' ? (
                   <SuccessMessage message={action.successMessage} />
                 ) : (

@@ -4,27 +4,26 @@ import SuccessMessage from '@/components/shared/action-success-message';
 import { Button } from '@/components/ui/button';
 import {
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
 import Input from '@/components/ui/input';
 import useExport from '@/hooks/mutations/use-export';
+import useCheckStatus from '@/hooks/queries/use-check-status';
 import { useClipboard } from '@/hooks/use-clipboard';
-import { cn } from '@/lib/utils';
+import { cn, downloadFile } from '@/lib/utils';
+import useDownloadFormStore from '@/stores/download-form-store';
 import { Status } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LuPencil } from 'react-icons/lu';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 const DownloadFormSchema = z.object({
   name: z.string().min(1, { message: 'This field is required' }),
 });
-
-const url = 'www.google.com';
 
 const DownloadForm = ({
   name = '',
@@ -35,11 +34,9 @@ const DownloadForm = ({
   open: boolean;
   forms: string[];
 }) => {
+  // Dialog Functionality
   const [allowEdit, setAllowEdit] = useState(!name);
   const [status, setStatus] = useState<Status>('default');
-  const [copied, onClick] = useClipboard(url);
-  const { mutateAsync: _export, isPending } = useExport();
-  const { status: authStatus } = useSession();
 
   const methods = useForm({
     defaultValues: { name },
@@ -53,37 +50,72 @@ const DownloadForm = ({
     setFocus('name');
   };
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    setStatus('success');
-  });
-
+  // reset dialog state to default
+  // reset input allow edit state
   useEffect(() => {
-    const exportForm = async () => {
-      try {
-        console.log(forms);
-        const res = await _export({ patients: forms });
-        console.log(res);
-      } catch (error) {
-        console.error(error);
-        if (!forms.length) {
-          toast.error('No forms selected');
-        }
-      }
-    };
-
     if (!open) {
       setStatus('default');
     } else {
       setAllowEdit(!name);
-      if (authStatus === 'authenticated') exportForm();
     }
-  }, [open, _export, authStatus, forms, name]);
+  }, [open, name]);
+
+  // -------------------
+  // Export Functionality
+  const { mutateAsync: _export } = useExport();
+  const key =
+    forms.length > 1 ? `${forms[0]}_${forms[forms.length - 1]}` : forms[0];
+  const downloads = useDownloadFormStore((state) => state.downloads);
+  const addTask = useDownloadFormStore((state) => state.addTask);
+  const updateTask = useDownloadFormStore((state) => state.updateTask);
+
+  const { data, isSuccess } = useCheckStatus(downloads[key]?.task_id);
+
+  // copy url function
+  const [copied, onClick] = useClipboard(data?.url || '');
+
+  // effect to add task if it doesn't exist
+  useEffect(() => {
+    const exportForms = async () => {
+      const res = await _export({ patients: forms });
+      if (res.status === 200) {
+        addTask(key, {
+          status: 'pending',
+          task_id: res.data?.task_id,
+        });
+      }
+    };
+
+    if (open && !downloads[key]) {
+      exportForms();
+    }
+  }, [open, _export, forms, name, addTask, downloads, key]);
+
+  // set url if export successful
+  useEffect(() => {
+    if (isSuccess && data?.url) {
+      updateTask(key, {
+        status: 'success',
+        url: data.url,
+      });
+    }
+  }, [isSuccess, data, downloads, key, updateTask]);
+
+  // Final download
+  const onSubmit = handleSubmit((data) => {
+    const { name } = data;
+    const { url } = downloads[key];
+    if (url) {
+      downloadFile({ name, url });
+      setStatus('success');
+    }
+  });
 
   return (
     <DialogContent className="pb-12">
       <DialogHeader className={cn(status === 'success' && 'sr-only')}>
         <DialogTitle>Export</DialogTitle>
+        <DialogDescription className="sr-only">Export form</DialogDescription>
       </DialogHeader>
 
       {status === 'success' ? (
@@ -114,7 +146,7 @@ const DownloadForm = ({
             </div>
             <div className="mt-12 flex items-center justify-between gap-4">
               <Button
-                disabled={!url || isPending}
+                disabled={Boolean(!data?.url)}
                 className="relative w-fit ring-0 hover:bg-none"
                 onClick={onClick}
                 variant="ghost"
@@ -129,7 +161,7 @@ const DownloadForm = ({
               </Button>
 
               <Button
-                isLoading={isPending}
+                isLoading={Boolean(!data?.url)}
                 type="submit"
                 className="max-w-[9.81rem] rounded-lg sm:ml-auto"
               >
