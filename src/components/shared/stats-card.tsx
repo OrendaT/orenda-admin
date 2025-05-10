@@ -14,6 +14,7 @@ const StatsCard = ({
 }: StatsCardProps) => {
   const TrendIcon = stats.trend === 'up' ? LuArrowUp : LuArrowDown;
 
+  const distance = formatDistanceToNowStrict(stats.range);
   return (
     <article className={cn('card', className)}>
       <h3 className="card_heading">
@@ -38,7 +39,9 @@ const StatsCard = ({
             <TrendIcon strokeWidth={2.3} />
             {stats.percentage}%
           </p>
-          <p className="text-[#8E8E8E]">Last {formatDistanceToNowStrict(stats.range)}</p>
+          <p className="text-[#8E8E8E]">
+            Last {distance === '8 days' ? '7 days' : distance}
+          </p>
         </div>
       </div>
     </article>
