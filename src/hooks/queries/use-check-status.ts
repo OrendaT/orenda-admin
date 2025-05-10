@@ -30,7 +30,7 @@ const useCheckStatus = (task_id?: string) => {
 
       return true; // if no error just retry
     },
-    retryDelay: 3000,
+    retryDelay: 2000,
     enabled: status === 'authenticated' && !!task_id,
   });
 };
