@@ -62,6 +62,7 @@ const DownloadForm = ({
 
   // -------------------
   // Export Functionality
+  const [isDownloading, setIsDownloading] = useState(false);
   const { mutateAsync: _export } = useExport();
   const key =
     forms.length > 1 ? `${forms[0]}_${forms[forms.length - 1]}` : forms[0];
@@ -106,7 +107,9 @@ const DownloadForm = ({
     const { name } = data;
     const { url } = downloads[key];
     if (url) {
+      setIsDownloading(true);
       downloadFile({ name, url }, () => {
+        setIsDownloading(false);
         setStatus('success');
       });
     }
@@ -162,7 +165,7 @@ const DownloadForm = ({
               </Button>
 
               <Button
-                isLoading={Boolean(!data?.url)}
+                isLoading={Boolean(!data?.url) || isDownloading}
                 type="submit"
                 className="max-w-[9.81rem] rounded-lg sm:ml-auto"
               >
