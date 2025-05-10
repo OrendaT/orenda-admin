@@ -69,7 +69,7 @@ const DownloadForm = ({
   const addTask = useDownloadFormStore((state) => state.addTask);
   const updateTask = useDownloadFormStore((state) => state.updateTask);
 
-  const { data, isSuccess } = useCheckStatus(downloads[key]?.task_id);
+  const { data } = useCheckStatus(downloads[key]?.task_id);
 
   // copy url function
   const [copied, onClick] = useClipboard(data?.url || '');
@@ -93,13 +93,13 @@ const DownloadForm = ({
 
   // set url if export successful
   useEffect(() => {
-    if (isSuccess && data?.url) {
+    if (data?.url) {
       updateTask(key, {
         status: 'success',
         url: data.url,
       });
     }
-  }, [isSuccess, data, downloads, key, updateTask]);
+  }, [data, updateTask, key]);
 
   // Final download
   const onSubmit = handleSubmit((data) => {
