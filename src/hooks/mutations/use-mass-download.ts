@@ -8,7 +8,12 @@ const useMassDownload = () => {
 
   return useMutation({
     mutationFn: async (data: { from_date: string; to_date: string }) =>
-      await axios<{ success: boolean; message: string }>({
+      await axios<{
+        success: boolean;
+        message: string;
+        data: string[];
+        task_id: string;
+      }>({
         url: FORMS_EP.MASS_DOWNLOAD,
         method: 'POST',
         data,

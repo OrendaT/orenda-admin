@@ -3,9 +3,13 @@
 import { Button } from '@/components/ui/button';
 import { FormDatePicker } from '@/components/ui/date-picker';
 import useMassDownload from '@/hooks/mutations/use-mass-download';
-import { cn } from '@/lib/utils';
+import useCheckStatus from '@/hooks/queries/use-check-status';
+import useRetry from '@/hooks/use-retry';
+import { cn, downloadFile } from '@/lib/utils';
+import useDownloadFormStore from '@/stores/download-form-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -15,8 +19,12 @@ const MassDownloadSchema = z.object({
   to: z.date({ message: 'End date is required' }),
 });
 
-const MassDownload = ({ close }: { close: () => void }) => {
-  const { mutateAsync: massDownload, isPending } = useMassDownload();
+const MassDownload = ({
+  setOpen,
+}: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
+  // Dialog Functionality
   const methods = useForm({
     defaultValues: {
       from: undefined,
@@ -24,7 +32,6 @@ const MassDownload = ({ close }: { close: () => void }) => {
     },
     resolver: zodResolver(MassDownloadSchema),
   });
-
   const {
     handleSubmit,
     formState: { errors },
@@ -34,20 +41,75 @@ const MassDownload = ({ close }: { close: () => void }) => {
 
   const [from, to] = watch(['from', 'to']);
 
+  // -------------------
+  // Export Functionality
+  const [key, setKey] = useState<string>();
+  const [taskId, setTaskId] = useState<string>();
+  const [isDownloading, setIsDownloading] = useState(false);
+  const downloads = useDownloadFormStore((state) => state.downloads);
+  const addTask = useDownloadFormStore((state) => state.addTask);
+  const updateTask = useDownloadFormStore((state) => state.updateTask);
+
+  const { mutateAsync: massDownload, isPending } = useMassDownload();
+  const { data, refetch, isRefetching } = useCheckStatus(taskId);
+
+  const loading = isPending || isRefetching || isDownloading;
+
   const onSubmit = handleSubmit(async (data) => {
     const from_date = format(data.from, 'MM-dd-yyyy');
     const to_date = format(data.to, 'MM-dd-yyyy');
+    const generatedKey = `${from_date}_${to_date}`;
+    setKey(generatedKey);
 
-    const res = await massDownload({ from_date, to_date });
+    if (!downloads[generatedKey]) {
+      const res = await massDownload({ from_date, to_date });
 
-    console.log(res);
+      addTask(generatedKey, {
+        status: 'pending',
+        task_id: res.data?.task_id,
+      });
 
-    if (res.status === 200) {
-      toast.success(res.data?.message);
-      reset();
-      close();
+      setTaskId(res.data.task_id);
+    } else if (downloads[generatedKey].task_id) {
+      setTaskId(downloads[generatedKey].task_id);
     }
+
+    refetch();
   });
+
+  // check the status until its ready
+  useRetry({
+    callback: refetch,
+    delay: 2000,
+    retries: Infinity,
+    stop: data?.ready || !key || !taskId, // Stop when data is ready or there's no key or task id
+  });
+
+  useEffect(() => {
+    if (data?.ready && !data.successful) {
+      toast.error('Mass download failed');
+    }
+
+    // set url if mass download successful
+    if (key && data?.url) {
+      const { url } = data;
+
+      updateTask(key, {
+        url,
+        status: 'success',
+      });
+
+      // download file when url is returned
+      setIsDownloading(true);
+      console.log('downloading');
+      downloadFile({ name: key, url }, () => {
+        toast.success('Mass download complete');
+        reset();
+        setOpen(false);
+        setIsDownloading(false);
+      });
+    }
+  }, [data, key, setOpen, reset, updateTask]);
 
   return (
     <FormProvider {...methods}>
@@ -89,11 +151,11 @@ const MassDownload = ({ close }: { close: () => void }) => {
         </div>
 
         <Button
-          isLoading={isPending}
+          isLoading={loading}
           type="submit"
           className="mx-auto max-w-[25rem] rounded-lg"
         >
-          Download file
+          {loading ? 'Downloading' : ' Download file'}
         </Button>
       </form>
     </FormProvider>

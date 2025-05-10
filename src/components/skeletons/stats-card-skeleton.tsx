@@ -24,7 +24,7 @@ const StatsCardSkeleton = ({
 
         <div className="space-y-1 text-xs">
           <Skeleton className="h-6 hidden w-20 rounded-lg" />
-          <Skeleton className="h-3 w-16 rounded-sm" />
+          <Skeleton className="h-4 w-16 rounded-sm" />
         </div>
       </div>
     </article>

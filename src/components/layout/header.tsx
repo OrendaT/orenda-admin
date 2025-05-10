@@ -1,7 +1,6 @@
 import { site_logo } from '@/assets';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import Link from 'next/link';
 
 const Header = ({ className }: { className?: string }) => {
   return (
@@ -12,7 +11,6 @@ const Header = ({ className }: { className?: string }) => {
       )}
     >
       <div className="clamp-[w,24,6.25rem] h-[2.25rem] bg-white">
-        <Link href="/">
           <Image
             className="object-contain"
             width={500}
@@ -20,7 +18,6 @@ const Header = ({ className }: { className?: string }) => {
             alt="Orenda Psychiatry"
             priority
           />
-        </Link>
       </div>
     </header>
   );

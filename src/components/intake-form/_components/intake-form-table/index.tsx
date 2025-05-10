@@ -20,6 +20,7 @@ import FormSkeleton from '../../../skeletons/form-table-skeleton';
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import useAxios from '@/lib/api/axios-client';
+import { Button } from '@/components/ui/button';
 
 const IntakeFormTable = () => {
   const searchParams = useSearchParams();
@@ -83,6 +84,14 @@ const IntakeFormTable = () => {
                 className="text-destructive h-24 text-center"
               >
                 Failed to fetch data.
+                <Button
+                  variant="ghost"
+                  className="mx-auto mt-2 w-fit py-1.5 text-sm"
+                  type="button"
+                  onClick={() => location.reload()}
+                >
+                  Retry
+                </Button>
               </TableCell>
             </TableRow>
           ) : isPending ? (

@@ -8,13 +8,15 @@ const useExport = () => {
 
   return useMutation({
     mutationFn: async (data: { patients: string[] }) =>
-      await axios<{ success: boolean; message: string }>({
+      await axios<{ success: boolean; message: string; task_id: string }>({
         url: FORMS_EP.EXPORT,
         method: 'POST',
         data,
       }),
-    onError: () => {
-      toast.error('Something went wrong');
+    onError: (_, { patients }) => {
+      toast.error(
+        patients.length ? 'Something went wrong' : 'No forms selected',
+      );
     },
   });
 };

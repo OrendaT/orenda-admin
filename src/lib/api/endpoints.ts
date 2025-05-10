@@ -1,5 +1,6 @@
 const BASE = {
   AUTH: 'auth',
+  ADMIN: 'admin',
   PATIENTS: 'patients',
 };
 
@@ -21,4 +22,6 @@ export const FORMS_EP = {
   FLAG: (id: string) => `${BASE.PATIENTS}/${id}/flag`,
   CREDIT_CARD: (id: string) => `${BASE.PATIENTS}/${id}/credit-card`,
   MASS_DOWNLOAD: `${BASE.PATIENTS}/mass-download`,
+  CHECK_TASK: (id?: string) => `${BASE.ADMIN}/check-task/${id}`,
+  DOWNLOAD: (id: string) => `${BASE.ADMIN}/download/DOWNLOADS/${id}.zip`,
 };
