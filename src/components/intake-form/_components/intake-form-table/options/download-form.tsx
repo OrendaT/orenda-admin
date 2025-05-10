@@ -106,8 +106,9 @@ const DownloadForm = ({
     const { name } = data;
     const { url } = downloads[key];
     if (url) {
-      downloadFile({ name, url });
-      setStatus('success');
+      downloadFile({ name, url }, () => {
+        setStatus('success');
+      });
     }
   });
 
