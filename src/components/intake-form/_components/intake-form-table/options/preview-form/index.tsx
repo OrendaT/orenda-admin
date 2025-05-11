@@ -19,19 +19,19 @@ const PreviewForm = ({ id }: { id: string }) => {
         <DialogDescription>
           Tab through different sections of the form
         </DialogDescription>
-
-        <Tabs className="mt-4">
-          <TabsList className="w-full">
-            <TabsTrigger value="general">General</TabsTrigger>
-            <TabsTrigger value="cc_info">Credit Card Info</TabsTrigger>
-            <TabsTrigger value="signatures">Signature</TabsTrigger>
-          </TabsList>
-
-          <GeneralTab id={id} />
-          <CreditCardTab id={id} />
-          <SignaturesTab id={id} />
-        </Tabs>
       </DialogHeader>
+
+      <Tabs className="mt-4">
+        <TabsList className="w-full">
+          <TabsTrigger value="general">General</TabsTrigger>
+          <TabsTrigger value="cc_info">Credit Card Info</TabsTrigger>
+          <TabsTrigger value="signatures">Signature</TabsTrigger>
+        </TabsList>
+
+        <GeneralTab id={id} />
+        <CreditCardTab id={id} />
+        <SignaturesTab id={id} />
+      </Tabs>
     </DialogContent>
   );
 };
