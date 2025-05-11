@@ -1,4 +1,4 @@
-import { IntakeFormTableData } from '@/types';
+import { FormData } from '@/types';
 import { CellContext, ColumnDef, HeaderContext } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -7,7 +7,7 @@ import { MdOutlineFlag } from 'react-icons/md';
 import Options from './options';
 import { useSelectedFormsStore } from '@/stores/selected-forms-store';
 
-export const columns: ColumnDef<IntakeFormTableData>[] = [
+export const columns: ColumnDef<FormData>[] = [
   {
     id: 'select',
     header: SelectHeader,
@@ -74,7 +74,7 @@ export const columns: ColumnDef<IntakeFormTableData>[] = [
   },
 ];
 
-function SelectHeader({ table }: HeaderContext<IntakeFormTableData, unknown>) {
+function SelectHeader({ table }: HeaderContext<FormData, unknown>) {
   const forms = useSelectedFormsStore((state) => state.forms);
   const addForm = useSelectedFormsStore((state) => state.addForm);
   const removeForm = useSelectedFormsStore((state) => state.removeForm);
@@ -109,7 +109,7 @@ function SelectHeader({ table }: HeaderContext<IntakeFormTableData, unknown>) {
   );
 }
 
-function SelectCell({ row }: CellContext<IntakeFormTableData, unknown>) {
+function SelectCell({ row }: CellContext<FormData, unknown>) {
   const id = row.original.id;
   const addForm = useSelectedFormsStore((state) => state.addForm);
   const removeForm = useSelectedFormsStore((state) => state.removeForm);

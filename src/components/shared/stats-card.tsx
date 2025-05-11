@@ -42,6 +42,7 @@ const StatsCard = ({
           <p className="text-[#8E8E8E]">
             Last {distance === '8 days' ? '7 days' : distance}
           </p>
+          <p className="text-[#8E8E8E]">{stats.range}</p>
         </div>
       </div>
     </article>

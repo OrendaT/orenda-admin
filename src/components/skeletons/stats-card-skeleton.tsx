@@ -20,7 +20,7 @@ const StatsCardSkeleton = ({
       </h3>
 
       <div className="clamp-[gap,4,8] flex items-center">
-        <Skeleton className="h-20 w-26 rounded-md" />
+        <Skeleton className="h-20 w-26" />
 
         <div className="space-y-1 text-xs">
           <Skeleton className="h-6 hidden w-20 rounded-lg" />
