@@ -3,7 +3,7 @@ import { TabsContent } from '@/components/ui/tabs';
 import useForm from '@/hooks/queries/use-form';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import { FaFilePdf } from 'react-icons/fa6';
+import { BsFiletypePdf } from 'react-icons/bs';
 
 export default function GeneralTab({ id }: { id: string }) {
   const { data, isPending } = useForm(id);
@@ -233,12 +233,17 @@ const TabItem = ({
 }) => {
   if (!value) return;
 
+  // check if value is a pdf
   const isPdf = !Array.isArray(value) && isFile && value.endsWith('.pdf');
 
   return (
     <div className={cn(className)}>
+      {/* label */}
       <h3 className="preview_label">{name}</h3>
+
+      {/* display value */}
       {Array.isArray(value) ? (
+        // when value is an array
         <ul className="list-disc space-y-1 ps-5">
           {value.map((item, index) => (
             <li key={`${name}_${item}_${index}`} className="preview_data">
@@ -248,11 +253,13 @@ const TabItem = ({
         </ul>
       ) : isFile ? (
         isPdf ? (
+          // when value is a pdf
           <p className="preview_data mb-2 flex items-center gap-2">
-            <FaFilePdf className="size-5" />
+            <BsFiletypePdf className="size-5 shrink-0" />
             PDF cannot be displayed. Download it instead
           </p>
         ) : (
+          // when value is an image
           <div className="mb-2 h-40 w-full rounded-md border p-1">
             <Image
               className="size-full object-contain"
@@ -264,6 +271,7 @@ const TabItem = ({
           </div>
         )
       ) : (
+        // when value is a string
         <p className="preview_data">{value}</p>
       )}
     </div>
