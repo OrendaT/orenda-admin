@@ -28,18 +28,95 @@ export type Status =
   | 'danger'
   | 'info';
 
-export interface IntakeFormTableData {
+export interface FormData {
   id: string;
   first_name: string;
   last_name: string;
+  email: string;
+  phone: string;
+  gender: string;
   status: 'pending' | 'submitted';
   type: 'Intake form';
-  date: Date;
+  date_of_birth: string;
+  created_at: string;
+  updated_at: string;
   flag?: boolean;
+
+  address_one: string;
+  address_two: string;
+  city: string;
+  state: string;
+  zip_code: string;
+
+  current_occupation: string;
+  education_level: string;
+  living_situation: string;
+
+  reason_for_visit: string;
+  relationship_details: string;
+  seen_health_professional: string;
+  mental_health_care_type: string;
+
+  current_medications: string;
+  medication_allergies: string;
+
+  personal_medical_history: string[];
+  personal_medical_history_other: string;
+  symptoms_past_six_months: string[];
+  symptoms_past_six_months_other: string;
+
+
+  hospitalized_psych: string;
+  suicidal_thoughts: string;
+
+  alcohol_frequency: string;
+  alcohol_quantity: string;
+  recreational_drug_use: string;
+
+  pregnant_or_breastfeeding: string;
+  has_weapons: string;
+  hearing_impairment: string;
+  recent_physical_exam: string;
+
+  family_history_mental_illness: string;
+
+  // Signatures and uploads
+  guardian_name: string;
+  guardian_signature: string;
+  relationship_with_child: string;
+  for_minor_child: string;
+
+  insurance_id: string;
+  insurance_card_front: string;
+  insurance_card_back: string;
+
+  honesty: string;
+  honesty_signature: string;
+  informed_consent_signature: string;
+  medication_history_signature: string;
+  practice_policies_signature: string;
+  privacy_policy_signature: string;
+  telehealth_consent_signature: string;
+  therapy_availability: string;
+  policy_agreement: string;
+
+  emergency_contact_info: string;
+  emergency_contact_phone: string;
+
+  sex_assigned_at_birth: string;
+  height: string;
+  weight: string;
+}
+
+export interface CreditCardInfo {
+  billing_zip_code: string;
+  credit_card_csv: string;
+  credit_card_exp_date: string;
+  credit_card_number: string;
 }
 
 export interface AllFormsResponse {
-  data: IntakeFormTableData[];
+  data: FormData[];
   message: string;
   page: number;
   per_page: number;

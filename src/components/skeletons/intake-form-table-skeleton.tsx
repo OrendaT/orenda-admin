@@ -3,7 +3,7 @@ import { Skeleton } from '../ui/skeleton';
 const IntakeFormTableSkeleton = () => {
   return (
     <div>
-      <Skeleton className="my-4 h-60 w-full rounded-md" />
+      <Skeleton className="my-4 h-60 w-full" />
     </div>
   );
 };

@@ -9,7 +9,7 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { cn } from '@/lib/utils';
-import { IntakeFormTableData } from '@/types';
+import { FormData } from '@/types';
 import { Table } from '@tanstack/react-table';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
@@ -19,7 +19,7 @@ export function IntakeFormTablePagination({
   table,
 }: {
   className?: string;
-  table: Table<IntakeFormTableData>;
+  table: Table<FormData>;
 }) {
   const { replace } = useRouter(); // replace to set the query params
   const pathname = usePathname();

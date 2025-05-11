@@ -19,7 +19,6 @@ import { useAllForms } from '@/hooks/queries/use-all-forms';
 import FormSkeleton from '../../../skeletons/form-table-skeleton';
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import useAxios from '@/lib/api/axios-client';
 import { Button } from '@/components/ui/button';
 
 const IntakeFormTable = () => {
@@ -43,8 +42,6 @@ const IntakeFormTable = () => {
     },
   });
 
-  const { status: _status } = useAxios();
-
   const table = useReactTable({
     data: data?.data ?? [],
     columns,
@@ -56,7 +53,6 @@ const IntakeFormTable = () => {
   });
   return (
     <>
-      <p className="mt-4 -mb-4 text-xs">{_status}</p>
       <Table className="mt-8 mb-3">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

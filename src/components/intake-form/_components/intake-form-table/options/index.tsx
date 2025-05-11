@@ -8,13 +8,13 @@ import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import DownloadForm from './download-form';
 import { CellContext } from '@tanstack/react-table';
-import { IntakeFormTableData } from '@/types';
+import { FormData } from '@/types';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
 import useFlagForm from '@/hooks/mutations/use-flag-form';
 import PreviewForm from './preview-form';
 
-const Options = ({ row }: CellContext<IntakeFormTableData, unknown>) => {
+const Options = ({ row }: CellContext<FormData, unknown>) => {
   const [open, setOpen] = useState(false);
   const [module, setModule] = useState<'download' | 'preview'>();
   const name = String(row.getValue('name'));

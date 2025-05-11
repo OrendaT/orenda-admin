@@ -191,4 +191,15 @@
   .label {
     @apply mb-2 block text-sm font-medium;
   }
+
+  .preview_heading {
+    @apply mb-2 text-base font-medium underline underline-offset-2;
+  }
+
+  .preview_label {
+    @apply w-full font-medium;
+  }
+  .preview_data {
+    @apply text-sm text-zinc-600;
+  }
 }
