@@ -10,7 +10,7 @@ const GeneralTab = ({ id }: { id: string }) => {
 
   return (
     <TabsContent value="general">
-      <section className="~text-sm/base scrollbar-w-1.5 scrollbar-none scrollbar max-h-[70vh] overflow-y-auto rounded-2xl border px-4 py-5">
+      <section className="~text-sm/base scrollbar-w-1.5 scrollbar-none scrollbar max-h-[64dvh] overflow-y-auto rounded-2xl border px-4 py-5">
         {isPending ? (
           <GeneralTabsSkeleton />
         ) : (

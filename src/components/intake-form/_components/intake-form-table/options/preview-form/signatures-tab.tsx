@@ -66,7 +66,7 @@ const SignaturesTab = ({ id }: { id: string }) => {
 
   return (
     <TabsContent value="signatures">
-      <div className="space-y-6 py-5">
+      <div className="scrollbar-none max-h-[60dvh] space-y-6 overflow-y-auto py-5">
         <section>
           <h3 className="preview_heading">Fields signed:</h3>
           <ul className="list-decimal space-y-1 ps-4">

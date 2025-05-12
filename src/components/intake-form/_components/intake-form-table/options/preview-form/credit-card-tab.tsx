@@ -16,7 +16,7 @@ export default function CreditCardTab({ id }: { id: string }) {
 
   return (
     <TabsContent value="cc_info">
-      <section className="~text-sm/base rounded-2xl border px-4 py-5">
+      <section className="~text-sm/base scrollbar-none max-h-[60dvh] overflow-y-auto rounded-2xl border px-4 py-5">
         {data ? (
           <>
             <h2 className="preview_heading">Credit Card Details</h2>
