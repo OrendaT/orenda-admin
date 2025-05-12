@@ -13,7 +13,7 @@ import SignaturesTab from './signatures-tab';
 
 const PreviewForm = ({ id }: { id: string }) => {
   return (
-    <DialogContent>
+    <DialogContent className='max-h-[97dvh]'>
       <DialogHeader>
         <DialogTitle>Preview</DialogTitle>
         <DialogDescription>
