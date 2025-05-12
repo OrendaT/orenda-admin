@@ -64,7 +64,9 @@ export const columns: ColumnDef<FormData>[] = [
     cell: ({ getValue }) => {
       let value = getValue();
       const dateValue = new Date(value as string);
-      value = dateValue ? format(dateValue, 'Ppaa').replace(',', '') : value;
+      value = dateValue
+        ? format(dateValue, 'PPp').replace('PM', 'pm').replace('AM', 'am')
+        : value;
       return value;
     },
   },
