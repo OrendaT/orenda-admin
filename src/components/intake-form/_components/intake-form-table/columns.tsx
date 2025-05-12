@@ -63,7 +63,8 @@ export const columns: ColumnDef<FormData>[] = [
     header: 'Status Date',
     cell: ({ getValue }) => {
       let value = getValue();
-      value = value instanceof Date ? format(value, 'Ppaa') : value;
+      const dateValue = new Date(value as string);
+      value = dateValue ? format(dateValue, 'Ppaa').replace(',', '') : value;
       return value;
     },
   },
