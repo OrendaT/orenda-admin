@@ -1,3 +1,5 @@
+'use client';
+
 import { TabsContent } from '@/components/ui/tabs';
 import useForm from '@/hooks/queries/use-form';
 import { FormData } from '@/types';
@@ -64,7 +66,7 @@ const SignaturesTab = ({ id }: { id: string }) => {
 
   return (
     <TabsContent value="signatures">
-      <div className="space-y-6">
+      <div className="space-y-6 py-5">
         <section>
           <h3 className="preview_heading">Fields signed:</h3>
           <ul className="list-decimal space-y-1 ps-4">
