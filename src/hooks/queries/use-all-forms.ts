@@ -20,7 +20,6 @@ export const useAllForms = ({
         url: FORMS_EP.ALL_PATIENTS,
         method: 'GET',
         params: {
-          per_page: 6,
           page,
           search,
           ...filters,

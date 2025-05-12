@@ -14,7 +14,9 @@ const FormsSubmitted = ({ className }: { className?: string }) => {
   const from = getPastDate(days);
   const to = getPastDate();
 
-  const { data, isPending } = useAllForms({ filters: { from, to } });
+  const { data, isPending } = useAllForms({
+    filters: { from, to, status: 'submitted' },
+  });
 
   const stats: DashboardCardStats = {
     name: 'Forms Submitted',

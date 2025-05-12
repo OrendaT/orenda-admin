@@ -24,7 +24,7 @@ const callbacks: Callbacks = {
       } as JWT;
     }
 
-    if (token.expires_at && Date.now() < token.expires_at) {
+    if (token.expires_at && Date.now() < token.expires_at - 60_000) {
       return token;
     } else {
       // Subsequent logins, but the `access_token` has expired, try to refresh it
@@ -32,7 +32,6 @@ const callbacks: Callbacks = {
         token.error = 'RefreshTokenError';
         return token;
       }
-      
 
       try {
         const res = await api.post(
