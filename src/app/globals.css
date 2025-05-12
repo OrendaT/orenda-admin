@@ -55,7 +55,7 @@
   --color-purple-mist: rgba(249, 246, 255, 1);
   --color-lavender-mist: rgba(236, 227, 255, 1);
 
-  --breakpoint-xs: 390px
+  --breakpoint-xs: 390px;
 }
 
 :root {
