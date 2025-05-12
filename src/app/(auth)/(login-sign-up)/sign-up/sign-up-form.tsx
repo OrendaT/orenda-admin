@@ -21,6 +21,7 @@ const SignUpForm = () => {
       email: '',
       password: '',
     },
+    mode: 'onChange',
     resolver: zodResolver(SignUpSchema),
   });
   const {
