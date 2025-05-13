@@ -8,7 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Textarea from '@/components/ui/textarea';
 import { Status } from '@/types';
-import { sendReminderEmail } from '@/utils/mailchimp';
+import { sendReminderEmail } from '@/services/email-service'; // Updated import path
 
 const url = 'https://orenda-intake.vercel.app/';
 
@@ -45,6 +45,7 @@ const RemindPatient = ({
     setSubmitError(null);
     
     try {
+      // Using the email service instead of directly calling Mailchimp
       const result = await sendReminderEmail(
         data.email,
         url,
@@ -58,14 +59,14 @@ const RemindPatient = ({
       } else {
         const errorMessage = result.error instanceof Error 
           ? result.error.message 
-          : 'Failed to send the reminder. Please try again.';
+          : String(result.error) || 'Failed to send the reminder. Please try again.';
         setSubmitError(errorMessage);
-        setStatus('danger'); // Use 'danger' instead of 'error'
+        setStatus('danger');
       }
     } catch (error) {
       console.error('Error in form submission:', error);
       setSubmitError('An unexpected error occurred. Please try again.');
-      setStatus('danger'); // Use 'danger' instead of 'error'
+      setStatus('danger');
     } finally {
       setIsSubmitting(false);
     }
