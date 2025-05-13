@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import api from '@/lib/api/axios';
 import { AUTH_EP } from '@/lib/api/endpoints';
+import { AxiosError } from 'axios';
 
 enum PasswordRequirements {
   MIN_LENGTH = 'minLength',
@@ -75,14 +76,20 @@ const NewPasswordForm = () => {
   const requirementsMet = requirements.every(({ type }) => checkType(type));
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await api.post(AUTH_EP.RESET_PASSWORD, {
-      password: data.password,
-    });
+    try {
+      const res = await api.post(AUTH_EP.RESET_PASSWORD, {
+        password: data.password,
+      });
 
-    if (res.status === 200) {
-      setSuccess(true);
-    } else {
-      setError('root', { message: 'Something went wrong' });
+      if (res.status === 200) setSuccess(true);
+    } catch (error) {
+      setError('root', {
+        type: 'custom',
+        message:
+          error instanceof AxiosError
+            ? error.response?.data.message || 'Something went wrong'
+            : 'Something went wrong',
+      });
     }
   });
 
@@ -131,10 +138,15 @@ const NewPasswordForm = () => {
           )}
 
           {errors.root && (
-            <p className="error_message mt-5">{errors.root.message}</p>
+            <p className="error_message text-center mt-3">{errors.root.message}</p>
           )}
 
-          <Button isLoading={isSubmitting} disabled={!requirementsMet} type="submit" className="mt-10">
+          <Button
+            isLoading={isSubmitting}
+            disabled={!requirementsMet}
+            type="submit"
+            className="mt-10"
+          >
             Continue
           </Button>
         </form>

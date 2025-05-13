@@ -10,6 +10,7 @@ import CheckMail from '@/components/auth/check-mail';
 import { useState } from 'react';
 import api from '@/lib/api/axios';
 import { AUTH_EP } from '@/lib/api/endpoints';
+import { AxiosError } from 'axios';
 
 const ResetPasswordSchema = LoginSchema.pick({
   email: true,
@@ -32,11 +33,17 @@ const ResetPasswordForm = () => {
   const email = watch('email');
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await api.post(AUTH_EP.RESET_PASSWORD_REQUEST, data);
-    if (res.status === 200) {
-      setSuccess(true);
-    } else {
-      setError('email', { message: 'Something went wrong' });
+    try {
+      const res = await api.post(AUTH_EP.RESET_PASSWORD_REQUEST, data);
+      if (res.status === 200) setSuccess(true);
+    } catch (error) {
+      setError('email', {
+        type: 'custom',
+        message:
+          error instanceof AxiosError
+            ? error.response?.data.message
+            : 'Something went wrong',
+      });
     }
   });
 
