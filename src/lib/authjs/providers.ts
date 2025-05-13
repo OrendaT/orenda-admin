@@ -4,9 +4,19 @@ import { LoginSchema } from '../schemas/auth-schema';
 import api from '../api/axios';
 import { AUTH_EP } from '../api/endpoints';
 import { AxiosError } from 'axios';
-import { CredentialsSignin } from '@auth/core/errors';
+import { CredentialsSignin, OAuthSignInError } from '@auth/core/errors';
 
-class CustomError extends CredentialsSignin {
+class CredentialsError extends CredentialsSignin {
+  code = 'custom';
+
+  constructor(name: string, message: string) {
+    super();
+    this.name = name;
+    this.message = message;
+  }
+}
+
+class OAuthError extends OAuthSignInError {
   code = 'custom';
 
   constructor(name: string, message: string) {
@@ -32,7 +42,7 @@ const providers = [
           const res = await api.post(AUTH_EP.LOGIN, validatedFields.data);
           user = res.data;
         } catch (error) {
-          throw new CustomError(
+          throw new CredentialsError(
             'Login error',
             error instanceof AxiosError
               ? error.response?.data?.message
@@ -47,7 +57,7 @@ const providers = [
   Google({
     profile: async (profile: GoogleProfile) => {
       let user = null;
-      const { email, sub } = profile;
+      const { email, sub, family_name, given_name } = profile;
       try {
         const res = await api.post(AUTH_EP.LOGIN, {
           email,
@@ -64,12 +74,13 @@ const providers = [
             const res = await api.post(AUTH_EP.REGISTER, {
               email,
               sub,
+              name: `${given_name} ${family_name}`,
             });
             user = res.data;
           } catch (registerError) {
             // Handle register failure here
             console.error('Registration failed:', registerError);
-            throw new CustomError(
+            throw new OAuthError(
               'Google LoginError',
               'Login and registration both failed.',
             );
@@ -77,7 +88,7 @@ const providers = [
         } else {
           // Handle unexpected login errors (not invalid credentials)
           console.error('Login failed:', loginError);
-          throw new CustomError(
+          throw new OAuthError(
             'Google LoginError',
             loginError instanceof AxiosError
               ? loginError.response?.data?.message
