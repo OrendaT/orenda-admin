@@ -3,18 +3,22 @@
 import Input from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Textarea from '@/components/ui/textarea';
 import { Status } from '@/types';
+import { sendReminderEmail } from '@/services/email-service'; // Updated import path
+
+const url = 'https://orenda-intake.vercel.app/';
 
 const RemindPatientSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
+  firstName: z.string().optional(),
   message: z
     .string()
-    .min(1, { message: 'This field is required' })
-    .max(500, { message: 'Message must be less than 50 characters' }),
+    .max(500, { message: 'Message must be less than 500 characters' })
+    .optional(),
 });
 
 const RemindPatient = ({
@@ -22,24 +26,63 @@ const RemindPatient = ({
 }: {
   setStatus: Dispatch<SetStateAction<Status>>;
 }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const methods = useForm({
     defaultValues: {
       email: '',
+      firstName: '',
       message: '',
     },
     resolver: zodResolver(RemindPatientSchema),
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, reset } = methods;
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    setStatus('success');
+  const onSubmit = handleSubmit(async (data) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    
+    try {
+      // Using the email service instead of directly calling Mailchimp
+      const result = await sendReminderEmail(
+        data.email,
+        url,
+        data.firstName || undefined,
+        data.message || undefined
+      );
+      
+      if (result.success) {
+        setStatus('success');
+        reset(); // Clear the form
+      } else {
+        const errorMessage = result.error instanceof Error 
+          ? result.error.message 
+          : String(result.error) || 'Failed to send the reminder. Please try again.';
+        setSubmitError(errorMessage);
+        setStatus('danger');
+      }
+    } catch (error) {
+      console.error('Error in form submission:', error);
+      setSubmitError('An unexpected error occurred. Please try again.');
+      setStatus('danger');
+    } finally {
+      setIsSubmitting(false);
+    }
   });
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={onSubmit} className="mt-8" noValidate>
+        <Input
+          label="Patient's First Name (optional)"
+          name="firstName"
+          type="text"
+          placeholder="Enter patient's first name"
+          className="mb-6"
+        />
+        
         <Input
           label="Email"
           name="email"
@@ -49,9 +92,9 @@ const RemindPatient = ({
         />
 
         <Textarea
-          label="Message"
+          label="Custom Message (optional)"
           name="message"
-          placeholder="Write your message"
+          placeholder="Write a custom message (leave blank to use default reminder text)"
           maxLength={500}
           rows={5}
           showCount
@@ -59,11 +102,22 @@ const RemindPatient = ({
           style={{ maxHeight: '16rem' }}
         />
 
-        <Button type="submit" className="mx-auto max-w-[25rem] rounded-lg">
-          Send Reminder
+        {submitError && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
+            {submitError}
+          </div>
+        )}
+
+        <Button 
+          type="submit" 
+          className="mx-auto max-w-[25rem] rounded-lg"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Sending...' : 'Send Reminder'}
         </Button>
       </form>
     </FormProvider>
   );
 };
+
 export default RemindPatient;
