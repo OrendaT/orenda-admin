@@ -8,6 +8,8 @@ import { LoginSchema } from '@/lib/schemas/auth-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CheckMail from '@/components/auth/check-mail';
 import { useState } from 'react';
+import api from '@/lib/api/axios';
+import { AUTH_EP } from '@/lib/api/endpoints';
 
 const ResetPasswordSchema = LoginSchema.pick({
   email: true,
@@ -20,11 +22,17 @@ const ResetPasswordForm = () => {
     resolver: zodResolver(ResetPasswordSchema),
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, setError, watch } = methods;
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    setSuccess(true);
+  const email = watch('email');
+
+  const onSubmit = handleSubmit(async (data) => {
+    const res = await api.post(AUTH_EP.RESET_PASSWORD_REQUEST, data);
+    if (res.status === 200) {
+      setSuccess(true);
+    } else {
+      setError('email', { message: 'Something went wrong' });
+    }
   });
 
   return (
@@ -44,7 +52,9 @@ const ResetPasswordForm = () => {
         </form>
       </FormProvider>
 
-      {success && <CheckMail className="fixed inset-0 bg-white" />}
+      {success && (
+        <CheckMail className="fixed inset-0 bg-white" email={email} />
+      )}
     </>
   );
 };

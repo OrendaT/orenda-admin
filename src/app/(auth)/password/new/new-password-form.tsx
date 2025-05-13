@@ -12,6 +12,8 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import api from '@/lib/api/axios';
+import { AUTH_EP } from '@/lib/api/endpoints';
 
 enum PasswordRequirements {
   MIN_LENGTH = 'minLength',
@@ -44,7 +46,12 @@ const NewPasswordForm = () => {
     resolver: zodResolver(NewPasswordSchema),
   });
 
-  const { handleSubmit, watch } = methods;
+  const {
+    handleSubmit,
+    setError,
+    watch,
+    formState: { errors },
+  } = methods;
 
   const password = watch('password');
 
@@ -67,9 +74,16 @@ const NewPasswordForm = () => {
 
   const requirementsMet = requirements.every(({ type }) => checkType(type));
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    setSuccess(true);
+  const onSubmit = handleSubmit(async (data) => {
+    const res = await api.post(AUTH_EP.RESET_PASSWORD, {
+      password: data.password,
+    });
+
+    if (res.status === 200) {
+      setSuccess(true);
+    } else {
+      setError('root', { message: 'Something went wrong' });
+    }
   });
 
   return (
@@ -114,6 +128,10 @@ const NewPasswordForm = () => {
                 ))}
               </div>
             </div>
+          )}
+
+          {errors.root && (
+            <p className="error_message mt-5">{errors.root.message}</p>
           )}
 
           <Button disabled={!requirementsMet} type="submit" className="mt-10">
