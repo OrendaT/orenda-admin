@@ -9,6 +9,7 @@ import { signIn, signOut } from '@/auth';
 import { AUTH_EP } from '@/lib/api/endpoints';
 import api from '@/lib/api/axios';
 import { AxiosError } from 'axios';
+import { AuthError } from 'next-auth';
 
 export const login = async (data: LoginSchemaType) => {
   try {
@@ -22,11 +23,14 @@ export const login = async (data: LoginSchemaType) => {
       success: true,
       message: 'Login successful',
     };
-  } catch {
+  } catch (error) {
+    console.log(error);
     return {
       error: {
-        name: 'Login error',
+        name: error instanceof AuthError ? error.name : 'Login Error',
         message:
+          error instanceof AuthError ? error.message : 'Something went wrong',
+        custom:
           'Incorrect login details. Please check your details and try again.',
       },
     };
@@ -34,7 +38,7 @@ export const login = async (data: LoginSchemaType) => {
 };
 
 export const logOut = async () => {
-  await signOut({ redirectTo: '/' });
+  await signOut({ redirectTo: '/login' });
 
   return {
     success: true,
