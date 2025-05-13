@@ -7,7 +7,9 @@ const BASE = {
 // auth
 export const AUTH_EP = {
   LOGIN: BASE.AUTH,
+  LOGIN_GOOGLE: `${BASE.AUTH}/google`,
   REGISTER: `${BASE.AUTH}/register`,
+  REGISTER_GOOGLE: `${BASE.AUTH}/register/google`,
   LOGOUT: `${BASE.AUTH}/logout`,
   REFRESH: `${BASE.AUTH}/token/refresh`,
   RESET_PASSWORD_REQUEST: `${BASE.AUTH}/reset-password-request`,

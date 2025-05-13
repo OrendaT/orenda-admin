@@ -59,24 +59,34 @@ const providers = [
       let user = null;
       const { email, sub, family_name, given_name } = profile;
       try {
-        const res = await api.post(AUTH_EP.LOGIN, {
+        const res = await api.post(AUTH_EP.LOGIN_GOOGLE, {
           email,
           sub,
         });
-        user = res.data;
+        user = {
+          ...profile,
+          id: profile.sub,
+          access_token: res.data.access_token,
+          refresh_token: res.data.refresh_token,
+        };
       } catch (loginError) {
         if (
           loginError instanceof AxiosError &&
           loginError.response?.data?.message ===
-            'Invalid credentials or inactive user'
+            'Invalid google credentials or inactive user'
         ) {
           try {
-            const res = await api.post(AUTH_EP.REGISTER, {
+            const res = await api.post(AUTH_EP.REGISTER_GOOGLE, {
               email,
               sub,
               name: `${given_name} ${family_name}`,
             });
-            user = res.data;
+            user = {
+              ...profile,
+              id: profile.sub,
+              access_token: res.data.access_token,
+              refresh_token: res.data.refresh_token,
+            };
           } catch (registerError) {
             // Handle register failure here
             console.error('Registration failed:', registerError);

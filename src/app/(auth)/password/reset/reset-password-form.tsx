@@ -11,6 +11,7 @@ import { useState } from 'react';
 import api from '@/lib/api/axios';
 import { AUTH_EP } from '@/lib/api/endpoints';
 import { AxiosError } from 'axios';
+import useResetPassword from '@/hooks/mutations/use-reset-password';
 
 const ResetPasswordSchema = LoginSchema.pick({
   email: true,
@@ -32,19 +33,23 @@ const ResetPasswordForm = () => {
 
   const email = watch('email');
 
+  const { mutateAsync } = useResetPassword();
+
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      const res = await api.post(AUTH_EP.RESET_PASSWORD_REQUEST, data);
-      if (res.status === 200) setSuccess(true);
-    } catch (error) {
-      setError('email', {
-        type: 'custom',
-        message:
-          error instanceof AxiosError
-            ? error.response?.data.message
-            : 'Something went wrong',
-      });
-    }
+    await mutateAsync(data, {
+      onSuccess: () => {
+        setSuccess(true);
+      },
+      onError: (error) => {
+        setError('email', {
+          type: 'custom',
+          message:
+            error instanceof AxiosError
+              ? error.response?.data.message
+              : 'Something went wrong',
+        });
+      },
+    });
   });
 
   return (
