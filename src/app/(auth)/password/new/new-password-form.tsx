@@ -50,7 +50,7 @@ const NewPasswordForm = () => {
     handleSubmit,
     setError,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = methods;
 
   const password = watch('password');
@@ -134,7 +134,7 @@ const NewPasswordForm = () => {
             <p className="error_message mt-5">{errors.root.message}</p>
           )}
 
-          <Button disabled={!requirementsMet} type="submit" className="mt-10">
+          <Button isLoading={isSubmitting} disabled={!requirementsMet} type="submit" className="mt-10">
             Continue
           </Button>
         </form>
