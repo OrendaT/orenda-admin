@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { ComponentProps, useId, useState } from 'react';
+import React, { ComponentProps, useId, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import FormErrorMessage from './error-message';
