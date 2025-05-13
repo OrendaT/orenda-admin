@@ -8,8 +8,6 @@ import { LoginSchema } from '@/lib/schemas/auth-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CheckMail from '@/components/auth/check-mail';
 import { useState } from 'react';
-import api from '@/lib/api/axios';
-import { AUTH_EP } from '@/lib/api/endpoints';
 import { AxiosError } from 'axios';
 import useResetPassword from '@/hooks/mutations/use-reset-password';
 
