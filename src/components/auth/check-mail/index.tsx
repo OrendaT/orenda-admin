@@ -1,5 +1,7 @@
 import { EmailIcon } from '@/assets/svgs';
+import useResetPassword from '@/hooks/mutations/use-reset-password';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 const CheckMail = ({
   email,
@@ -8,6 +10,21 @@ const CheckMail = ({
   email: string;
   className?: string;
 }) => {
+  const { mutateAsync, isPending } = useResetPassword();
+  const resend = async () => {
+    await mutateAsync(
+      { email },
+      {
+        onSuccess: () => {
+          toast.success('Email sent successfully');
+        },
+        onError: () => {
+          toast.error('Something went wrong');
+        },
+      },
+    );
+  };
+
   return (
     <section className={cn('padding_inline', className)}>
       <div className="box_center text-center">
@@ -25,7 +42,11 @@ const CheckMail = ({
 
         <strong className="mb-6 text-sm">Didn’t receive an email?</strong>
 
-        <button className="text-orenda-purple text-sm font-semibold underline">
+        <button
+          disabled={isPending}
+          onClick={resend}
+          className="text-orenda-purple text-sm font-semibold underline"
+        >
           Resend confirmation email
         </button>
       </div>
