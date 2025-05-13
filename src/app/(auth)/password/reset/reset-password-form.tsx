@@ -22,7 +22,12 @@ const ResetPasswordForm = () => {
     resolver: zodResolver(ResetPasswordSchema),
   });
 
-  const { handleSubmit, setError, watch } = methods;
+  const {
+    handleSubmit,
+    setError,
+    watch,
+    formState: { isSubmitting },
+  } = methods;
 
   const email = watch('email');
 
@@ -46,7 +51,7 @@ const ResetPasswordForm = () => {
             placeholder="Enter your email"
           />
 
-          <Button type="submit" className="mt-10">
+          <Button isLoading={isSubmitting} type="submit" className="mt-10">
             Continue
           </Button>
         </form>
