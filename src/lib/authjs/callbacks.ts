@@ -9,13 +9,14 @@ type Callbacks = NextAuthConfig['callbacks'];
 const callbacks: Callbacks = {
   jwt: async ({ token, account, user }) => {
     if (account && user) {
-      // First-time login, save the `access_token`, its expiry and the `refresh_token`
-
+      // First-time login
+      // get the access_token expiry time
       const decoded = jwtDecode<{ exp: number }>(user.access_token);
       const expires_at = decoded?.exp
         ? decoded.exp * 1000
         : Date.now() + 60_000;
 
+      // save the `access_token`, its expiry and the `refresh_token`
       return {
         ...token,
         access_token: user.access_token,
@@ -24,11 +25,13 @@ const callbacks: Callbacks = {
       } as JWT;
     }
 
+    // if token isn't about to expire
     if (token.expires_at && Date.now() < token.expires_at - 60_000) {
       return token;
     } else {
       // Subsequent logins, but the `access_token` has expired, try to refresh it
       if (!token.refresh_token) {
+        // exit early if no refresh token
         token.error = 'RefreshTokenError';
         return token;
       }

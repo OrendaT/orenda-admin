@@ -18,14 +18,10 @@ export default function AuthWatcher() {
     const maybeLogOut = async () => {
       if (
         isMounted &&
-        status === 'authenticated' &&
+        status !== 'unauthenticated' &&
         session?.error === 'RefreshTokenError'
       ) {
-        try {
-          await logOut();
-        } catch (error) {
-          console.error('Failed to log out:', error);
-        }
+        await logOut();
       }
     };
 
