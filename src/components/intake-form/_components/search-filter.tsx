@@ -176,7 +176,7 @@ const Filters = ({
               {statusFilters.map(({ id, label, value, Icon }) => (
                 <label
                   className={cn(
-                    'flex cursor-pointer items-center gap-2 rounded-3xl border px-4 py-1.5 text-sm font-medium select-none',
+                    'flex cursor-pointer items-center gap-2 rounded-3xl border px-4 py-1.5 text-sm font-medium transition-all duration-300 select-none',
                     status?.[0] === id && id === 'pending' && 'pending_form',
                     status?.[0] === id &&
                       id === 'submitted' &&
