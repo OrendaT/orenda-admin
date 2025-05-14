@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 export const FiltersSchema = z
   .object({
-    status: z.enum(['pending', 'submitted']).optional().nullable(),
+    status: z
+      .array(z.enum(['pending', 'submitted']).optional().nullable())
+      .optional()
+      .nullable(),
     from: z.date().optional(),
     to: z.date().optional(),
     flag: z
