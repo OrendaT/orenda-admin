@@ -7,6 +7,8 @@ import {
   SidebarHeader,
   SidebarListItem,
   SidebarMenu,
+  SidebarTrigger,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import Header from './header';
 import { FormIcon, ProviderWallIcon } from '@/assets/svgs';
@@ -15,6 +17,8 @@ import React from 'react';
 import { MenuItem } from '@/types';
 import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
+import { GoSidebarCollapse, GoSidebarExpand } from 'react-icons/go';
+import { cn } from '@/lib/utils';
 
 const topMenuItems: (MenuItem | false)[] = [
   true && {
@@ -43,14 +47,17 @@ export function AppSidebar() {
       title: 'Log out',
       Icon: MdLogout({}),
       onClick: signOut,
-      className: 'text-red-500 hover:text-error-red hover:bg-red-50 active:bg-red-100 active:text-error-red',
+      className:
+        'text-red-500 hover:text-error-red hover:bg-red-50 active:bg-red-100 active:text-error-red',
+      itemClassName:
+        'hover:bg-red-50 active:bg-red-100',
     },
   ];
 
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarHeader>
-        <Header className="!clamp-[ps,2,4] !clamp-[pt,4,1.62rem] static" />
+        <HeaderComp />
       </SidebarHeader>
       <SidebarContent>
         {/* top menu list */}
@@ -74,3 +81,28 @@ export function AppSidebar() {
     </Sidebar>
   );
 }
+
+const HeaderComp = () => {
+  const { open, isMobile } = useSidebar();
+  return (
+    <div className="flex items-center justify-between">
+      <Header
+        className={cn(
+          '!clamp-[ps,2,4] !clamp-[pt,4,1.62rem] static transition-all duration-300',
+          !open && '!w-0 overflow-clip !ps-0',
+        )}
+      />
+
+      {!isMobile && (
+        <SidebarTrigger
+          className="mt-4 focus-visible:ring-0"
+          Icon={
+            <div className="*:size-6">
+              {open ? <GoSidebarExpand /> : <GoSidebarCollapse />}
+            </div>
+          }
+        />
+      )}
+    </div>
+  );
+};

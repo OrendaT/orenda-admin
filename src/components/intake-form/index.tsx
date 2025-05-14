@@ -25,7 +25,7 @@ const IntakeForm = async () => {
           </div>
         </section>
 
-        <section className="db_section md:max-w-1/2 xl:max-w-[22.75rem]">
+        <section className="db_section md:max-w-1/2 xl:max-w-[35%]">
           <h2 className="heading">Quick Actions</h2>
           <QuickActions />
         </section>

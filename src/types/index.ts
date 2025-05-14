@@ -7,6 +7,7 @@ export type MenuItem = {
   href?: string;
   Icon: React.ReactNode;
   className?: string;
+  itemClassName?: string;
   onClick?: () => void;
 };
 
