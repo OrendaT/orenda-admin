@@ -9,7 +9,7 @@ import { z } from 'zod';
 import { Status } from '@/types';
 import { LuCheck, LuCopy } from 'react-icons/lu';
 import { useClipboard } from '@/hooks/use-clipboard';
-import { sendNewFormEmail } from '@/services/email-service'; // Updated import
+import { sendNewFormEmail } from '@/services/email-service';
 
 const url = 'https://orenda-intake.vercel.app/';
 
@@ -47,8 +47,7 @@ export default function SendNewForm({
       setStatus('success');
       reset();
     } else {
-      const errorMessage =
-        res.error || 'Failed. Please try again.';
+      const errorMessage = res.error || 'Failed. Please try again.';
       setError('root', { message: errorMessage });
       console.error('Error in form submission:', errorMessage);
     }
@@ -88,7 +87,7 @@ export default function SendNewForm({
         />
 
         {errors.root && (
-          <p className="error_message ps-2 -mt-5 mb-6">{errors.root.message}</p>
+          <p className="error_message -mt-5 mb-6 ps-2">{errors.root.message}</p>
         )}
 
         <Button

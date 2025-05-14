@@ -30,6 +30,7 @@ export async function sendReminderEmail(data: {
   email: string;
   url: string;
   first_name?: string;
+  via: ('email' | 'sms')[];
 }) {
   try {
     const response = await axios.post('/api/send-email', {

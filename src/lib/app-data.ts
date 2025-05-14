@@ -8,7 +8,12 @@ export const initialFilters = {
   to: undefined,
 };
 
-export const statusFilters = [
+export const statusFilters: {
+  id: string;
+  label: string;
+  value: 'pending' | 'submitted';
+  Icon: React.ComponentType;
+}[] = [
   {
     id: 'pending',
     label: 'Pending',
