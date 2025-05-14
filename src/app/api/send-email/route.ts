@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mailchimpTransactional from '@mailchimp/mailchimp_transactional';
+import logo from "../../../assets/site_logo.png"
 
 // Initialize with server-side API key
 const mailchimpClient = mailchimpTransactional(process.env.MAILCHIMP_API_KEY || '');
@@ -11,36 +12,39 @@ const logoBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAA
 
 // Base email template with logo and styling
 function getBaseEmailTemplate(content: string, includeNotInterestedLink = false) {
-  return `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-      <!-- Logo -->
-      <div style="text-align: center; margin-bottom: 30px;">
-        <img src="${logoBase64}" alt="Orenda Psychiatry" style="max-width: 180px;">
-      </div>
-      
-      <!-- Content -->
-      <div style="color: #333; line-height: 1.5;">
-        ${content}
-      </div>
-      
-      ${includeNotInterestedLink ? `
-        <!-- Not Interested Link -->
-        <div style="text-align: center; margin-top: 20px;">
-          <a href="#" style="color: #2e0086; text-decoration: underline; font-size: 14px;">Not interested in booking</a>
+    const logoUrl = "https://mcusercontent.com/f49e77d8389e110b514988d07/images/bd4a6ffd-dce6-72c2-e379-2223ce4d0a6b.png";
+  
+    return `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <!-- Logo -->
+        <div style="text-align: center; margin-bottom: 30px;">
+          <img src="${logoUrl}" alt="Orenda Psychiatry" style="max-width: 180px;">
         </div>
-      ` : ''}
-      
-      <!-- Footer -->
-      <div style="margin-top: 40px; text-align: center; color: #666; font-size: 12px;">
-        <p>80 Fifth Avenue, Office #903-10, New York, NY 10011.</p>
-        <p>Call: (347) 707-7735 | Email: <a href="mailto:admin@orendapsych.com" style="color: #2e0086;">admin@orendapsych.com</a></p>
-        <div style="margin-top: 20px;">
-          <img src="${logoBase64}" alt="Orenda Psychiatry" style="max-width: 120px;">
+  
+        <!-- Content -->
+        <div style="color: #333; line-height: 1.5;">
+          ${content}
+        </div>
+  
+        ${includeNotInterestedLink ? `
+          <!-- Not Interested Link -->
+          <div style="text-align: center; margin-top: 20px;">
+            <a href="#" style="color: #2e0086; text-decoration: underline; font-size: 14px;">Not interested in booking</a>
+          </div>
+        ` : ''}
+  
+        <!-- Footer -->
+        <div style="margin-top: 40px; text-align: center; color: #666; font-size: 12px;">
+          <p>80 Fifth Avenue, Office #903-10, New York, NY 10011.</p>
+          <p>Call: (347) 707-7735 | Email: <a href="mailto:admin@orendapsych.com" style="color: #2e0086;">admin@orendapsych.com</a></p>
+          <div style="margin-top: 20px;">
+            <img src="${logoUrl}" alt="Orenda Psychiatry" style="max-width: 120px;">
+          </div>
         </div>
       </div>
-    </div>
-  `;
-}
+    `;
+  }
+  
 
 export async function POST(request: NextRequest) {
   try {
