@@ -101,7 +101,7 @@ const Filters = ({
 
   const methods = useForm({
     defaultValues: {
-      status: _status,
+      status: [_status],
       from: _from ? new Date(_from) : undefined,
       to: _to ? new Date(_to) : undefined,
       flag: _flag === 'true' ? true : undefined,
@@ -115,14 +115,21 @@ const Filters = ({
     register,
     watch,
     reset,
+    setValue,
   } = methods;
 
   const { isPending, waitFor } = useWaitFor();
 
   const onSubmit = handleSubmit(async (data) => {
     const queryData = Object.fromEntries(
-      Object.entries(data).filter(([, value]) => Boolean(value)),
+      Object.entries(data).filter(([, value]) =>
+        Array.isArray(value)
+          ? !!value?.length && Boolean(value[0])
+          : Boolean(value),
+      ),
     );
+
+    console.log(status);
 
     const { from, to } = queryData;
 
@@ -139,7 +146,7 @@ const Filters = ({
       replace(`${pathname}?${query}`, {
         scroll: false,
       });
-    }, 420);
+    }, 600);
 
     setOpen(false);
   });
@@ -169,9 +176,11 @@ const Filters = ({
               {statusFilters.map(({ id, label, value, Icon }) => (
                 <label
                   className={cn(
-                    'flex cursor-pointer items-center gap-2 rounded-3xl border px-4 py-1.5 text-sm font-medium',
-                    status === id && id === 'pending' && 'pending_form',
-                    status === id && id === 'submitted' && 'submitted_form',
+                    'flex cursor-pointer items-center gap-2 rounded-3xl border px-4 py-1.5 text-sm font-medium select-none',
+                    status?.[0] === id && id === 'pending' && 'pending_form',
+                    status?.[0] === id &&
+                      id === 'submitted' &&
+                      'submitted_form',
                   )}
                   key={id}
                 >
@@ -180,8 +189,14 @@ const Filters = ({
 
                   {/* Hidden radio input */}
                   <input
-                    type="radio"
+                    type="checkbox"
                     value={value}
+                    onClick={() => {
+                      setValue(
+                        'status',
+                        status?.[0] === value ? undefined : [value],
+                      );
+                    }}
                     hidden
                     {...register('status')}
                   />
