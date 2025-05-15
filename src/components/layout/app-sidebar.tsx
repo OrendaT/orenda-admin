@@ -17,8 +17,8 @@ import React from 'react';
 import { MenuItem } from '@/types';
 import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
-import { GoSidebarCollapse, GoSidebarExpand } from 'react-icons/go';
 import { cn } from '@/lib/utils';
+import { LuPanelLeftClose } from 'react-icons/lu';
 
 const topMenuItems: (MenuItem | false)[] = [
   true && {
@@ -49,8 +49,7 @@ export function AppSidebar() {
       onClick: signOut,
       className:
         'text-red-500 hover:text-error-red hover:bg-red-50 active:bg-red-100 active:text-error-red',
-      itemClassName:
-        'hover:bg-red-50 active:bg-red-100',
+      itemClassName: 'hover:bg-red-50 active:bg-red-100',
     },
   ];
 
@@ -97,9 +96,12 @@ const HeaderComp = () => {
         <SidebarTrigger
           className="mt-4 focus-visible:ring-0"
           Icon={
-            <div className="*:size-6">
-              {open ? <GoSidebarExpand /> : <GoSidebarCollapse />}
-            </div>
+            <LuPanelLeftClose
+              className={cn(
+                'size-6 transition-all duration-300',
+                !open && 'rotate-180',
+              )}
+            />
           }
         />
       )}
