@@ -15,7 +15,7 @@ const TabItem = ({
   isFile?: boolean;
   altText?: string;
 }) => {
-  if (!value) return;
+  if (!value || !value.length) return;
 
   // check if value is a pdf
   const isPdf = !Array.isArray(value) && isFile && value.endsWith('.pdf');
