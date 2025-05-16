@@ -66,7 +66,6 @@ export interface FormData {
   symptoms_past_six_months: string[];
   symptoms_past_six_months_other: string;
 
-
   hospitalized_psych: string;
   suicidal_thoughts: string;
 
@@ -93,13 +92,8 @@ export interface FormData {
 
   honesty: string;
   honesty_signature: string;
-  informed_consent_signature: string;
-  medication_history_signature: string;
-  practice_policies_signature: string;
-  privacy_policy_signature: string;
-  telehealth_consent_signature: string;
-  therapy_availability: string;
   policy_agreement: string;
+  policy_agreement_signature: string;
 
   emergency_contact_info: string;
   emergency_contact_phone: string;
