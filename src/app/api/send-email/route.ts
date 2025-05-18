@@ -8,10 +8,7 @@ const mailchimpClient = mailchimpTransactional(
 );
 
 // HTML email template with logo and styling
-const getBaseEmailTemplate = (
-  content: string,
-  includeNotInterestedLink = false,
-) => {
+const getBaseEmailTemplate = (content: string) => {
   const logo =
     'https://mcusercontent.com/f49e77d8389e110b514988d07/images/bd4a6ffd-dce6-72c2-e379-2223ce4d0a6b.png';
 
@@ -29,16 +26,6 @@ const getBaseEmailTemplate = (
           ${content}
         </div>
   
-        ${
-          includeNotInterestedLink
-            ? `
-          <!-- Not Interested Link -->
-          <div style="text-align: center; margin-top: 20px;">
-            <a href="#" style="color: #2e0086; text-decoration: underline; font-size: 14px;">Not interested in booking</a>
-          </div>
-        `
-            : ''
-        }
   
         <!-- Footer -->
         <div style="margin-top: 40px; text-align: center; color: #666; font-size: 12px;">
@@ -106,7 +93,7 @@ export async function POST(request: NextRequest) {
       `;
 
       // Include the "Not interested" link for reminder emails
-      html = getBaseEmailTemplate(content, true);
+      html = getBaseEmailTemplate(content);
     } else {
       return NextResponse.json(
         { success: false, error: 'Invalid email type' },
