@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mailchimpTransactional from '@mailchimp/mailchimp_transactional';
+import { INTAKE_FORM_URL as url } from '@/lib/app-data';
 
 // Initialize with server-side API key
 const mailchimpClient = mailchimpTransactional(
@@ -54,7 +55,7 @@ const getBaseEmailTemplate = (
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    const { email, url, first_name, type } = data;
+    const { email, first_name, type } = data;
 
     let subject = '';
     let html = '';

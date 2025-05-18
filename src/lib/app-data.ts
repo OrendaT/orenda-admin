@@ -1,5 +1,7 @@
 import { LuCircleCheckBig, LuTimer } from 'react-icons/lu';
 
+export const INTAKE_FORM_URL = 'https://orenda-intake.vercel.app/';
+
 //  INTAKE FORM FILTERS DATA
 export const initialFilters = {
   status: undefined,

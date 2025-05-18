@@ -9,8 +9,6 @@ import { z } from 'zod';
 import { Status } from '@/types';
 import { sendReminderEmail } from '@/services/email-service';
 
-const url = 'https://orenda-intake.vercel.app/';
-
 const RemindPatientSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
   first_name: z.string().optional(),
@@ -42,7 +40,6 @@ const RemindPatient = ({
     // Using the email service instead of directly calling Mail chimp
     const res = await sendReminderEmail({
       email,
-      url,
       first_name,
     });
 

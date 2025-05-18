@@ -10,8 +10,7 @@ import { Status } from '@/types';
 import { LuCheck, LuCopy } from 'react-icons/lu';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { sendNewFormEmail } from '@/services/email-service';
-
-const url = 'https://orenda-intake.vercel.app/';
+import { INTAKE_FORM_URL as url } from '@/lib/app-data';
 
 const SendNewFormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -41,7 +40,7 @@ export default function SendNewForm({
   const onSubmit = handleSubmit(async (data) => {
     const { email, first_name } = data;
 
-    const res = await sendNewFormEmail({ email, url, first_name });
+    const res = await sendNewFormEmail({ email, first_name });
 
     if (res.success) {
       setStatus('success');

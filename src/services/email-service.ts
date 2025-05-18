@@ -3,7 +3,6 @@ import axios, { AxiosError } from 'axios';
 // New form email function
 export async function sendNewFormEmail(data: {
   email: string;
-  url: string;
   first_name?: string;
 }) {
   try {
@@ -28,7 +27,6 @@ export async function sendNewFormEmail(data: {
 // Reminder email function
 export async function sendReminderEmail(data: {
   email: string;
-  url: string;
   first_name?: string;
 }) {
   try {
