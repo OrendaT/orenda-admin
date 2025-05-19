@@ -5,7 +5,7 @@ import api from '../api/axios';
 import { AUTH_EP } from '../api/endpoints';
 import { AxiosError } from 'axios';
 import { CredentialsSignin, OAuthSignInError } from '@auth/core/errors';
-import { INotSure } from '@/types';
+import { DBUser } from '@/types';
 
 class CredentialsError extends CredentialsSignin {
   code = 'custom';
@@ -56,9 +56,12 @@ const providers = [
     },
   }),
   Google({
-    profile: async (profile: GoogleProfile): Promise<INotSure> => {
+    profile: async (profile: GoogleProfile): Promise<DBUser> => {
       let user = null;
       const { email, sub, family_name, given_name } = profile;
+      const name = `${given_name} ${family_name}`;
+
+      // Login or sign-up user
       try {
         const res = await api.post(AUTH_EP.LOGIN_GOOGLE, {
           email,
@@ -66,9 +69,14 @@ const providers = [
         });
         user = {
           ...profile,
-          id: profile.sub,
           access_token: res.data.access_token,
           refresh_token: res.data.refresh_token,
+          user: {
+            id: res.data.user.id,
+            name: res.data.user.name,
+            email,
+            roles: res.data.user.roles,
+          },
         };
       } catch (loginError) {
         if (
@@ -80,13 +88,18 @@ const providers = [
             const res = await api.post(AUTH_EP.REGISTER_GOOGLE, {
               email,
               sub,
-              name: `${given_name} ${family_name}`,
+              name,
             });
             user = {
               ...profile,
-              id: profile.sub,
               access_token: res.data.access_token,
               refresh_token: res.data.refresh_token,
+              user: {
+                id: res.data.user.id,
+                name,
+                email,
+                roles: res.data.user.roles,
+              },
             };
           } catch (registerError) {
             // Handle register failure here
