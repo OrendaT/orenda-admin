@@ -5,6 +5,7 @@ import api from '../api/axios';
 import { AUTH_EP } from '../api/endpoints';
 import { AxiosError } from 'axios';
 import { CredentialsSignin, OAuthSignInError } from '@auth/core/errors';
+import { INotSure } from '@/types';
 
 class CredentialsError extends CredentialsSignin {
   code = 'custom';
@@ -55,7 +56,7 @@ const providers = [
     },
   }),
   Google({
-    profile: async (profile: GoogleProfile) => {
+    profile: async (profile: GoogleProfile): Promise<INotSure> => {
       let user = null;
       const { email, sub, family_name, given_name } = profile;
       try {
