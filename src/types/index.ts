@@ -1,7 +1,16 @@
 import { IconType } from 'react-icons/lib';
 import { JSX } from 'react';
 
-export type INotSure = any;
+export interface DBUser {
+  access_token: string;
+  refresh_token?: string;
+  user: {
+    name: string | null;
+    email: string;
+    roles: { name: string; permissions: string[] }[];
+    id: string;
+  };
+}
 
 export type MenuItem = {
   id: string;
