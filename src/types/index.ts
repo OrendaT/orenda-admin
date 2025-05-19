@@ -1,6 +1,8 @@
 import { IconType } from 'react-icons/lib';
 import { JSX } from 'react';
 
+export type INotSure = any;
+
 export type MenuItem = {
   id: string;
   title: string;
