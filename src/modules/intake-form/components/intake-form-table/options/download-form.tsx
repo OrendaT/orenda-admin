@@ -12,6 +12,7 @@ import Input from '@/components/ui/input';
 import useExport from '@/hooks/mutations/use-export';
 import useCheckStatus from '@/hooks/queries/use-check-status';
 import { useClipboard } from '@/hooks/use-clipboard';
+import useRetry from '@/hooks/use-retry';
 import { cn, downloadFile } from '@/lib/utils';
 import useDownloadFormStore from '@/stores/download-form-store';
 import { Status } from '@/types';
@@ -70,7 +71,9 @@ const DownloadForm = ({
   const addTask = useDownloadFormStore((state) => state.addTask);
   const updateTask = useDownloadFormStore((state) => state.updateTask);
 
-  const { data } = useCheckStatus(downloads[key]?.task_id);
+  const { data, refetch: checkStatus } = useCheckStatus(
+    downloads[key]?.task_id,
+  );
 
   // copy url function
   const [copied, onClick] = useClipboard(data?.url || '');
@@ -92,6 +95,13 @@ const DownloadForm = ({
     }
   }, [open, _export, forms, name, addTask, downloads, key]);
 
+  useRetry({
+    callback: checkStatus,
+    delay: 2000,
+    retries: Infinity,
+    stop: data?.ready || !Boolean(downloads[key]?.task_id), // Stop when data is ready or there's no task_id
+  });
+
   // set url if export successful
   useEffect(() => {
     if (data?.url) {
@@ -100,7 +110,7 @@ const DownloadForm = ({
         url: data.url,
       });
     }
-  }, [data, updateTask, key]);
+  }, [data, updateTask, key, checkStatus]);
 
   // Final download
   const onSubmit = handleSubmit((data) => {

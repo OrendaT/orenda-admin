@@ -13,6 +13,7 @@ const useRetry = ({
 }) => {
   const retryCountRef = useRef(0);
   const callbackRef = useRef(callback);
+  const intervalRef = useRef<NodeJS.Timeout>(null);
 
   // Keep callback ref updated
   useEffect(() => {
@@ -20,14 +21,17 @@ const useRetry = ({
   }, [callback]);
 
   useEffect(() => {
-    if (stop) return;
+    if (stop) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      return;
+    }
 
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       if (retryCountRef.current < retries) {
         callbackRef.current();
         retryCountRef.current++;
       } else {
-        clearInterval(interval);
+        if (intervalRef.current) clearInterval(intervalRef.current);
       }
     }, delay);
 
@@ -37,7 +41,9 @@ const useRetry = ({
       retryCountRef.current++;
     }
 
-    return () => clearInterval(interval);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
   }, [delay, retries, stop]);
 
   return;
