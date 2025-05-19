@@ -37,7 +37,7 @@ const requirements = [
   },
 ];
 
-const NewPasswordForm = () => {
+const NewPasswordForm = ({ token }: { token: string }) => {
   const [success, setSuccess] = useState(false);
   const methods = useForm<NewPasswordSchemaType>({
     defaultValues: {
@@ -77,9 +77,17 @@ const NewPasswordForm = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const res = await api.post(AUTH_EP.RESET_PASSWORD, {
-        password: data.password,
-      });
+      const res = await api.post(
+        AUTH_EP.RESET_PASSWORD,
+        {
+          password: data.password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       if (res.status === 200) setSuccess(true);
     } catch (error) {
@@ -138,7 +146,9 @@ const NewPasswordForm = () => {
           )}
 
           {errors.root && (
-            <p className="error_message text-center mt-3">{errors.root.message}</p>
+            <p className="error_message mt-3 text-center">
+              {errors.root.message}
+            </p>
           )}
 
           <Button
