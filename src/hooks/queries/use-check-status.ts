@@ -3,6 +3,7 @@ import { QUERY_KEYS } from './query-keys';
 import useAxios from '@/lib/api/axios-client';
 import { FORMS_EP } from '@/lib/api/endpoints';
 import { TaskStatusResponse } from '@/types';
+import { AxiosError } from 'axios';
 
 const useCheckStatus = (task_id?: string) => {
   const { axios, status } = useAxios();
@@ -17,21 +18,17 @@ const useCheckStatus = (task_id?: string) => {
 
       return res.data;
     },
-    retry: (_, error?: { response: { data: { ready: boolean } } }) => {
-      console.log(error);
-      if (error) {
-        // check response before retrying
-        if (!error.response.data.ready) {
-          return true;
-        } else {
-          return false;
-        }
-      }
+    retry: (_, error: AxiosError<TaskStatusResponse>) => {
+      console.error(error);
 
-      return true; // if no error just retry
+      // retry if not ready
+      if (!error.response?.data?.ready) return true;
+
+      return false;
     },
     retryDelay: 2000,
-    enabled: status === 'authenticated' && !!task_id,
+    enabled: status === 'authenticated' && Boolean(task_id),
+    refetchOnWindowFocus: false,
   });
 };
 export default useCheckStatus;
