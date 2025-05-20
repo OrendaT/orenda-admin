@@ -18,8 +18,6 @@ const getBaseEmailTemplate = (content: string) => {
         <div style="text-align: center; margin-bottom: 30px;">
           <img src="${logo}" alt="Orenda Psychiatry" style="max-width: 180px;">
         </div>
-
-        <h2 style="color: #000; margin-bottom: 20px;">Orenda Psychiatry</h2>
   
         <!-- Content -->
         <div style="color: #333; line-height: 1.5; font-size: 14px;">
