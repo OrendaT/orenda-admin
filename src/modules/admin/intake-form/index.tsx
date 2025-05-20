@@ -6,8 +6,8 @@ import SearchFilter from './components/search-filter';
 import IntakeFormTable from './components/intake-form-table';
 import Export from './components/export';
 import { Suspense } from 'react';
-import SearchFilterSkeleton from '../../components/skeletons/search-filter-skeleton';
-import IntakeFormTableSkeleton from '../../components/skeletons/intake-form-table-skeleton';
+import SearchFilterSkeleton from '../../../components/skeletons/search-filter-skeleton';
+import IntakeFormTableSkeleton from '../../../components/skeletons/intake-form-table-skeleton';
 
 const IntakeForm = async () => {
   return (
