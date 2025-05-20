@@ -98,7 +98,7 @@ const HeaderComp = () => {
           Icon={
             <LuPanelLeftClose
               className={cn(
-                'size-6 transition-all duration-300',
+                'size-6 transition-all text-neutral-700 duration-300',
                 !open && 'rotate-180',
               )}
             />
