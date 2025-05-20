@@ -15,24 +15,24 @@ const getBaseEmailTemplate = (content: string) => {
   return `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <!-- Logo -->
-        <div style="text-align: center; margin-bottom: 30px;">
+        <header style="text-align: center; margin-bottom: 30px;">
           <img src="${logo}" alt="Orenda Psychiatry" style="max-width: 180px;">
-        </div>
+        </header>
   
         <!-- Content -->
-        <div style="color: #333; line-height: 1.5; font-size: 14px;">
+        <main style="color: #333; line-height: 1.5; font-size: 14px;">
           ${content}
-        </div>
+        </main>
   
   
         <!-- Footer -->
-        <div style="margin-top: 40px; text-align: center; color: #666; font-size: 12px;">
+        <footer style="margin-top: 40px; text-align: center; color: #666; font-size: 12px;">
           <p>80 Fifth Avenue, Office #903-10, New York, NY 10011.</p>
           <p>Call: (347) 707-7735 | Email: <a href="mailto:admin@orendapsych.com" style="color: #2e0086;">admin@orendapsych.com</a></p>
           <div style="margin-top: 20px;">
             <img src="${logo}" alt="Orenda Psychiatry" style="max-width: 120px;">
           </div>
-        </div>
+        </footer>
       </div>
     `;
 };
