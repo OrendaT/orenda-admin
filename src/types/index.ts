@@ -7,7 +7,7 @@ export interface DBUser {
   user: {
     name: string | null;
     email: string;
-    roles: { name: string; permissions: string[] }[];
+    roles: UserRoles[];
     id: string;
   };
 }
@@ -147,4 +147,9 @@ export interface TaskStatusResponse {
   ready: boolean;
   successful: boolean;
   url: string;
+}
+
+export interface UserRoles {
+  name: string;
+  permissions: string[];
 }
