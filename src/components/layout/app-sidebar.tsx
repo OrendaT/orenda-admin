@@ -13,14 +13,27 @@ import {
 import Header from './header';
 import { FormIcon, ProviderWallIcon } from '@/assets/svgs';
 import { MdLogout } from 'react-icons/md';
-import React from 'react';
+import React, { useState } from 'react';
 import { MenuItem } from '@/types';
 import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { LuPanelLeftClose } from 'react-icons/lu';
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '../ui/alert-dialog';
+import { Button } from '../ui/button';
 
 export function AppSidebar({ isProvider }: { isProvider: boolean }) {
+  const [open, setOpen] = useState(false);
+
   const topMenuItems: (MenuItem | false)[] = [
     !isProvider && {
       id: 'intake-forms',
@@ -36,20 +49,17 @@ export function AppSidebar({ isProvider }: { isProvider: boolean }) {
     },
   ];
 
-  const signOut = async () => {
-    await logOut();
-    toast.success('Log out successful');
-  };
-
   const bottomMenuItems: MenuItem[] = [
     {
       id: 'log-out',
       title: 'Log out',
       Icon: MdLogout({}),
-      onClick: signOut,
       className:
         'text-red-500 hover:text-error-red hover:bg-red-50 active:bg-red-100 active:text-error-red',
       itemClassName: 'hover:bg-red-50 active:bg-red-100',
+      onClick: () => {
+        setOpen(true);
+      },
     },
   ];
 
@@ -71,8 +81,14 @@ export function AppSidebar({ isProvider }: { isProvider: boolean }) {
         {/* bottom menu list */}
         <SidebarGroup className="mt-40 border-t border-[#ECECEC]">
           <SidebarMenu>
-            {bottomMenuItems.map(
-              (item) => item && <SidebarListItem key={item.id} item={item} />,
+            {bottomMenuItems.map((item) =>
+              item && item.id === 'log-out' ? (
+                <LogOutModal key={item.id} open={open} setOpen={setOpen}>
+                  <SidebarListItem item={item} />
+                </LogOutModal>
+              ) : (
+                <SidebarListItem key={item.id} item={item} />
+              ),
             )}
           </SidebarMenu>
         </SidebarGroup>
@@ -106,5 +122,45 @@ const HeaderComp = () => {
         />
       )}
     </div>
+  );
+};
+
+const LogOutModal = ({
+  open,
+  setOpen,
+  children,
+}: {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  children: React.ReactNode;
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const signOut = async () => {
+    setIsLoading(true);
+    await logOut();
+    setIsLoading(false);
+    setOpen(false);
+    toast.success('Log out successful');
+  };
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Log out</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to log out?
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="*:w-fit *:py-1.5">
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <Button isLoading={isLoading} onClick={signOut} variant="destructive">
+            Log out
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
