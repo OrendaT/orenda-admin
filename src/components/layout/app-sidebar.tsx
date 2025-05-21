@@ -154,8 +154,8 @@ const LogOutModal = ({
             Are you sure you want to log out?
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter className="*:w-fit *:py-1.5 flex-row justify-center">
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogFooter className="flex-row justify-center *:w-fit *:py-1.5">
+          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
           <Button isLoading={isLoading} onClick={signOut} variant="destructive">
             Log out
           </Button>
