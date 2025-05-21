@@ -21,7 +21,7 @@ const PreviewForm = ({ id, status }: { id: string; status: string }) => {
         </DialogDescription>
       </DialogHeader>
 
-      <Tabs className="mt-4">
+      <Tabs defaultValue="general" className="mt-4">
         <TabsList className="w-full">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="cc_info">Credit Card Info</TabsTrigger>
