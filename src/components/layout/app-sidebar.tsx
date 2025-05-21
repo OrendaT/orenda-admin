@@ -20,22 +20,22 @@ import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { LuPanelLeftClose } from 'react-icons/lu';
 
-const topMenuItems: (MenuItem | false)[] = [
-  true && {
-    id: 'intake-forms',
-    title: 'Intake Forms',
-    Icon: FormIcon({ className: 'mt-0.5' }),
-    href: '/',
-  },
-  false && {
-    id: 'provider-wall',
-    title: 'Provider Wall',
-    Icon: ProviderWallIcon({}),
-    href: '/',
-  },
-];
+export function AppSidebar({ isProvider }: { isProvider: boolean }) {
+  const topMenuItems: (MenuItem | false)[] = [
+    !isProvider && {
+      id: 'intake-forms',
+      title: 'Intake Forms',
+      Icon: FormIcon({ className: 'mt-0.5' }),
+      href: '/',
+    },
+    isProvider && {
+      id: 'provider-wall',
+      title: 'Provider Wall',
+      Icon: ProviderWallIcon({}),
+      href: '/',
+    },
+  ];
 
-export function AppSidebar() {
   const signOut = async () => {
     await logOut();
     toast.success('Log out successful');
@@ -98,7 +98,7 @@ const HeaderComp = () => {
           Icon={
             <LuPanelLeftClose
               className={cn(
-                'size-6 transition-all text-neutral-700 duration-300',
+                'size-6 text-neutral-700 transition-all duration-300',
                 !open && 'rotate-180',
               )}
             />

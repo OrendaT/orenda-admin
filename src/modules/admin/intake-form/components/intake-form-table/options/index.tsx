@@ -51,9 +51,7 @@ const Options = ({ row }: CellContext<FormData, unknown>) => {
             </DropdownMenuItem>
           </DialogTrigger>
           <DropdownMenuItem
-            onClick={() => flagForm(id, {
-              onSuccess: () => console.log('success')
-            })}
+            onClick={() => flagForm(id)}
             disabled={isPending}
             className="py-2 pr-8 text-sm"
           >
