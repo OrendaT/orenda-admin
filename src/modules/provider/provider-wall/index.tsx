@@ -30,7 +30,7 @@ const ProviderWall = async () => {
           </section>
         </div>
 
-        <aside className="db_section lg:max-w-[35%] xl:max-w-[min(35%,_25rem)]">
+        <aside className="db_section lg:max-w-[clamp(0rem,_35%,_23.31rem)]">
           <h2 className="heading mb-4">Announcements</h2>
 
           <ul className="scrollbar-none divide-y divide-[#E7E7E7] lg:max-h-[calc(100vh-14.5rem)] lg:overflow-y-auto">
