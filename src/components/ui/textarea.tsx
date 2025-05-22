@@ -1,70 +1,57 @@
+// components/ui/form-textarea.tsx
+
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useId } from 'react';
+import React, { ComponentProps, useId } from 'react';
 import { useFormContext } from 'react-hook-form';
 import FormErrorMessage from './error-message';
 
-interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface FormTextareaProps extends ComponentProps<'textarea'> {
   label?: React.ReactNode;
   name: string;
-  showCount?: boolean;
+  textareaClassName?: string;
 }
 
-const Textarea = ({
+const FormTextarea = ({
   label,
   name,
   className,
-  showCount,
+  textareaClassName,
   ...props
-}: TextareaProps) => {
+}: FormTextareaProps) => {
   const id = useId();
 
   const {
     register,
     formState: { errors },
-    watch,
   } = useFormContext();
-
-  const value = watch(name);
 
   return (
     <div className={cn('w-full', className)}>
-      {label ||
-        (showCount && (
-          <label
-            className="label flex items-center justify-between gap-6"
-            htmlFor={id}
-          >
-            {label}
-
-            <span className="mr-2">
-              {value.length}/{props.maxLength}
-            </span>
-          </label>
-        ))}
+      {label && (
+        <label className="label" htmlFor={id}>
+          {label}
+        </label>
+      )}
 
       <textarea
         className={cn(
-          'clamp-[text,sm,base] block w-full rounded-lg px-4 py-2.5 outline outline-[#E7E7E7]',
+          'w-full rounded-lg px-4 py-2.5 outline outline-[#E7E7E7] text-sm resize-none',
           {
             'outline-error-red': errors?.[name],
           },
+          textareaClassName,
         )}
         id={id}
         {...register(name)}
         aria-describedby={id}
         {...props}
-        style={{
-          minHeight: '3rem',
-          scrollbarWidth: 'thin',
-          ...props.style,
-        }}
       />
 
       <FormErrorMessage name={name} id={id} />
     </div>
   );
 };
-export default Textarea;
+
+export default FormTextarea;

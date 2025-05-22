@@ -1,3 +1,5 @@
+// components/AppSidebar.tsx
+
 'use client';
 
 import {
@@ -10,7 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import Header from './header';
 import { FormIcon, ProviderWallIcon } from '@/assets/svgs';
-import { MdLogout } from 'react-icons/md';
+import { MdLogout, MdAdminPanelSettings } from 'react-icons/md'; // Add MdAdminPanelSettings icon
 import React from 'react';
 import { MenuItem } from '@/types';
 import { logOut } from '@/app/actions/auth';
@@ -22,6 +24,13 @@ const topMenuItems: (MenuItem | false)[] = [
     title: 'Intake Forms',
     Icon: FormIcon({ className: 'mt-0.5' }),
     href: '/',
+  },
+  // Add the new Admins & Permissions menu item
+  true && {
+    id: 'admins-permissions',
+    title: 'Admins & Permissions',
+    Icon: MdAdminPanelSettings({ className: 'text-xl' }),
+    href: '/admins-permissions', // This should match your route path
   },
   false && {
     id: 'provider-wall',
