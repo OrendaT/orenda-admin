@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import NewPasswordForm from './new-password-form';
 
 export const metadata = {
@@ -5,7 +6,16 @@ export const metadata = {
   description: 'New password page',
 };
 
-const NewPassword = () => {
+const NewPassword = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) => {
+  const token = (await searchParams).token?.toString();
+  if (!token) {
+    redirect('/password/reset');
+  }
+
   return (
     <main className="padding_inline box_center">
       <section className="relative w-full max-w-[25rem]">
@@ -15,7 +25,7 @@ const NewPassword = () => {
           Create a new password to your account.
         </p>
 
-        <NewPasswordForm />
+        <NewPasswordForm token={token} />
       </section>
     </main>
   );

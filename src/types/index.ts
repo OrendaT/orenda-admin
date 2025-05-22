@@ -1,12 +1,24 @@
 import { IconType } from 'react-icons/lib';
 import { JSX } from 'react';
 
+export interface DBUser {
+  access_token: string;
+  refresh_token?: string;
+  user: {
+    name: string | null;
+    email: string;
+    roles: UserRoles[];
+    id: string;
+  };
+}
+
 export type MenuItem = {
   id: string;
   title: string;
   href?: string;
   Icon: React.ReactNode;
   className?: string;
+  itemClassName?: string;
   onClick?: () => void;
 };
 
@@ -65,7 +77,6 @@ export interface FormData {
   symptoms_past_six_months: string[];
   symptoms_past_six_months_other: string;
 
-
   hospitalized_psych: string;
   suicidal_thoughts: string;
 
@@ -92,13 +103,8 @@ export interface FormData {
 
   honesty: string;
   honesty_signature: string;
-  informed_consent_signature: string;
-  medication_history_signature: string;
-  practice_policies_signature: string;
-  privacy_policy_signature: string;
-  telehealth_consent_signature: string;
-  therapy_availability: string;
   policy_agreement: string;
+  policy_agreement_signature: string;
 
   emergency_contact_info: string;
   emergency_contact_phone: string;
@@ -141,4 +147,9 @@ export interface TaskStatusResponse {
   ready: boolean;
   successful: boolean;
   url: string;
+}
+
+export interface UserRoles {
+  name: string;
+  permissions: string[];
 }

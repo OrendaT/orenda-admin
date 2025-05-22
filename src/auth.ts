@@ -1,24 +1,28 @@
 import NextAuth, { DefaultSession } from 'next-auth';
 import providers from './lib/authjs/providers';
 import callbacks from './lib/authjs/callbacks';
+import { DBUser } from './types';
 
-interface JWTExtension {
-  access_token: string;
+interface JWTExtension extends Omit<DBUser, 'user'> {
+  name: string | null;
+  email: string;
+  id: string;
   expires_at: number;
-  refresh_token?: string;
+  roles: DBUser['user']['roles'];
 }
 
 declare module 'next-auth' {
-  interface User {
-    name: string;
-    access_token: string;
-    refresh_token: string;
+  interface User extends DBUser {
+    empty?: boolean; //added to satisfy eslint
   }
 
   interface Session {
     error?: 'RefreshTokenError';
     access_token: string;
-    user: DefaultSession['user'];
+    user: DefaultSession['user'] & {
+      email: string;
+      roles: DBUser['user']['roles'];
+    };
   }
 }
 

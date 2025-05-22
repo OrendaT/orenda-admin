@@ -29,7 +29,6 @@ export function IntakeFormTablePagination({
   const status = searchParams.get('status') ?? undefined;
   const flag = searchParams.get('flag') ?? undefined;
   const from = searchParams.get('from') ?? undefined;
-  const to = searchParams.get('to') ?? undefined;
 
   const createQueryString = useCallback(
     (page: number) => {
@@ -72,7 +71,7 @@ export function IntakeFormTablePagination({
         ? Math.min(Math.max(nextPageIndex, 2), lastPageIndex)
         : undefined, // Ensure the index is within bounds
     ];
-  }, [currentPageIndex, table, status, flag, from, to]);
+  }, [currentPageIndex, table, status, flag, from]);
 
   return (
     <Pagination className={cn(className)}>

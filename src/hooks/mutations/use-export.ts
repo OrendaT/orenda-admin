@@ -1,6 +1,7 @@
 import useAxios from '@/lib/api/axios-client';
 import { FORMS_EP } from '@/lib/api/endpoints';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 
 const useExport = () => {
@@ -13,9 +14,11 @@ const useExport = () => {
         method: 'POST',
         data,
       }),
-    onError: (_, { patients }) => {
+    onError: (error: AxiosError<{ message: string }>, { patients }) => {
       toast.error(
-        patients.length ? 'Something went wrong' : 'No forms selected',
+        patients.length
+          ? error.response?.data?.message?.split(':')?.[0] || 'Something went wrong'
+          : 'No forms selected',
       );
     },
   });
