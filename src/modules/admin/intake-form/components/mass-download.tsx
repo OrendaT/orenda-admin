@@ -128,7 +128,7 @@ const MassDownload = ({
             }}
           />
 
-          <div className="hidden xs:grid items-center">
+          <div className="xs:grid hidden items-center">
             <hr
               className={cn('clamp-[w,4,6] mt-7 block border-[#888]', {
                 'mt-0': Object.values(errors ?? {}).length,

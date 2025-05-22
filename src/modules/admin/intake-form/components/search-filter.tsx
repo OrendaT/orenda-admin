@@ -27,6 +27,8 @@ import { NavigateOptions } from 'next/dist/shared/lib/app-router-context.shared-
 import useWaitFor from '@/hooks/use-wait-for';
 import { FiltersSchema } from '@/lib/schemas/filters-schema';
 import { initialFilters, statusFilters } from '@/lib/app-data';
+import Checkbox from '@/components/ui/custom-checkbox';
+import { FlagIcon } from 'lucide-react';
 
 export default function SearchFilter() {
   const { replace } = useRouter(); // replace to set the query params
@@ -112,7 +114,6 @@ const Filters = ({
   const {
     handleSubmit,
     formState: { errors },
-    register,
     watch,
     reset,
     setValue,
@@ -174,33 +175,25 @@ const Filters = ({
             <h3 className="mb-2 font-medium">Status</h3>
             <div className="flex items-center gap-4">
               {statusFilters.map(({ id, label, value, Icon }) => (
-                <label
+                <Checkbox
+                  key={id}
+                  name="status"
+                  label={label}
+                  Icon={Icon}
+                  value={value}
                   className={cn(
-                    'flex cursor-pointer items-center gap-2 rounded-3xl border px-4 py-1.5 text-sm font-medium select-none',
                     status?.[0] === id && id === 'pending' && 'pending_form',
                     status?.[0] === id &&
                       id === 'submitted' &&
                       'submitted_form',
                   )}
-                  key={id}
-                >
-                  <Icon />
-                  {label}
-
-                  {/* Hidden radio input */}
-                  <input
-                    type="checkbox"
-                    value={value}
-                    onClick={() => {
-                      setValue(
-                        'status',
-                        status?.[0] === value ? undefined : [value],
-                      );
-                    }}
-                    hidden
-                    {...register('status')}
-                  />
-                </label>
+                  onClick={() => {
+                    setValue(
+                      'status',
+                      status?.[0] === value ? undefined : [value],
+                    );
+                  }}
+                />
               ))}
             </div>
 
@@ -243,24 +236,17 @@ const Filters = ({
               />
             </div>
 
-            <label
-              className={cn(
-                '!mt-6 flex w-fit cursor-pointer items-center gap-2 rounded-3xl border px-4 py-2 text-sm font-medium select-none has-checked:border-red-400 has-checked:bg-red-200 has-checked:text-red-900',
-              )}
-            >
-              Flagged
-              {/* Hidden radio input */}
-              <input
-                type="checkbox"
-                value="true"
-                hidden
-                {...register('flag')}
-              />
-            </label>
+            <Checkbox
+              name="flag"
+              value="true"
+              label="Flagged"
+              Icon={FlagIcon}
+              className="!mt-6 w-fit has-checked:border-red-400 has-checked:bg-red-200 has-checked:text-red-900 [&_svg]:size-4"
+            />
 
-            <div className="mt-12 flex items-center justify-between gap-4">
+            <div className="mt-8 flex items-center justify-between gap-4">
               <Button
-                className="relative w-fit ring-0 hover:bg-none"
+                className="relative w-fit font-medium ring-0 hover:bg-none"
                 variant="ghost"
                 type="button"
                 onClick={() => reset(initialFilters)}

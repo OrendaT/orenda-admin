@@ -18,7 +18,7 @@ const AdminsPermissionsPage: React.FC = () => {
     <SidebarProvider>
       <div className="flex h-screen w-full">
         {/* Sidebar */}
-        <AppSidebar />
+        <AppSidebar isProvider={false} />
         
         {/* Main Content */}
         <div className="flex-1 overflow-auto bg-[#F6F6F6]">

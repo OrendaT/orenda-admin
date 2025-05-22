@@ -20,7 +20,7 @@ const Options = ({ row }: CellContext<FormData, unknown>) => {
   const [open, setOpen] = useState(false);
   const [module, setModule] = useState<'download' | 'preview'>();
   const name = String(row.getValue('name'));
-  const { id, flag } = row.original;
+  const { id, flag, status } = row.original;
 
   const { mutateAsync: flagForm, isPending } = useFlagForm();
 
@@ -64,7 +64,7 @@ const Options = ({ row }: CellContext<FormData, unknown>) => {
         <DownloadForm name={name} open={open} forms={[id]} />
       )}
 
-      {module === 'preview' && <PreviewForm id={id} />}
+      {module === 'preview' && <PreviewForm id={id} status={status} />}
     </Dialog>
   );
 };

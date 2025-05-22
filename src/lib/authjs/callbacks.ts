@@ -17,10 +17,14 @@ const callbacks: Callbacks = {
         : Date.now() + 60_000;
 
       // save the `access_token`, its expiry and the `refresh_token`
+      // and other user info
       return {
         ...token,
         access_token: user.access_token,
         refresh_token: user.refresh_token,
+        name: user.user?.name,
+        email: user.user.email,
+        roles: user.user.roles,
         expires_at,
       } as JWT;
     }
@@ -68,7 +72,11 @@ const callbacks: Callbacks = {
   },
   session: async ({ session, token }) => {
     session.access_token = token.access_token;
+    session.user.name = token.name;
+    session.user.email = token.email ?? '';
+    session.user.roles = token.roles;
     session.error = token.error;
+
     return session;
   },
 };

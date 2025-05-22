@@ -89,18 +89,21 @@ function SelectHeader({ table }: HeaderContext<FormData, unknown>) {
         (table.getIsSomePageRowsSelected() && 'indeterminate')
       }
       onCheckedChange={(value) => {
+        // check all rows in current page
         table.toggleAllPageRowsSelected(!!value);
+
+        // get rowIds for all rows in current page
         const rowIds = table
           .getPaginationRowModel()
           .rows.map((row) => row.original.id);
+
+        // add or remove id form selected forms state
         if (value) {
           rowIds.forEach((id) => {
             if (!forms.length) {
               addForm(id);
             } else if (!forms.includes(id)) {
-              {
-                addForm(id);
-              }
+              addForm(id);
             }
           });
         } else {
@@ -113,7 +116,7 @@ function SelectHeader({ table }: HeaderContext<FormData, unknown>) {
 }
 
 function SelectCell({ row }: CellContext<FormData, unknown>) {
-  const id = row.original.id;
+  const { id } = row.original;
   const addForm = useSelectedFormsStore((state) => state.addForm);
   const removeForm = useSelectedFormsStore((state) => state.removeForm);
 

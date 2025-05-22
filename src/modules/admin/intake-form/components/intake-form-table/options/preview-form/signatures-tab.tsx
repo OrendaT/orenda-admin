@@ -13,37 +13,17 @@ export const _signatures: {
 }[] = [
   {
     id: 'guardian_signature',
-    name: 'Guardian signature',
+    name: 'Parent/Guardian permission',
     value: '',
   },
   {
     id: 'honesty_signature',
-    name: 'Honesty signature',
+    name: 'Answered all questions honestly & truthfully',
     value: '',
   },
   {
-    id: 'medication_history_signature',
-    name: 'Medication history signature',
-    value: '',
-  },
-  {
-    id: 'informed_consent_signature',
-    name: 'Informed consent signature',
-    value: '',
-  },
-  {
-    id: 'practice_policies_signature',
-    name: 'Practice policies signature',
-    value: '',
-  },
-  {
-    id: 'privacy_policy_signature',
-    name: 'Privacy policy signature',
-    value: '',
-  },
-  {
-    id: 'telehealth_consent_signature',
-    name: 'Telehealth consent signature',
+    id: 'policy_agreement_signature',
+    name: 'Terms of use & practice policies',
     value: '',
   },
 ];

@@ -11,9 +11,9 @@ import GeneralTab from './general-tab';
 import CreditCardTab from './credit-card-tab';
 import SignaturesTab from './signatures-tab';
 
-const PreviewForm = ({ id }: { id: string }) => {
+const PreviewForm = ({ id, status }: { id: string; status: string }) => {
   return (
-    <DialogContent className='max-h-[97dvh]'>
+    <DialogContent className="max-h-[97dvh]">
       <DialogHeader>
         <DialogTitle>Preview</DialogTitle>
         <DialogDescription>
@@ -21,11 +21,13 @@ const PreviewForm = ({ id }: { id: string }) => {
         </DialogDescription>
       </DialogHeader>
 
-      <Tabs className="mt-4">
+      <Tabs defaultValue="general" className="mt-4">
         <TabsList className="w-full">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="cc_info">Credit Card Info</TabsTrigger>
-          <TabsTrigger value="signatures">Signature</TabsTrigger>
+          {status === 'submitted' && (
+            <TabsTrigger value="signatures">Signature</TabsTrigger>
+          )}
         </TabsList>
 
         <GeneralTab id={id} />
