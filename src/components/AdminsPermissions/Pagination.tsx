@@ -12,7 +12,7 @@ interface PaginationProps {
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
   // Generate page numbers to display
   const getPageNumbers = (): (number | string)[] => {
-    let pages: (number | string)[] = [];
+    const pages: (number | string)[] = [];
     const maxPagesToShow = 5;
     
     if (totalPages <= maxPagesToShow) {
@@ -25,8 +25,8 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
       pages.push(1);
       
       // Calculate start and end of pages to show
-      let start = Math.max(2, currentPage - 1);
-      let end = Math.min(totalPages - 1, currentPage + 1);
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
       
       // Add ellipsis if needed
       if (start > 2) {
