@@ -10,7 +10,6 @@ import { Status } from '@/types';
 import { RiMailSendLine } from "react-icons/ri";
 import { FaRegMessage } from "react-icons/fa6";
 import { sendReminderEmail } from '@/services/email-service';
-<<<<<<< HEAD:src/components/intake-form/_components/remind-patient.tsx
 import { cn } from '@/lib/utils';
 
 const url = 'https://orenda-intake.vercel.app/';
@@ -34,13 +33,6 @@ const createRemindPatientSchema = (via: string[]) => {
     via: z.array(z.enum(['sms', 'email'])).min(1, { message: 'Select at least one method' }),
   });
 };
-=======
-
-const RemindPatientSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address' }),
-  first_name: z.string().optional(),
-});
->>>>>>> origin/main:src/modules/admin/intake-form/components/remind-patient.tsx
 
 const RemindPatient = ({
   setStatus,
@@ -51,11 +43,8 @@ const RemindPatient = ({
     defaultValues: {
       email: '',
       first_name: '',
-<<<<<<< HEAD:src/components/intake-form/_components/remind-patient.tsx
       phone: '',
       via: ['email'] as ('email' | 'sms')[],
-=======
->>>>>>> origin/main:src/modules/admin/intake-form/components/remind-patient.tsx
     },
     resolver: zodResolver(createRemindPatientSchema(['email'])),
   });
@@ -88,21 +77,11 @@ const RemindPatient = ({
   }, [via, clearErrors, trigger]);
 
   const onSubmit = handleSubmit(async (data) => {
-<<<<<<< HEAD:src/components/intake-form/_components/remind-patient.tsx
     const { email, first_name, phone, via } = data;
 
     try {
       let emailResult = { success: true };
       let smsResult = { success: true };
-=======
-    const { email, first_name } = data;
-
-    // Using the email service instead of directly calling Mail chimp
-    const res = await sendReminderEmail({
-      email,
-      first_name,
-    });
->>>>>>> origin/main:src/modules/admin/intake-form/components/remind-patient.tsx
 
       // Create an array of promises to execute
       const promises = [];
@@ -173,26 +152,8 @@ const RemindPatient = ({
           placeholder="Enter patient's first name"
         />
 
-<<<<<<< HEAD:src/components/intake-form/_components/remind-patient.tsx
         {/* Send via options */}
         <div>
-=======
-        <Input
-          label="Email"
-          name="email"
-          type="email"
-          placeholder="Enter email"
-        />
-
-        {/* <Input
-          label="Phone Number"
-          name="phone"
-          type="tel"
-          placeholder="Enter phone number"
-        /> */}
-
-        {/* <div>
->>>>>>> origin/main:src/modules/admin/intake-form/components/remind-patient.tsx
           <h3 className="mb-2 text-sm font-medium">Send via</h3>
           <div className="flex items-center gap-4 mb-2">
             {options.map(({ label, value, icon: Icon }) => (
@@ -208,13 +169,8 @@ const RemindPatient = ({
                 <Icon className="h-4 w-4" />
                 {label}
 
-<<<<<<< HEAD:src/components/intake-form/_components/remind-patient.tsx
                 {/* Hidden checkbox input */}
                 <input
-=======
-                {/* Hidden radio input */}
-        {/* <input
->>>>>>> origin/main:src/modules/admin/intake-form/components/remind-patient.tsx
                   type="checkbox"
                   value={value}
                   hidden
@@ -222,16 +178,11 @@ const RemindPatient = ({
                 />
               </label>
             ))}
-<<<<<<< HEAD:src/components/intake-form/_components/remind-patient.tsx
           </div>
           {errors.via && (
             <p className="text-red-500 text-xs mt-1">{errors.via.message as string}</p>
           )}
         </div>
-=======
-          </div> */}
-        {/* </div> */}
->>>>>>> origin/main:src/modules/admin/intake-form/components/remind-patient.tsx
 
         {/* Conditional Email Field */}
         {via.includes('email') && (
