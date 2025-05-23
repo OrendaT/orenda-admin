@@ -1,4 +1,5 @@
 import site_logo from './site_logo.png';
 import arch_banner from './arch_banner.jpg';
+import cover_image from './cover_image.png';
 
-export { site_logo, arch_banner };
+export { site_logo, arch_banner, cover_image };

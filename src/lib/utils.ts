@@ -1,4 +1,4 @@
-import { UserRoles } from '@/types';
+import { UserRole } from '@/types';
 import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import { format } from 'date-fns';
@@ -58,7 +58,7 @@ export const downloadFile = async (
  * and checks whether the user is a provider
  * or not (admin|super_admin)
  */
-export const isProvider = (roles: UserRoles[]) =>
+export const isProvider = (roles: UserRole[]) =>
   roles.some(
     (role) => typeof role.name === 'string' && /provider/i.test(role.name),
   );
