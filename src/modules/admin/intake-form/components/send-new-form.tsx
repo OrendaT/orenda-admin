@@ -12,13 +12,9 @@ import { RiMailSendLine } from "react-icons/ri";
 import { FaRegMessage } from "react-icons/fa6";
 import { useClipboard } from '@/hooks/use-clipboard';
 import { sendNewFormEmail } from '@/services/email-service';
-<<<<<<< HEAD:src/components/intake-form/_components/send-new-form.tsx
 import { cn } from '@/lib/utils';
 
 const url = 'https://orenda-intake.vercel.app/';
-=======
-import { INTAKE_FORM_URL as url } from '@/lib/app-data';
->>>>>>> origin/main:src/modules/admin/intake-form/components/send-new-form.tsx
 
 // Define send via options with correct typing
 const options = [
@@ -85,7 +81,6 @@ export default function SendNewForm({
   const onSubmit = handleSubmit(async (data) => {
     const { email, first_name, phone, via } = data;
 
-<<<<<<< HEAD:src/components/intake-form/_components/send-new-form.tsx
     try {
       let emailResult = { success: true };
       let smsResult = { success: true };
@@ -132,15 +127,6 @@ export default function SendNewForm({
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed. Please try again.';
-=======
-    const res = await sendNewFormEmail({ email, first_name });
-
-    if (res.success) {
-      setStatus('success');
-      reset();
-    } else {
-      const errorMessage = res.error || 'Failed. Please try again.';
->>>>>>> origin/main:src/modules/admin/intake-form/components/send-new-form.tsx
       setError('root', { message: errorMessage });
       console.error('Error in form submission:', errorMessage);
     }
