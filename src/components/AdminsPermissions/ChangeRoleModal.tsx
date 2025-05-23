@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { X } from 'lucide-react';
+
 import { User, Role, ROLE_PERMISSIONS } from '@/types/user';
 import { useRoles } from '@/hooks/useRoles';
 import useUserActions from '@/hooks/useUserActions';
