@@ -1,11 +1,11 @@
 import { cn } from '@/lib/utils';
-import { DashboardCardStats } from '@/types';
+import { DashboardCardStat } from '@/types';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { LuArrowDown, LuArrowUp } from 'react-icons/lu';
 
 interface StatsCardProps {
   className?: string;
-  stats: DashboardCardStats;
+  stats: DashboardCardStat;
 }
 
 const StatsCard = ({

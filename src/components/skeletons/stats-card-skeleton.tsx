@@ -1,10 +1,10 @@
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
-import { DashboardCardStats } from '@/types';
+import { DashboardCardStat } from '@/types';
 
 interface StatsCardSkeletonProps {
   name: string;
-  Icon: DashboardCardStats['NameIcon'];
+  Icon: DashboardCardStat['NameIcon'];
   className?: string;
 }
 
@@ -23,7 +23,7 @@ const StatsCardSkeleton = ({
         <Skeleton className="h-20 w-26" />
 
         <div className="space-y-1 text-xs">
-          <Skeleton className="h-6 hidden w-20 rounded-lg" />
+          <Skeleton className="hidden h-6 w-20 rounded-lg" />
           <Skeleton className="h-4 w-16 rounded-sm" />
           <Skeleton className="h-4 w-16 rounded-sm" />
         </div>

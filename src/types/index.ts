@@ -7,9 +7,14 @@ export interface DBUser {
   user: {
     name: string | null;
     email: string;
-    roles: UserRoles[];
+    roles: UserRole[];
     id: string;
   };
+}
+
+export interface UserRole {
+  name: string;
+  permissions: string[];
 }
 
 export type MenuItem = {
@@ -22,7 +27,7 @@ export type MenuItem = {
   onClick?: () => void;
 };
 
-export interface DashboardCardStats {
+export interface DashboardCardStat {
   name: string;
   value: number;
   percentage: number;
@@ -149,7 +154,22 @@ export interface TaskStatusResponse {
   url: string;
 }
 
-export interface UserRoles {
+// This is the type for the resources in the app-data.ts file
+export interface Resource {
+  id: string;
   name: string;
-  permissions: string[];
+  resources: ResourceFolder[] | ResourceFile[];
+}
+
+export interface ResourceFolder {
+  id: string;
+  folder_name: string;
+  files: ResourceFile[];
+  sub_folders?: ResourceFolder[];
+}
+
+export interface ResourceFile {
+  id: string;
+  file_name: string;
+  url: string;
 }
