@@ -71,6 +71,7 @@ export function IntakeFormTablePagination({
         ? Math.min(Math.max(nextPageIndex, 2), lastPageIndex)
         : undefined, // Ensure the index is within bounds
     ];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPageIndex, table, status, flag, from]);
 
   return (
