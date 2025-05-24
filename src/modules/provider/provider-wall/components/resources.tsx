@@ -9,7 +9,7 @@ import { LuFolder } from 'react-icons/lu';
 const Resources = () => {
   return (
     <Tabs className="pb-7" defaultValue={resources[0].id}>
-      <TabsList className="scrollbar-none mb-6 flex h-auto w-full flex-wrap gap-2 p-1">
+      <TabsList className="scrollbar-none mb-6 w-full flex-wrap gap-2">
         {resources.map(({ id, name }) => (
           <TabsTrigger key={id} value={id}>
             {name}
