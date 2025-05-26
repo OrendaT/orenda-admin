@@ -7,14 +7,10 @@ export interface DBUser {
   user: {
     name: string | null;
     email: string;
-    roles: UserRole[];
+    roles: string[];
+    permissions: string[];
     id: string;
   };
-}
-
-export interface UserRole {
-  name: string;
-  permissions: string[];
 }
 
 export type MenuItem = {
