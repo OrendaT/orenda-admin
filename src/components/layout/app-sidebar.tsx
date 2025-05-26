@@ -42,8 +42,8 @@ export function AppSidebar({ isProvider }: { isProvider: boolean }) {
       href: '/',
     },
     isProvider && {
-      id: 'provider-wall',
-      title: 'Provider Wall',
+      id: 'resources',
+      title: 'Brick & Mortar Office Info',
       Icon: ProviderWallIcon({}),
       href: '/',
     },
