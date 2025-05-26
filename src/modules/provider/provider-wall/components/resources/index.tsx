@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { resources } from '@/lib/app-data';
 import ResourceFolder from './resource-folder';
 import ResourceFile from './resource-file';
+import { resources } from '@/lib/data/resources';
 
 const Resources = () => {
   return (
