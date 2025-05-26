@@ -1,7 +1,8 @@
 import { WavingHandEmoji } from '@/assets/svgs';
 import { auth } from '@/auth';
-import { announcements } from '@/lib/app-data';
+
 import Resources from './components/resources';
+import { announcements } from '@/lib/data/announcements';
 
 const ProviderWall = async () => {
   const session = await auth();

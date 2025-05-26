@@ -39,7 +39,7 @@ export const downloadFile = async (
   // create and click link
   const link = document.createElement('a');
   link.href = blobUrl;
-  link.setAttribute('download', name);
+  link.setAttribute('download', `${name}.zip`);
   document.body.appendChild(link);
   link.click();
 
