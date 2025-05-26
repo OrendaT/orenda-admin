@@ -58,7 +58,14 @@ export const downloadFile = async (
  * and checks whether the user is a provider
  * or not (admin|super_admin)
  */
-export const isProvider = (roles: UserRoles[]) =>
-  roles.some(
+
+export const isProvider = (roles: UserRoles[] | undefined) =>
+  Array.isArray(roles) && roles.some(
     (role) => typeof role.name === 'string' && /provider/i.test(role.name),
   );
+
+
+// export const isProvider = (roles: UserRoles[]) =>
+//   roles.some(
+//     (role) => typeof role.name === 'string' && /provider/i.test(role.name),
+//   );

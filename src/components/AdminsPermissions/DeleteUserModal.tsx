@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { X, AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { User } from '@/types/user';
 import useUserActions from '@/hooks/useUserActions'; // Import your existing hook
 

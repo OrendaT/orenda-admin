@@ -3,7 +3,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext } from 'react';
 
 interface RadioGroupContextType {
   value: string;

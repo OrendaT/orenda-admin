@@ -11,10 +11,15 @@ interface InviteSuccessModalProps {
   email: string;
 }
 
-const InviteSuccessModal: React.FC<InviteSuccessModalProps> = ({ isOpen, onClose, email }) => {
+const InviteSuccessModal: React.FC<InviteSuccessModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  // email parameter kept in interface but not used in component
+  email: string // eslint-disable-line @typescript-eslint/no-unused-vars
+}) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md text-center p-6">
+      <DialogContent className="sm:max-w-md text-center p-6 max-h-[90vh] overflow-y-auto">
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center">
             <CheckCircle className="w-8 h-8 text-[#2e0086]" />

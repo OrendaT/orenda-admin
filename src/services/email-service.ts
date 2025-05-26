@@ -14,7 +14,6 @@ interface SendEmailParams {
     email,
     url,
     first_name,
-    via = ['email'],
   }: SendEmailParams) {
     try {
       // Return early if no email provided
@@ -56,7 +55,6 @@ interface SendEmailParams {
     url,
     first_name,
     customMessage,
-    via = ['email'],
   }: SendEmailParams) {
     try {
       // Return early if no email provided
@@ -92,4 +90,3 @@ interface SendEmailParams {
       };
     }
   }
-   

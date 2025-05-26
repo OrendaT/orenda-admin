@@ -12,7 +12,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 
 const AdminsPermissionsPage: React.FC = () => {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
-  const { users, loading, error: _error, fetchUsers } = useUsers();
+  const { users, loading, fetchUsers } = useUsers();
 
   return (
     <SidebarProvider>

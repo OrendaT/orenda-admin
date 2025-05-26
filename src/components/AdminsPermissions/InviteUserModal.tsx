@@ -4,14 +4,13 @@
 
 import React, { useState } from 'react';
 import { useUsers } from '@/hooks/useUsers';
-import { usePermissions } from '@/hooks/usePermissions';
 import { useRoles } from '@/hooks/useRoles';
 import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import { FormProvider, useForm } from 'react-hook-form'; 
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { X } from 'lucide-react';
+
 import InviteSuccessModal from './InviteSuccessModal';
 import { InviteUserPayload, Role, ROLE_PERMISSIONS } from '@/types/user';
 
@@ -23,7 +22,7 @@ interface InviteUserModalProps {
 
 const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClose, onSuccess }) => {
   const { inviteUser } = useUsers();
-  const { getPermissionsForRole } = usePermissions();
+  // Removed unused usePermissions hook entirely since it's not being used
   const { availableRoles, getRoleDisplayName } = useRoles();
   
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -78,10 +77,9 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClose, onSu
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">Invite new user</DialogTitle>
-            
           </DialogHeader>
           
           <FormProvider {...methods}>

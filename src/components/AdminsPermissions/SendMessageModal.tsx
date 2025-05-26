@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Textarea from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { X } from 'lucide-react';
 import { User } from '@/types/user';
 import { FormProvider, useForm } from 'react-hook-form';
 import useUserActions from '@/hooks/useUserActions'; // Import your existing hook

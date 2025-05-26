@@ -8,7 +8,7 @@ interface PermissionDropdownProps {
   onClose: () => void;
 }
 
-const PermissionDropdown: React.FC<PermissionDropdownProps> = ({ user, onClose }) => {
+const PermissionDropdown: React.FC<PermissionDropdownProps> = ({ user }) => {
   // Get permissions based on role
   const rolePermissions = ROLE_PERMISSIONS[user.role] || [];
 
