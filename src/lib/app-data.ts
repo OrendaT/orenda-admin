@@ -34,38 +34,7 @@ export const statusFilters: {
 export const announcements = [
   {
     id: 1,
-    message:
-      'Updated documentation guidelines now live. Please review under ‘Clinical Resources’ > ‘Compliance’',
-  },
-  {
-    id: 2,
-    message:
-      "Don't forget to complete your Practice Orientation Checklist – 2 items remaining!",
-  },
-  {
-    id: 3,
-    message:
-      'Explore curated readings and clinical cases under ‘Resources’ to honor Mental Health Awareness Month.',
-  },
-  {
-    id: 4,
-    message:
-      'You can now save clinical templates directly to your personal folder. See ‘Tools’ > ‘Templates’',
-  },
-  {
-    id: 5,
-    message:
-      'Quarterly HIPAA training due by May 15. Find it in your Training tab.',
-  },
-  {
-    id: 6,
-    message:
-      'We’ve added a quick-reference guide for DSM-5-TR diagnostic changes.',
-  },
-  {
-    id: 7,
-    message:
-      'Updated documentation guidelines now live. Please review under ‘Clinical Resources’ > ‘Compliance’',
+    message: 'Orenda Hangout in NY on July 1st - Save the Date!',
   },
 ];
 
