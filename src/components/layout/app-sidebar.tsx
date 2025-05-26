@@ -49,12 +49,11 @@ export function AppSidebar({ isProvider }: { isProvider: boolean }) {
       Icon: ProviderWallIcon({}),
       href: '/',
     },
-    // Add Admins & Permissions link
-    {
+    !isProvider && {
       id: 'admins-permissions',
       title: 'Admins & Permissions',
       Icon: MdAdminPanelSettings({}),
-      href: '/admins-permissions', // Update this to match your actual route
+      href: '/admins-permissions', 
     },
   ];
 
