@@ -13,7 +13,6 @@ interface UserActionMenuProps {
 }
 
 const UserActionMenu: React.FC<UserActionMenuProps> = ({ 
-  user, 
   onClose, 
   onChangeRole,
   onDeleteUser,

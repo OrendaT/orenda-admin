@@ -1,7 +1,7 @@
 // services/userService.ts
 
 import axios from '@/lib/api/axios';
-import { User, ApiUser, InviteUserPayload, ApiUserPayload, Role, ROLE_PERMISSIONS } from '@/types/user';
+import { User, ApiUser, InviteUserPayload, ApiUserPayload, Role } from '@/types/user';
 
 // Transformation functions
 const transformUserForApi = (userData: InviteUserPayload): ApiUserPayload => {

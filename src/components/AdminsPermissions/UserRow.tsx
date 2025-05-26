@@ -12,6 +12,7 @@ import { ChevronDown } from 'lucide-react';
 import { User, ROLE_PERMISSIONS, Role } from '@/types/user';
 import { useUsers } from '@/hooks/useUsers';
 import { useRoles } from '@/hooks/useRoles';
+import Image from 'next/image'; // Added Next.js Image import
 // Import the modal components
 import ChangeRoleModal from './ChangeRoleModal';
 import DeleteUserModal from './DeleteUserModal';
@@ -177,7 +178,13 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
         <div className="col-span-4 flex items-center gap-3">
           <Avatar className="h-10 w-10 bg-purple-100 text-purple-800">
             {user.avatar ? (
-              <img src={user.avatar} alt={displayName} className="h-full w-full object-cover" />
+              <Image 
+                src={user.avatar} 
+                alt={displayName} 
+                width={40}
+                height={40}
+                className="h-full w-full object-cover rounded-full"
+              />
             ) : (
               <AvatarFallback className="bg-purple-100 text-purple-800 font-medium">
                 {getInitials(user.first_name, user.last_name, user.name)}

@@ -1,7 +1,7 @@
 // hooks/useUsers.ts
 
 import { useState, useEffect, useCallback } from 'react';
-import { User, InviteUserPayload } from '@/types/user';
+import { User, InviteUserPayload, Role } from '@/types/user';
 import { userService } from '@/services/userService';
 
 interface UseUsersReturn {
@@ -13,7 +13,7 @@ interface UseUsersReturn {
   fetchUsers: (page?: number, search?: string) => Promise<void>;
   inviteUser: (payload: InviteUserPayload) => Promise<void>;
   deleteUser: (userId: string) => Promise<void>;
-  changeUserRole: (userId: string, role: string) => Promise<void>;
+  changeUserRole: (userId: string, role: Role) => Promise<void>;
 }
 
 // Sample data for development/fallback
@@ -317,13 +317,13 @@ export const useUsers = (): UseUsersReturn => {
     }
   }, [fetchUsers, currentPage]);
 
-  const changeUserRole = useCallback(async (userId: string, role: string) => {
+  const changeUserRole = useCallback(async (userId: string, role: Role) => {
     setLoading(true);
     setError(null);
 
     try {
       // Use your API service
-      const response = await userService.changeRole(userId, role as any);
+      const response = await userService.changeRole(userId, role);
       
       if (response.success) {
         // Refresh users list after successful role change
@@ -339,7 +339,7 @@ export const useUsers = (): UseUsersReturn => {
       if (userIndex > -1) {
         SAMPLE_USERS[userIndex] = {
           ...SAMPLE_USERS[userIndex],
-          role: role as any
+          role: role
         };
       }
       

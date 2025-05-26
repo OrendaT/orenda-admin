@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/sidebar';
 import Header from './header';
 import { FormIcon, ProviderWallIcon } from '@/assets/svgs';
-import { MdLogout } from 'react-icons/md';
+import { MdLogout, MdAdminPanelSettings } from 'react-icons/md'; // Added admin icon
 import React, { useState } from 'react';
 import { MenuItem } from '@/types';
 import { logOut } from '@/app/actions/auth';
@@ -48,6 +48,13 @@ export function AppSidebar({ isProvider }: { isProvider: boolean }) {
       title: 'Provider Wall',
       Icon: ProviderWallIcon({}),
       href: '/',
+    },
+    // Add Admins & Permissions link
+    {
+      id: 'admins-permissions',
+      title: 'Admins & Permissions',
+      Icon: MdAdminPanelSettings({}),
+      href: '/admins-permissions', // Update this to match your actual route
     },
   ];
 

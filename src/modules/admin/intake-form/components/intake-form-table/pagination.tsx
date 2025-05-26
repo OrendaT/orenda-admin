@@ -26,9 +26,10 @@ export function IntakeFormTablePagination({
   const searchParams = useSearchParams(); // get current searchParams
 
   const currentPageIndex = Number(searchParams.get('page') ?? 1) - 1;
-  const status = searchParams.get('status') ?? undefined;
-  const flag = searchParams.get('flag') ?? undefined;
-  const from = searchParams.get('from') ?? undefined;
+  // Remove unused variables since they're not needed in current implementation
+  // const status = searchParams.get('status') ?? undefined;
+  // const flag = searchParams.get('flag') ?? undefined;
+  // const from = searchParams.get('from') ?? undefined;
 
   const createQueryString = useCallback(
     (page: number) => {
@@ -71,7 +72,7 @@ export function IntakeFormTablePagination({
         ? Math.min(Math.max(nextPageIndex, 2), lastPageIndex)
         : undefined, // Ensure the index is within bounds
     ];
-  }, [currentPageIndex, table, status, flag, from]);
+  }, [currentPageIndex, table]);
 
   return (
     <Pagination className={cn(className)}>
