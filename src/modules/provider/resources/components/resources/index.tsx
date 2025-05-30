@@ -1,7 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import ResourceFolder from './resource-folder';
-import ResourceFile from './resource-file';
 import { resources } from '@/lib/data/resources';
+import FileList from './file-list';
 
 const Resources = () => {
   return (
@@ -16,17 +15,7 @@ const Resources = () => {
 
       {resources.map(({ id }) => (
         <TabsContent key={id} value={id}>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))] justify-items-center gap-5">
-            {resources
-              .find((resource) => resource.id === id)
-              ?.resources.map((resource) =>
-                'folder_name' in resource ? (
-                  <ResourceFolder key={resource.id} folder={resource} />
-                ) : (
-                  <ResourceFile key={resource.id} file={resource} />
-                ),
-              )}
-          </div>
+          <FileList id={id} />
         </TabsContent>
       ))}
     </Tabs>

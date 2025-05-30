@@ -16,7 +16,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex h-[90dvh] w-full flex-col items-center justify-center gap-4">
+    <div className="flex h-[80dvh] w-full flex-col items-center justify-center gap-4">
       <h2 className="text-xl font-bold">Something went wrong!</h2>
 
       <p>{error?.message || 'An unknown error occurred. Please try again.'}</p>
@@ -24,6 +24,7 @@ export default function Error({
       <p>Digest: {error.digest || ''}</p>
 
       <Button
+      className='w-fit'
         variant="outline"
         onClick={
           // Attempt to recover by trying to re-render the segment
