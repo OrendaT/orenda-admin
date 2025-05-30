@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { isProvider } from '@/lib/utils';
 import IntakeForm from '@/modules/admin/intake-form';
-import ProviderWall from '@/modules/provider/provider-wall';
+import ProviderResources from '@/modules/provider/resources';
 import { redirect } from 'next/navigation';
 
 export async function generateMetadata() {
@@ -21,5 +21,5 @@ export default async function Home() {
     redirect('/login');
   }
 
-  return isProvider(session.user.roles) ? <ProviderWall /> : <IntakeForm />;
+  return isProvider(session.user.roles) ? <ProviderResources /> : <IntakeForm />;
 }

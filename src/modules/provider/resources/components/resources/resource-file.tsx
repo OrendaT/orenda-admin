@@ -1,0 +1,26 @@
+import { cover_image } from '@/assets';
+import type { ResourceFile } from '@/types';
+import Image from 'next/image';
+import Link from 'next/link';
+
+const ResourceFile = ({ file: { url, name } }: { file: ResourceFile }) => {
+  return (
+    <Link href={url} target="_blank" className="w-full max-w-64">
+      <article className="h-full w-full items-center justify-center overflow-clip rounded-lg border shadow">
+        <div className="h-28 border-b flex w-full bg-[#F6F6F6]">
+          <Image
+            className="size-full object-scale-down object-center"
+            src={cover_image}
+            alt="file cover image"
+          />
+        </div>
+
+        <div className="min-h-[4.5rem] content-center px-4 py-3">
+          <h3 className="line-clamp-2 text-sm">{name}</h3>
+        </div>
+      </article>
+    </Link>
+  );
+};
+
+export default ResourceFile;

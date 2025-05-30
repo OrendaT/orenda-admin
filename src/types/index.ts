@@ -17,10 +17,13 @@ export type MenuItem = {
   id: string;
   title: string;
   href?: string;
-  Icon: React.ReactNode;
+  Icon?: React.ReactNode;
   className?: string;
   itemClassName?: string;
+  disabled?: boolean;
   onClick?: () => void;
+  isActive?: boolean;
+  items?: MenuItem[];
 };
 
 export interface DashboardCardStat {
@@ -60,13 +63,16 @@ export interface FormData {
   city: string;
   state: string;
   zip_code: string;
+  appointment_address: string;
+  appointment_city: string;
+  appointment_state: string;
 
   current_occupation: string;
   education_level: string;
   living_situation: string;
 
   reason_for_visit: string;
-  relationship_details: string;
+  relationship_status: string;
   seen_health_professional: string;
   mental_health_care_type: string;
 
@@ -80,6 +86,7 @@ export interface FormData {
 
   hospitalized_psych: string;
   suicidal_thoughts: string;
+  suicidal_thoughts_details: string;
 
   alcohol_frequency: string;
   alcohol_quantity: string;
@@ -101,6 +108,7 @@ export interface FormData {
   insurance_id: string;
   insurance_card_front: string;
   insurance_card_back: string;
+  photo_ID: string;
 
   honesty: string;
   honesty_signature: string;
@@ -159,13 +167,13 @@ export interface Resource {
 
 export interface ResourceFolder {
   id: string;
-  folder_name: string;
-  files: ResourceFile[];
+  name: string;
+  resources: ResourceFile[];
   sub_folders?: ResourceFolder[];
 }
 
 export interface ResourceFile {
   id: string;
-  file_name: string;
+  name: string;
   url: string;
 }

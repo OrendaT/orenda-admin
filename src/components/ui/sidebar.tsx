@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { VariantProps, cva } from 'class-variance-authority';
-import { PanelLeftIcon } from 'lucide-react';
+import { ChevronRight, PanelLeftIcon } from 'lucide-react';
 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
@@ -26,6 +26,11 @@ import {
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { MenuItem } from '@/types';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from './collapsible';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -396,7 +401,7 @@ function SidebarGroupLabel({
       data-slot="sidebar-group-label"
       data-sidebar="group-label"
       className={cn(
-        'text-sidebar-foreground/70 ring-sidebar-ring flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
+        'text-sidebar-foreground/70 ring-sidebar-ring clamp-[px,4,6] flex h-8 shrink-0 items-center rounded-md text-sm font-semibold outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
         'group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0',
         className,
       )}
@@ -447,7 +452,7 @@ function SidebarMenu({ className, ...props }: React.ComponentProps<'ul'>) {
     <ul
       data-slot="sidebar-menu"
       data-sidebar="menu"
-      className={cn('flex w-full min-w-0 flex-col gap-1', className)}
+      className={cn('flex w-full min-w-0 flex-col', className)}
       {...props}
     />
   );
@@ -459,7 +464,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<'li'>) {
       data-slot="sidebar-menu-item"
       data-sidebar="menu-item"
       className={cn(
-        'group/ hover:bg-sidebar-accent has-[a[data-active=true]]:bg-sidebar-accent relative',
+        'group/ has-[a[data-active=true]]:bg-sidebar-accent relative',
         className,
       )}
       {...props}
@@ -468,7 +473,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<'li'>) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button flex w-full items-center gap-2 overflow-hidden px-6 py-[0.88rem] text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2.5! [&>span:last-child]:truncate [&>svg]:size-6 [&>svg]:shrink-0',
+  'peer/menu-button flex w-full items-center gap-2 clamp-[px,4,6] clamp-[py,3,0.88rem] overflow-hidden text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8!  group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:ps-1 group-data-[collapsible=icon]:h-10! [&>span:last-child]:truncate [&>svg]:size-6 [&>svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -637,7 +642,7 @@ function SidebarMenuSub({ className, ...props }: React.ComponentProps<'ul'>) {
       data-slot="sidebar-menu-sub"
       data-sidebar="menu-sub"
       className={cn(
-        'border-sidebar-border mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l px-2.5 py-0.5',
+        'border-sidebar-border mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 bg-white ps-4',
         'group-data-[collapsible=icon]:hidden',
         className,
       )}
@@ -680,7 +685,7 @@ function SidebarMenuSubButton({
       data-size={size}
       data-active={isActive}
       className={cn(
-        'text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground [&>svg]:text-sidebar-accent-foreground flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+        'text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground [&>svg]:text-sidebar-accent-foreground flex min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 py-2 outline-hidden focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
         'data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground',
         size === 'sm' && 'text-xs',
         size === 'md' && 'text-sm',
@@ -693,7 +698,7 @@ function SidebarMenuSubButton({
 }
 
 const SidebarListItem = ({
-  item: { title, Icon, href, itemClassName, ...props },
+  item: { title, Icon, href, itemClassName, items, ...props },
 }: {
   item: MenuItem;
 }) => {
@@ -705,15 +710,45 @@ const SidebarListItem = ({
     <>
       {Icon}
       {title}
+      {items && (
+        <ChevronRight className="ml-auto !size-5 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+      )}
     </>
   );
 
   return (
-    <SidebarMenuItem className={itemClassName}>
-      <SidebarMenuButton asChild={!!href} isActive={isActiveRoute} {...props}>
-        {href ? <Link href={href}>{content}</Link> : content}
-      </SidebarMenuButton>
-    </SidebarMenuItem>
+    <Collapsible
+      asChild
+      defaultOpen={props.isActive || isActiveRoute}
+      className="group/collapsible"
+    >
+      <SidebarMenuItem className={itemClassName}>
+        <CollapsibleTrigger asChild>
+          <SidebarMenuButton
+            asChild={!!href}
+            isActive={isActiveRoute}
+            tooltip={title}
+            {...props}
+          >
+            {href ? <Link href={href}>{content}</Link> : content}
+          </SidebarMenuButton>
+        </CollapsibleTrigger>
+
+        {items && (
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              {items?.map((subItem) => (
+                <SidebarMenuSubItem key={subItem.title}>
+                  <SidebarMenuSubButton asChild>
+                    <Link href={subItem.href || ''}>{subItem.title}</Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              ))}
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        )}
+      </SidebarMenuItem>
+    </Collapsible>
   );
 };
 

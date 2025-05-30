@@ -4,6 +4,8 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarListItem,
   SidebarMenu,
@@ -11,14 +13,20 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import Header from './header';
-import { FormIcon, ProviderWallIcon } from '@/assets/svgs';
+import { FormIcon } from '@/assets/svgs';
 import { MdLogout } from 'react-icons/md';
 import React, { useState } from 'react';
 import { MenuItem } from '@/types';
 import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { LuPanelLeftClose } from 'react-icons/lu';
+import {
+  LuInfo,
+  LuPanelLeftClose,
+  LuScrollText,
+  LuVideo,
+} from 'react-icons/lu';
+import { PiUsersThreeBold, PiFolderUser } from 'react-icons/pi';
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -34,20 +42,71 @@ import { Button } from '../ui/button';
 export function AppSidebar({ isProvider }: { isProvider: boolean }) {
   const [open, setOpen] = useState(false);
 
-  const topMenuItems: (MenuItem | false)[] = [
-    !isProvider && {
-      id: 'intake-forms',
-      title: 'Intake Forms',
-      Icon: FormIcon({ className: 'mt-0.5' }),
-      href: '/',
-    },
-    isProvider && {
-      id: 'resources',
-      title: 'Brick & Mortar Office Info',
-      Icon: ProviderWallIcon({}),
-      href: '/',
-    },
-  ];
+  const navMain: MenuItem[] = isProvider
+    ? [
+        {
+          id: 'resources',
+          title: 'Resources',
+          items: [
+            {
+              id: 'policies-info',
+              title: 'Policies & Info',
+              Icon: LuScrollText({}),
+              href: '/',
+            },
+            {
+              id: 'meet-the-team',
+              title: 'Meet the Team',
+              Icon: PiUsersThreeBold({}),
+              href: '/meet-the-team',
+            },
+            {
+              id: 'student-folder',
+              title: 'Student Folder',
+              Icon: PiFolderUser({}),
+              href: '/student-folder',
+            },
+            {
+              id: 'town-hall-recordings',
+              title: 'Town Hall Recordings',
+              Icon: LuVideo({}),
+              href: '/town-hall-recordings',
+            },
+            {
+              id: 'office-info',
+              title: 'B&M Office Info',
+              Icon: LuInfo({}),
+              href: '',
+              items: [
+                {
+                  id: 'ny-office-info',
+                  title: 'NY Office Info',
+                  href: '/bm/ny-office-info',
+                },
+                {
+                  id: 'boston-office-info',
+                  title: 'Boston Office Info',
+                  href: '/bm/boston-office-info',
+                },
+              ],
+            },
+          ],
+        },
+      ]
+    : [
+        {
+          id: '1',
+          title: '',
+          items: [
+            {
+              id: 'intake-forms',
+              title: 'Intake Forms',
+              Icon: FormIcon({ className: 'mt-0.5' }),
+              href: '/',
+            },
+          ],
+        },
+      ];
 
   const bottomMenuItems: MenuItem[] = [
     {
@@ -70,27 +129,33 @@ export function AppSidebar({ isProvider }: { isProvider: boolean }) {
       </SidebarHeader>
       <SidebarContent>
         {/* top menu list */}
-        <SidebarGroup className="mt-20">
-          <SidebarMenu>
-            {topMenuItems.map(
-              (item) => item && <SidebarListItem key={item.id} item={item} />,
-            )}
-          </SidebarMenu>
-        </SidebarGroup>
+        {navMain.map((item) => (
+          <SidebarGroup key={item.id} className="mt-20">
+            {item.title && <SidebarGroupLabel>{item.title}</SidebarGroupLabel>}
+
+            <SidebarMenu>
+              {item.items?.map(
+                (item) => item && <SidebarListItem key={item.id} item={item} />,
+              )}
+            </SidebarMenu>
+          </SidebarGroup>
+        ))}
 
         {/* bottom menu list */}
         <SidebarGroup className="mt-40 border-t border-[#ECECEC]">
-          <SidebarMenu>
-            {bottomMenuItems.map((item) =>
-              item && item.id === 'log-out' ? (
-                <LogOutModal key={item.id} open={open} setOpen={setOpen}>
-                  <SidebarListItem item={item} />
-                </LogOutModal>
-              ) : (
-                <SidebarListItem key={item.id} item={item} />
-              ),
-            )}
-          </SidebarMenu>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {bottomMenuItems.map((item) =>
+                item && item.id === 'log-out' ? (
+                  <LogOutModal key={item.id} open={open} setOpen={setOpen}>
+                    <SidebarListItem item={item} />
+                  </LogOutModal>
+                ) : (
+                  <SidebarListItem key={item.id} item={item} />
+                ),
+              )}
+            </SidebarMenu>
+          </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>

@@ -1,3 +1,4 @@
+import { Resource, ResourceFile, ResourceFolder } from '@/types';
 import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import { format } from 'date-fns';
@@ -57,5 +58,41 @@ export const downloadFile = async (
  * and checks whether the user is a provider
  * or not (admin|super_admin)
  */
-export const isProvider = (roles: string[]) =>
-  roles.some((role) => /provider/i.test(role));
+export const isProvider = (roles?: string[]) =>
+  roles?.some((role) => /provider/i.test(role));
+
+type FoundResult = Resource | ResourceFolder | ResourceFile | undefined;
+
+export const findResourceById = (
+  resources: Resource[],
+  targetId: string,
+): FoundResult => {
+  // First, check if the targetId matches any top-level Resource
+  for (const res of resources) {
+    if (res.id === targetId) {
+      return res; // Return the resources array (can be folders or files)
+    }
+
+    const folder = searchNested(res.resources);
+    if (folder) return folder;
+  }
+
+  function searchNested(items: ResourceFolder[] | ResourceFile[]): FoundResult {
+    for (const item of items) {
+      if (item.id === targetId) {
+        return item;
+      }
+    }
+
+    //   // Search subfolders recursively
+    //   const folder = item as ResourceFolder;
+    //   if (folder.sub_folders) {
+    //     const found = searchNested(folder.sub_folders, id);
+    //     if (found) return found;
+    //   }
+
+    //   // Also check files inside the folder
+    //   const foundFile = searchNested(folder.files, id);
+    //   if (foundFile) return foundFile;
+  }
+};
