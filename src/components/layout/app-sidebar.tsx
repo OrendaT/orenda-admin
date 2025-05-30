@@ -39,7 +39,7 @@ import {
 } from '../ui/alert-dialog';
 import { Button } from '../ui/button';
 
-export function AppSidebar({ isProvider }: { isProvider: boolean }) {
+export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
   const [open, setOpen] = useState(false);
 
   const navMain: MenuItem[] = isProvider
