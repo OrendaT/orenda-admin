@@ -4,7 +4,8 @@ import ResourceFile from './resource-file';
 import { cn, findResourceById } from '@/lib/utils';
 import { resources } from '@/lib/data/resources';
 import { usePathname } from 'next/navigation';
-import type { ResourceFile as File } from '@/types';
+import type { ResourceFile as File, ResourceFolder as Folder } from '@/types';
+import ResourceFolder from './resource-folder';
 
 interface FileListProps {
   id?: string;
@@ -17,7 +18,7 @@ const FileList = ({ id, className }: FileListProps) => {
   const foundResource = findResourceById(resources, id || pathname);
   const _resources =
     foundResource && 'resources' in foundResource
-      ? (foundResource as { resources: File[] }).resources
+      ? (foundResource as { resources: File[] | Folder[] }).resources
       : [];
 
   return (
@@ -28,9 +29,13 @@ const FileList = ({ id, className }: FileListProps) => {
       )}
     >
       {Array.isArray(_resources) &&
-        _resources?.map((resource) => (
-          <ResourceFile key={resource.id} file={resource} />
-        ))}
+        _resources?.map((resource) =>
+          'resources' in resource ? (
+            <ResourceFolder key={resource.id} folder={resource} />
+          ) : (
+            <ResourceFile key={resource.id} file={resource} />
+          ),
+        )}
     </div>
   );
 };

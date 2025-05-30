@@ -1,13 +1,17 @@
 import type { ResourceFolder } from '@/types';
+import Link from 'next/link';
 import { LuFolder } from 'react-icons/lu';
 
 const ResourceFolder = ({
-  folder: { name, resources, sub_folders },
+  folder: { id, name, resources, sub_folders },
 }: {
   folder: ResourceFolder;
 }) => {
   return (
-    <div className="flex w-full items-center gap-4 rounded-lg bg-white px-4 py-2 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.10)]">
+    <Link
+      href={id}
+      className="flex w-full items-center gap-4 rounded-lg bg-white px-4 py-2 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.10)]"
+    >
       <LuFolder className="size-7 text-gray-500" />
       <div className="flex flex-col">
         <h3 className="font-medium">{name}</h3>
@@ -16,7 +20,7 @@ const ResourceFolder = ({
           {resources.length} files
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

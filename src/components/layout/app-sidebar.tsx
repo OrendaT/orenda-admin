@@ -76,7 +76,7 @@ export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
               id: 'office-info',
               title: 'B&M Office Info',
               Icon: LuInfo({}),
-              href: '',
+              href: '/bm',
               items: [
                 {
                   id: 'ny-office-info',

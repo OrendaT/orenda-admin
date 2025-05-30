@@ -2,7 +2,7 @@ import { Resource } from '@/types';
 
 export const resources: Resource[] = [
   {
-    id: 'brick-mortar-office-info',
+    id: '/bm',
     name: 'Brick & Mortar Office Info',
     resources: [
       {
