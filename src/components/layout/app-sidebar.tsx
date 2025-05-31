@@ -3,8 +3,8 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
   SidebarListItem,
@@ -19,14 +19,8 @@ import React, { useState } from 'react';
 import { MenuItem } from '@/types';
 import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
-import {
-  LuInfo,
-  LuPanelLeftClose,
-  LuScrollText,
-  LuVideo,
-} from 'react-icons/lu';
-import { PiUsersThreeBold, PiFolderUser } from 'react-icons/pi';
+import { cn, convertResourcesToMenu } from '@/lib/utils';
+import { LuPanelLeftClose } from 'react-icons/lu';
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -38,61 +32,13 @@ import {
   AlertDialogTrigger,
 } from '../ui/alert-dialog';
 import { Button } from '../ui/button';
+import { resources } from '@/lib/data/resources';
 
 export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
   const [open, setOpen] = useState(false);
 
-  const navMain: MenuItem[] = isProvider
-    ? [
-        {
-          id: 'resources',
-          title: 'Resources',
-          items: [
-            {
-              id: 'policies-info',
-              title: 'Policies & Info',
-              Icon: LuScrollText({}),
-              href: '/',
-            },
-            {
-              id: 'meet-the-team',
-              title: 'Meet the Team',
-              Icon: PiUsersThreeBold({}),
-              href: '/meet-the-team',
-            },
-            {
-              id: 'student-folder',
-              title: 'Student Folder',
-              Icon: PiFolderUser({}),
-              href: '/student-folder',
-            },
-            {
-              id: 'town-hall-recordings',
-              title: 'Town Hall Recordings',
-              Icon: LuVideo({}),
-              href: '/town-hall-recordings',
-            },
-            {
-              id: 'office-info',
-              title: 'B&M Office Info',
-              Icon: LuInfo({}),
-              href: '/bm',
-              items: [
-                {
-                  id: 'ny-office-info',
-                  title: 'NY Office Info',
-                  href: '/bm/ny-office-info',
-                },
-                {
-                  id: 'boston-office-info',
-                  title: 'Boston Office Info',
-                  href: '/bm/boston-office-info',
-                },
-              ],
-            },
-          ],
-        },
-      ]
+  const navMenu: MenuItem[] = isProvider
+    ? [convertResourcesToMenu(resources)]
     : [
         {
           id: '1',
@@ -108,19 +54,17 @@ export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
         },
       ];
 
-  const bottomMenuItems: MenuItem[] = [
-    {
-      id: 'log-out',
-      title: 'Log out',
-      Icon: MdLogout({}),
-      className:
-        'text-red-500 hover:text-error-red hover:bg-red-50 active:bg-red-100 active:text-error-red',
-      itemClassName: 'hover:bg-red-50 active:bg-red-100',
-      onClick: () => {
-        setOpen(true);
-      },
+  const footerItem: MenuItem = {
+    id: 'log-out',
+    title: 'Log out',
+    Icon: MdLogout({}),
+    className:
+      'text-red-500 hover:text-error-red hover:bg-red-50 active:bg-red-100 active:text-error-red',
+    itemClassName: 'hover:bg-red-50 active:bg-red-100',
+    onClick: () => {
+      setOpen(true);
     },
-  ];
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -129,8 +73,8 @@ export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
       </SidebarHeader>
       <SidebarContent>
         {/* top menu list */}
-        {navMain.map((item) => (
-          <SidebarGroup key={item.id} className="mt-20">
+        {navMenu.map((item) => (
+          <SidebarGroup key={item.id} className="mt-4">
             {item.title && <SidebarGroupLabel>{item.title}</SidebarGroupLabel>}
 
             <SidebarMenu>
@@ -140,24 +84,15 @@ export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
             </SidebarMenu>
           </SidebarGroup>
         ))}
-
-        {/* bottom menu list */}
-        <SidebarGroup className="mt-40 border-t border-[#ECECEC]">
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {bottomMenuItems.map((item) =>
-                item && item.id === 'log-out' ? (
-                  <LogOutModal key={item.id} open={open} setOpen={setOpen}>
-                    <SidebarListItem item={item} />
-                  </LogOutModal>
-                ) : (
-                  <SidebarListItem key={item.id} item={item} />
-                ),
-              )}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
       </SidebarContent>
+      {/* footer */}
+      <SidebarFooter className="border-t border-[#ECECEC]">
+        <SidebarMenu>
+          <LogOutModal open={open} setOpen={setOpen}>
+            <SidebarListItem item={footerItem} />
+          </LogOutModal>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

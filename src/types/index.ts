@@ -163,17 +163,20 @@ export interface Resource {
   id: string;
   name: string;
   resources: ResourceFolder[] | ResourceFile[];
+  title?: MenuItem['title'];
+  Icon: MenuItem['Icon'];
 }
 
 export interface ResourceFolder {
   id: string;
   name: string;
+  title?: string;
   resources: ResourceFile[];
   sub_folders?: ResourceFolder[];
 }
 
 export interface ResourceFile {
-  id: string;
+  id?: string;
   name: string;
   url: string;
 }

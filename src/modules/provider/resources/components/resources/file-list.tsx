@@ -1,7 +1,7 @@
 'use client';
 
 import ResourceFile from './resource-file';
-import { cn, findResourceById } from '@/lib/utils';
+import { cn, findResource } from '@/lib/utils';
 import { resources } from '@/lib/data/resources';
 import { usePathname } from 'next/navigation';
 import type { ResourceFile as File, ResourceFolder as Folder } from '@/types';
@@ -15,7 +15,7 @@ interface FileListProps {
 const FileList = ({ id, className }: FileListProps) => {
   const pathname = usePathname();
 
-  const foundResource = findResourceById(resources, id || pathname);
+  const foundResource = findResource(resources, id || pathname);
   const _resources =
     foundResource && 'resources' in foundResource
       ? (foundResource as { resources: File[] | Folder[] }).resources
@@ -33,7 +33,7 @@ const FileList = ({ id, className }: FileListProps) => {
           'resources' in resource ? (
             <ResourceFolder key={resource.id} folder={resource} />
           ) : (
-            <ResourceFile key={resource.id} file={resource} />
+            <ResourceFile key={resource.id || resource.url} file={resource} />
           ),
         )}
     </div>

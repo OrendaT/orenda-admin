@@ -1,4 +1,4 @@
-import { Resource, ResourceFile, ResourceFolder } from '@/types';
+import { MenuItem, Resource, ResourceFile, ResourceFolder } from '@/types';
 import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import { format } from 'date-fns';
@@ -61,25 +61,20 @@ export const downloadFile = async (
 export const isProvider = (roles?: string[]) =>
   roles?.some((role) => /provider/i.test(role));
 
-type FoundResult = Resource | ResourceFolder | ResourceFile | undefined;
-
-export const findResourceById = (
-  resources: Resource[],
-  targetId: string,
-): FoundResult => {
-  // First, check if the targetId matches any top-level Resource
+export const findResource = (resources: Resource[], id: string) => {
+  // First, check if the id matches any top-level Resource
   for (const res of resources) {
-    if (res.id === targetId) {
-      return res; // Return the resources array (can be folders or files)
+    if (res.id === id) {
+      return res;
     }
 
     const folder = searchNested(res.resources);
     if (folder) return folder;
   }
 
-  function searchNested(items: ResourceFolder[] | ResourceFile[]): FoundResult {
+  function searchNested(items: ResourceFolder[] | ResourceFile[]) {
     for (const item of items) {
-      if (item.id === targetId) {
+      if (item.id === id) {
         return item;
       }
     }
@@ -95,4 +90,39 @@ export const findResourceById = (
     //   const foundFile = searchNested(folder.files, id);
     //   if (foundFile) return foundFile;
   }
+};
+
+export const convertResourcesToMenu = (
+  resources: Resource[],
+): { id: string; title: string; items: MenuItem[] } => {
+  const items: MenuItem[] = resources.map(
+    ({ id, name, title, Icon, resources }) => {
+      const item: MenuItem = {
+        id,
+        title: title || name,
+        href: id,
+        Icon,
+      };
+
+      // If this resource has folders, convert them
+      const subFolders = resources.filter(
+        (r: ResourceFolder | ResourceFile) => 'resources' in r,
+      ) as ResourceFolder[];
+      if (subFolders.length) {
+        item.items = subFolders.map(({ id, name, title }) => ({
+          id,
+          title: title || name,
+          href: id,
+        }));
+      }
+
+      return item;
+    },
+  );
+
+  return {
+    id: 'resources',
+    title: 'Resources',
+    items,
+  };
 };

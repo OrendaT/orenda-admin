@@ -370,7 +370,7 @@ function SidebarContent({ className, ...props }: React.ComponentProps<'div'>) {
       data-slot="sidebar-content"
       data-sidebar="content"
       className={cn(
-        'flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
+        'scrollbar-none flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
         className,
       )}
       {...props}
@@ -642,7 +642,7 @@ function SidebarMenuSub({ className, ...props }: React.ComponentProps<'ul'>) {
       data-slot="sidebar-menu-sub"
       data-sidebar="menu-sub"
       className={cn(
-        'border-sidebar-border mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 bg-white ps-4',
+        'border-sidebar-border mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 ps-4',
         'group-data-[collapsible=icon]:hidden',
         className,
       )}
@@ -686,7 +686,7 @@ function SidebarMenuSubButton({
       data-active={isActive}
       className={cn(
         'text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground [&>svg]:text-sidebar-accent-foreground flex min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 py-2 outline-hidden focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
-        'data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground',
+        'data-[active=true]:text-sidebar-accent-foreground data-[active=true]:font-medium',
         size === 'sm' && 'text-xs',
         size === 'md' && 'text-sm',
         'group-data-[collapsible=icon]:hidden',
@@ -703,8 +703,16 @@ const SidebarListItem = ({
   item: MenuItem;
 }) => {
   const pathname = usePathname();
+  const isActiveRoute = (href?: string) =>
+    Boolean(
+      href && (href === '/' ? pathname === href : pathname.includes(href)),
+    );
 
-  const isActiveRoute = pathname === href;
+  const [open, setOpen] = React.useState(isActiveRoute(href));
+
+  React.useEffect(() => {
+    if (href && !pathname.includes(href)) setTimeout(() => setOpen(false), 500);
+  }, [pathname, href]);
 
   const content = (
     <>
@@ -719,14 +727,15 @@ const SidebarListItem = ({
   return (
     <Collapsible
       asChild
-      defaultOpen={props.isActive || isActiveRoute}
+      open={open}
+      onOpenChange={setOpen}
       className="group/collapsible"
     >
       <SidebarMenuItem className={itemClassName}>
         <CollapsibleTrigger asChild>
           <SidebarMenuButton
             asChild={!!href}
-            isActive={isActiveRoute}
+            isActive={isActiveRoute(href)}
             tooltip={title}
             {...props}
           >
@@ -735,12 +744,12 @@ const SidebarListItem = ({
         </CollapsibleTrigger>
 
         {items && (
-          <CollapsibleContent>
+          <CollapsibleContent className="bg-white">
             <SidebarMenuSub>
-              {items?.map((subItem) => (
-                <SidebarMenuSubItem key={subItem.title}>
-                  <SidebarMenuSubButton asChild>
-                    <Link href={subItem.href || ''}>{subItem.title}</Link>
+              {items?.map(({ title, href }) => (
+                <SidebarMenuSubItem key={title}>
+                  <SidebarMenuSubButton asChild isActive={isActiveRoute(href)}>
+                    <Link href={href || ''}>{title}</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               ))}
