@@ -1,6 +1,6 @@
 import { WavingHandEmoji } from '@/assets/svgs';
 import { auth } from '@/auth';
-import Announcements from '@/modules/provider/resources/components/announcements';
+import Announcements from '@/modules/provider/announcements';
 
 const ProviderHeader = async () => {
   const session = await auth();
