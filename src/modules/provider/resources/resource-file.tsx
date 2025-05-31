@@ -7,7 +7,7 @@ const ResourceFile = ({ file: { url, name } }: { file: ResourceFile }) => {
   return (
     <Link href={url} target="_blank" className="w-full max-w-64">
       <article className="h-full w-full items-center justify-center overflow-clip rounded-lg border shadow">
-        <div className="h-28 border-b flex w-full bg-[#F6F6F6]">
+        <div className="flex h-28 w-full border-b bg-[#F6F6F6]">
           <Image
             className="size-full object-scale-down object-center"
             src={cover_image}

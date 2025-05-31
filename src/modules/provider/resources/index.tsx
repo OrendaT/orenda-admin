@@ -1,5 +1,5 @@
-import FileList from './components/resources/file-list';
-import ResourceTitle from './components/resources/resource-title';
+import FileList from './file-list';
+import ResourceTitle from './resource-title';
 
 const ProviderResources = async () => {
   return (
