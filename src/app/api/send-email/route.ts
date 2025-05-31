@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mailchimpTransactional from '@mailchimp/mailchimp_transactional';
-import { INTAKE_FORM_URL as url } from '@/lib/app-data';
+import { INTAKE_FORM_URL as url } from '@/lib/data';
 
 // Initialize with server-side API key
 const mailchimpClient = mailchimpTransactional(

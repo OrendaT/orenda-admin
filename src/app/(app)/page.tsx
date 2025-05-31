@@ -21,5 +21,9 @@ export default async function Home() {
     redirect('/login');
   }
 
-  return isProvider(session.user.roles) ? <ProviderResources /> : <IntakeForm />;
+  return isProvider(session.user.roles) ? (
+    <ProviderResources />
+  ) : (
+    <IntakeForm />
+  );
 }

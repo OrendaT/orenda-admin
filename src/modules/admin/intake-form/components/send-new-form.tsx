@@ -10,7 +10,7 @@ import { Status } from '@/types';
 import { LuCheck, LuCopy } from 'react-icons/lu';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { sendNewFormEmail } from '@/services/email-service';
-import { INTAKE_FORM_URL as url } from '@/lib/app-data';
+import { INTAKE_FORM_URL as url } from '@/lib/data';
 
 const SendNewFormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
