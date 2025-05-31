@@ -26,7 +26,7 @@ import { format } from 'date-fns';
 import { NavigateOptions } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import useWaitFor from '@/hooks/use-wait-for';
 import { FiltersSchema } from '@/lib/schemas/filters-schema';
-import { initialFilters, statusFilters } from '@/lib/app-data';
+import { initialFilters, statusFilters } from '@/lib/data';
 import Checkbox from '@/components/ui/custom-checkbox';
 import { FlagIcon } from 'lucide-react';
 
