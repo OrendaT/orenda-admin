@@ -126,3 +126,15 @@ export const convertResourcesToMenu = (
     items,
   };
 };
+
+export const slugify = (routes?: string[]): string => {
+  if (!routes || !routes.length) return '/';
+  
+  let slug = '';
+
+  routes.forEach((route) => {
+    slug += `/${route}`;
+  });
+
+  return slug;
+};
