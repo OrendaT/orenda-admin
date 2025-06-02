@@ -48,6 +48,21 @@ const GeneralTab = ({ id }: { id: string }) => {
                 </div>
 
                 <TabItem
+                  name="Same address for appointment?"
+                  value={data?.appointment_address}
+                />
+                <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
+                  <TabItem
+                    name="Appointment City"
+                    value={data?.appointment_city}
+                  />
+                  <TabItem
+                    name="Appointment State"
+                    value={data?.appointment_state}
+                  />
+                </div>
+
+                <TabItem
                   name="Appointment for a minor child:"
                   value={data?.for_minor_child}
                 />
@@ -135,7 +150,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                   />
                   <TabItem
                     name="Relationship details"
-                    value={data?.relationship_details}
+                    value={data?.relationship_status}
                   />
                   <TabItem
                     name="Level of education"
@@ -154,8 +169,12 @@ const GeneralTab = ({ id }: { id: string }) => {
                     value={data?.has_weapons}
                   />
                   <TabItem
-                    name="Suicidal thoughts"
+                    name="Has suicidal thoughts"
                     value={data?.suicidal_thoughts}
+                  />
+                  <TabItem
+                    name="Suicidal thoughts details"
+                    value={data?.suicidal_thoughts_details}
                   />
                   <TabItem
                     name="Hearing impairments"
@@ -215,6 +234,22 @@ const GeneralTab = ({ id }: { id: string }) => {
                   value={data?.insurance_card_back}
                   isFile
                   altText="Insurance card back"
+                />
+                <TabItem
+                  name={
+                    <>
+                      Photo ID
+                      <a
+                        href={data?.photo_ID}
+                        className="ml-4 inline-block text-xs underline underline-offset-1 text-shadow-blue-900"
+                      >
+                        Download file
+                      </a>
+                    </>
+                  }
+                  value={data?.photo_ID}
+                  isFile
+                  altText="Photo ID"
                 />
               </section>
             )}

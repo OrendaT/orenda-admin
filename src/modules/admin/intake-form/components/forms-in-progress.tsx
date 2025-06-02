@@ -5,7 +5,7 @@ import StatsCardSkeleton from '@/components/skeletons/stats-card-skeleton';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
 import { getPastDate } from '@/lib/utils';
 import { usePreviousDateStore } from '@/stores/previous-date-store';
-import { DashboardCardStats } from '@/types';
+import { DashboardCardStat } from '@/types';
 import { LuDownload } from 'react-icons/lu';
 
 const FormsInProgress = ({ className }: { className?: string }) => {
@@ -17,7 +17,7 @@ const FormsInProgress = ({ className }: { className?: string }) => {
     filters: { from, to, status: 'pending' },
   });
 
-  const stats: DashboardCardStats = {
+  const stats: DashboardCardStat = {
     name: 'Forms in progress',
     value: data?.total ?? 0,
     percentage: 35,

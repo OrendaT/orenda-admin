@@ -12,9 +12,10 @@ import { RiMailSendLine } from "react-icons/ri";
 import { FaRegMessage } from "react-icons/fa6";
 import { useClipboard } from '@/hooks/use-clipboard';
 import { sendNewFormEmail } from '@/services/email-service';
+import { INTAKE_FORM_URL as url } from '@/lib/data';
 import { cn } from '@/lib/utils';
 
-const url = 'https://orenda-intake.vercel.app/';
+
 
 // Define send via options with correct typing
 const options = [

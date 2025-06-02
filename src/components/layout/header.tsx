@@ -11,13 +11,13 @@ const Header = ({ className }: { className?: string }) => {
       )}
     >
       <div className="clamp-[w,24,6.25rem] h-[2.25rem] bg-white">
-          <Image
-            className="object-contain"
-            width={500}
-            src={site_logo}
-            alt="Orenda Psychiatry"
-            priority
-          />
+        <Image
+          className="object-contain"
+          width={500}
+          src={site_logo}
+          alt="Orenda Psychiatry"
+          priority
+        />
       </div>
     </header>
   );
