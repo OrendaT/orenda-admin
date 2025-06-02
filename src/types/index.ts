@@ -21,7 +21,7 @@ export type MenuItem = {
   className?: string;
   itemClassName?: string;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler;
   isActive?: boolean;
   items?: MenuItem[];
 };

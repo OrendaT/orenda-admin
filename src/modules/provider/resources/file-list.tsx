@@ -24,7 +24,7 @@ const FileList = ({ id, className }: FileListProps) => {
   return (
     <div
       className={cn(
-        'grid grid-cols-1 justify-items-center gap-5 sm:grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))]',
+        'grid justify-items-center gap-5 grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))]',
         className,
       )}
     >
