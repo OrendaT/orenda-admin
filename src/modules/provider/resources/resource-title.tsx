@@ -1,12 +1,14 @@
-'use client';
-
 import { resources } from '@/lib/data/resources';
 import { cn, findResource } from '@/lib/utils';
-import { usePathname } from 'next/navigation';
 
-const ResourceTitle = ({ className }: { className?: string }) => {
-  const pathname = usePathname();
-  const resource = findResource(resources, pathname);
+const ResourceTitle = ({
+  id,
+  className,
+}: {
+  id: string;
+  className?: string;
+}) => {
+  const resource = findResource(resources, id);
 
   const title = resource?.name;
 

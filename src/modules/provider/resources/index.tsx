@@ -1,12 +1,12 @@
 import ResourceList from './resource-list';
 import ResourceTitle from './resource-title';
 
-const ProviderResources = async () => {
+const ProviderResources = async ({ id = '/' }: { id?: string }) => {
   return (
     <div>
-      <ResourceTitle />
+      <ResourceTitle id={id} />
 
-      <ResourceList />
+      <ResourceList id={id} />
     </div>
   );
 };
