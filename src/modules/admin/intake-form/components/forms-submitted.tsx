@@ -6,7 +6,7 @@ import StatsCardSkeleton from '@/components/skeletons/stats-card-skeleton';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
 import { getPastDate } from '@/lib/utils';
 import { usePreviousDateStore } from '@/stores/previous-date-store';
-import { DashboardCardStats } from '@/types';
+import { DashboardCardStat } from '@/types';
 
 const FormsSubmitted = ({ className }: { className?: string }) => {
   const days = usePreviousDateStore((state) => state.days);
@@ -18,7 +18,7 @@ const FormsSubmitted = ({ className }: { className?: string }) => {
     filters: { from, to, status: 'submitted' },
   });
 
-  const stats: DashboardCardStats = {
+  const stats: DashboardCardStat = {
     name: 'Forms Submitted',
     value: data?.total ?? 0,
     percentage: 10.5,

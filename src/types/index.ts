@@ -7,7 +7,8 @@ export interface DBUser {
   user: {
     name: string | null;
     email: string;
-    roles: UserRoles[];
+    roles: string[];
+    permissions: string[];
     id: string;
   };
 }
@@ -16,13 +17,16 @@ export type MenuItem = {
   id: string;
   title: string;
   href?: string;
-  Icon: React.ReactNode;
+  Icon?: React.ReactNode;
   className?: string;
   itemClassName?: string;
-  onClick?: () => void;
+  disabled?: boolean;
+  onClick?: React.MouseEventHandler;
+  isActive?: boolean;
+  items?: MenuItem[];
 };
 
-export interface DashboardCardStats {
+export interface DashboardCardStat {
   name: string;
   value: number;
   percentage: number;
@@ -59,13 +63,16 @@ export interface FormData {
   city: string;
   state: string;
   zip_code: string;
+  appointment_address: string;
+  appointment_city: string;
+  appointment_state: string;
 
   current_occupation: string;
   education_level: string;
   living_situation: string;
 
   reason_for_visit: string;
-  relationship_details: string;
+  relationship_status: string;
   seen_health_professional: string;
   mental_health_care_type: string;
 
@@ -79,6 +86,7 @@ export interface FormData {
 
   hospitalized_psych: string;
   suicidal_thoughts: string;
+  suicidal_thoughts_details: string;
 
   alcohol_frequency: string;
   alcohol_quantity: string;
@@ -100,6 +108,7 @@ export interface FormData {
   insurance_id: string;
   insurance_card_front: string;
   insurance_card_back: string;
+  photo_ID: string;
 
   honesty: string;
   honesty_signature: string;
@@ -149,7 +158,25 @@ export interface TaskStatusResponse {
   url: string;
 }
 
-export interface UserRoles {
+// This is the type for the resources in the app-data.ts file
+export interface Resource {
+  id: string;
   name: string;
-  permissions: string[];
+  resources: ResourceFolder[] | ResourceFile[];
+  title?: MenuItem['title'];
+  Icon: MenuItem['Icon'];
+}
+
+export interface ResourceFolder {
+  id: string;
+  name: string;
+  title?: string;
+  resources: ResourceFile[];
+  sub_folders?: ResourceFolder[];
+}
+
+export interface ResourceFile {
+  id?: string;
+  name: string;
+  url: string;
 }

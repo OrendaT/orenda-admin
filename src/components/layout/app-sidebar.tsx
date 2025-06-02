@@ -5,7 +5,9 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarListItem,
   SidebarMenu,
@@ -13,13 +15,13 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import Header from './header';
-import { FormIcon, ProviderWallIcon } from '@/assets/svgs';
-import { MdLogout, MdAdminPanelSettings } from 'react-icons/md'; // Added admin icon
+import { FormIcon } from '@/assets/svgs';
+import { MdLogout } from 'react-icons/md';
 import React, { useState } from 'react';
 import { MenuItem } from '@/types';
 import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
+import { cn, convertResourcesToMenu } from '@/lib/utils';
 import { LuPanelLeftClose } from 'react-icons/lu';
 import {
   AlertDialog,
@@ -32,44 +34,39 @@ import {
   AlertDialogTrigger,
 } from '../ui/alert-dialog';
 import { Button } from '../ui/button';
+import { resources } from '@/lib/data/resources';
 
-export function AppSidebar({ isProvider }: { isProvider: boolean }) {
+export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
   const [open, setOpen] = useState(false);
 
-  const topMenuItems: (MenuItem | false)[] = [
-    !isProvider && {
-      id: 'intake-forms',
-      title: 'Intake Forms',
-      Icon: FormIcon({ className: 'mt-0.5' }),
-      href: '/',
-    },
-    isProvider && {
-      id: 'provider-wall',
-      title: 'Provider Wall',
-      Icon: ProviderWallIcon({}),
-      href: '/',
-    },
-    !isProvider && {
-      id: 'admins-permissions',
-      title: 'Admins & Permissions',
-      Icon: MdAdminPanelSettings({}),
-      href: '/admins-permissions', 
-    },
-  ];
+  const navMenu: MenuItem[] = isProvider
+    ? [convertResourcesToMenu(resources)]
+    : [
+        {
+          id: '1',
+          title: '',
+          items: [
+            {
+              id: 'intake-forms',
+              title: 'Intake Forms',
+              Icon: FormIcon({ className: 'mt-0.5' }),
+              href: '/',
+            },
+          ],
+        },
+      ];
 
-  const bottomMenuItems: MenuItem[] = [
-    {
-      id: 'log-out',
-      title: 'Log out',
-      Icon: MdLogout({}),
-      className:
-        'text-red-500 hover:text-error-red hover:bg-red-50 active:bg-red-100 active:text-error-red',
-      itemClassName: 'hover:bg-red-50 active:bg-red-100',
-      onClick: () => {
-        setOpen(true);
-      },
+  const footerItem: MenuItem = {
+    id: 'log-out',
+    title: 'Log out',
+    Icon: MdLogout({}),
+    className:
+      'text-red-500 hover:text-error-red hover:bg-red-50 active:bg-red-100 active:text-error-red',
+    itemClassName: 'hover:bg-red-50 active:bg-red-100',
+    onClick: () => {
+      setOpen(true);
     },
-  ];
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -78,29 +75,26 @@ export function AppSidebar({ isProvider }: { isProvider: boolean }) {
       </SidebarHeader>
       <SidebarContent>
         {/* top menu list */}
-        <SidebarGroup className="mt-20">
-          <SidebarMenu>
-            {topMenuItems.map(
-              (item) => item && <SidebarListItem key={item.id} item={item} />,
-            )}
-          </SidebarMenu>
-        </SidebarGroup>
+        {navMenu.map((item) => (
+          <SidebarGroup key={item.id} className="mt-4">
+            {item.title && <SidebarGroupLabel>{item.title}</SidebarGroupLabel>}
 
-        {/* bottom menu list */}
-        <SidebarGroup className="mt-40 border-t border-[#ECECEC]">
-          <SidebarMenu>
-            {bottomMenuItems.map((item) =>
-              item && item.id === 'log-out' ? (
-                <LogOutModal key={item.id} open={open} setOpen={setOpen}>
-                  <SidebarListItem item={item} />
-                </LogOutModal>
-              ) : (
-                <SidebarListItem key={item.id} item={item} />
-              ),
-            )}
-          </SidebarMenu>
-        </SidebarGroup>
+            <SidebarMenu>
+              {item.items?.map(
+                (item) => item && <SidebarListItem key={item.id} item={item} />,
+              )}
+            </SidebarMenu>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
+      {/* footer */}
+      <SidebarFooter className="border-t border-[#ECECEC]">
+        <SidebarMenu>
+          <LogOutModal open={open} setOpen={setOpen}>
+            <SidebarListItem item={footerItem} />
+          </LogOutModal>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

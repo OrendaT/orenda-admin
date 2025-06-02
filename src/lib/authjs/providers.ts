@@ -67,6 +67,7 @@ const providers = [
           email,
           sub,
         });
+
         user = {
           ...profile,
           access_token: res.data.access_token,
@@ -76,6 +77,7 @@ const providers = [
             name: res.data.user.name,
             email,
             roles: res.data.user.roles,
+            permissions: res.data.user.permissions,
           },
         };
       } catch (loginError) {
@@ -99,6 +101,7 @@ const providers = [
                 name,
                 email,
                 roles: res.data.user.roles,
+                permissions: res.data.user.permissions,
               },
             };
           } catch (registerError) {

@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'picsum.photos',
       },
+      {
+        protocol: 'https',
+        hostname: 'orenda-bkt.s3.eu-north-1.amazonaws.com',
+      }
     ],
   },
 };

@@ -25,6 +25,7 @@ const callbacks: Callbacks = {
         name: user.user?.name,
         email: user.user.email,
         roles: user.user.roles,
+        permissions: user.user.permissions,
         expires_at,
       } as JWT;
     }
@@ -75,6 +76,7 @@ const callbacks: Callbacks = {
     session.user.name = token.name;
     session.user.email = token.email ?? '';
     session.user.roles = token.roles;
+    session.user.permissions = token.permissions;
     session.error = token.error;
 
     return session;
