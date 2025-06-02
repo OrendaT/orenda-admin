@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { resources } from '@/lib/data/resources';
-import FileList from './file-list';
+import ResourceList from './resource-list';
 
 const Resources = () => {
   return (
@@ -15,7 +15,7 @@ const Resources = () => {
 
       {resources.map(({ id }) => (
         <TabsContent key={id} value={id}>
-          <FileList id={id} />
+          <ResourceList id={id} />
         </TabsContent>
       ))}
     </Tabs>
