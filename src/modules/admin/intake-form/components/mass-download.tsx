@@ -45,15 +45,13 @@ const MassDownload = ({
   // Export Functionality
   const [key, setKey] = useState<string>();
   const [taskId, setTaskId] = useState<string>();
-  const [isDownloading, setIsDownloading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const downloads = useDownloadFormStore((state) => state.downloads);
   const addTask = useDownloadFormStore((state) => state.addTask);
   const updateTask = useDownloadFormStore((state) => state.updateTask);
 
-  const { mutateAsync: massDownload, isPending } = useMassDownload();
-  const { data, refetch, isRefetching } = useCheckStatus(taskId);
-
-  const loading = isPending || isRefetching || isDownloading;
+  const { mutateAsync: massDownload } = useMassDownload();
+  const { data, refetch } = useCheckStatus(taskId);
 
   const onSubmit = handleSubmit(async (data) => {
     const from_date = format(data.from, 'MM-dd-yyyy');
@@ -74,6 +72,7 @@ const MassDownload = ({
       setTaskId(downloads[generatedKey].task_id);
     }
 
+    setLoading(true);
     refetch();
   });
 
@@ -86,7 +85,9 @@ const MassDownload = ({
   });
 
   useEffect(() => {
+    // if mass download failed
     if (data?.ready && !data.successful) {
+      setLoading(false);
       toast.error('Mass download failed');
     }
 
@@ -100,13 +101,12 @@ const MassDownload = ({
       });
 
       // download file when url is returned
-      setIsDownloading(true);
       console.log('downloading');
       downloadFile({ name: key, url }, () => {
         toast.success('Mass download complete');
         reset();
         setOpen(false);
-        setIsDownloading(false);
+        setLoading(false);
       });
     }
   }, [data, key, setOpen, reset, updateTask]);
