@@ -9,9 +9,9 @@ interface ResourcePageProps {
   params: Promise<{ resource?: string[] }>;
 }
 
-export const generateMetadata = async ({
+export async function generateMetadata({
   params,
-}: ResourcePageProps): Promise<Metadata> => {
+}: ResourcePageProps): Promise<Metadata> {
   const { resource } = await params;
 
   const title = findResource(resources, slugify(resource))?.name;
@@ -20,7 +20,7 @@ export const generateMetadata = async ({
     title,
     description: `This page includes all the resources for ${title}`,
   };
-};
+}
 
 const ResourcePage = async ({ params }: ResourcePageProps) => {
   const session = await auth();
