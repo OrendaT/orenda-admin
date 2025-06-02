@@ -14,7 +14,7 @@ export async function generateMetadata({
 }: ResourcePageProps): Promise<Metadata> {
   const { resource } = await params;
 
-  const title = findResource(resources, slugify(resource))?.name;
+  const title = `${findResource(resources, slugify(resource))?.name} | Orenda`;
 
   return {
     title,
