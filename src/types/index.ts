@@ -1,5 +1,6 @@
 import { IconType } from 'react-icons/lib';
 import { JSX } from 'react';
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
 export interface DBUser {
   access_token: string;
@@ -179,4 +180,5 @@ export interface ResourceFile {
   id?: string;
   name: string;
   url: string;
+  image?: string | StaticImport;
 }
