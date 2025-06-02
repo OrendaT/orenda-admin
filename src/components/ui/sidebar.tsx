@@ -698,10 +698,11 @@ function SidebarMenuSubButton({
 }
 
 const SidebarListItem = ({
-  item: { title, Icon, href, itemClassName, items, ...props },
+  item: { title, Icon, href, itemClassName, items, onClick, ...props },
 }: {
   item: MenuItem;
 }) => {
+  const { isMobile, setOpenMobile } = useSidebar();
   const pathname = usePathname();
   const isActiveRoute = (href?: string) =>
     Boolean(
@@ -737,6 +738,11 @@ const SidebarListItem = ({
             asChild={!!href}
             isActive={isActiveRoute(href)}
             tooltip={title}
+            onClick={(event) => {
+              event.stopPropagation();
+              onClick?.(event);
+              if (isMobile && !items) setOpenMobile(false);
+            }}
             {...props}
           >
             {href ? <Link href={href}>{content}</Link> : content}
@@ -746,9 +752,18 @@ const SidebarListItem = ({
         {items && (
           <CollapsibleContent className="bg-white">
             <SidebarMenuSub>
-              {items?.map(({ title, href }) => (
+              {items?.map(({ title, href, onClick, ...props }) => (
                 <SidebarMenuSubItem key={title}>
-                  <SidebarMenuSubButton asChild isActive={isActiveRoute(href)}>
+                  <SidebarMenuSubButton
+                    asChild
+                    isActive={isActiveRoute(href)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onClick?.(event);
+                      if (isMobile) setOpenMobile(false);
+                    }}
+                    {...props}
+                  >
                     <Link href={href || ''}>{title}</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
