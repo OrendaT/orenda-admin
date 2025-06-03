@@ -741,7 +741,7 @@ const SidebarListItem = ({
             onClick={(event) => {
               event.stopPropagation();
               onClick?.(event);
-              if (isMobile && !items) setOpenMobile(false);
+              if (isMobile && !items && href) setOpenMobile(false);
             }}
             {...props}
           >

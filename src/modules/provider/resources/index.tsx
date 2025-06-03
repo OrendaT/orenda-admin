@@ -1,4 +1,4 @@
-import FileList from './file-list';
+import ResourceList from './resource-list';
 import ResourceTitle from './resource-title';
 
 const ProviderResources = async () => {
@@ -6,7 +6,7 @@ const ProviderResources = async () => {
     <div>
       <ResourceTitle />
 
-      <FileList />
+      <ResourceList />
     </div>
   );
 };
