@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { isProvider } from '@/lib/utils';
-import ProviderHome from '@/modules/provider/resources';
+import ProviderResources from '@/modules/provider/resources';
 import { notFound } from 'next/navigation';
 
 const ResourcePage = async () => {
@@ -10,6 +10,6 @@ const ResourcePage = async () => {
     notFound();
   }
 
-  return <ProviderHome />;
+  return <ProviderResources />;
 };
 export default ResourcePage;

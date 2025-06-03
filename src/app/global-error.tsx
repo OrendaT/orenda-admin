@@ -21,7 +21,7 @@ export default function GlobalError({
 
         <p>Digest: {error.digest || ''}</p>
 
-        <Button variant={'outline'} onClick={() => reset()}>
+        <Button className="w-fit" variant={'outline'} onClick={() => reset()}>
           Try again
         </Button>
       </body>

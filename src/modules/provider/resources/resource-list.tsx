@@ -7,12 +7,12 @@ import { usePathname } from 'next/navigation';
 import type { ResourceFile as File, ResourceFolder as Folder } from '@/types';
 import ResourceFolder from './resource-folder';
 
-interface FileListProps {
+interface ResourceListProps {
   id?: string;
   className?: string;
 }
 
-const FileList = ({ id, className }: FileListProps) => {
+const ResourceList = ({ id, className }: ResourceListProps) => {
   const pathname = usePathname();
 
   const foundResource = findResource(resources, id || pathname);
@@ -24,7 +24,7 @@ const FileList = ({ id, className }: FileListProps) => {
   return (
     <div
       className={cn(
-        'grid justify-items-center gap-5 grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))]',
+        'grid grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))] justify-items-center gap-5',
         className,
       )}
     >
@@ -39,4 +39,4 @@ const FileList = ({ id, className }: FileListProps) => {
     </div>
   );
 };
-export default FileList;
+export default ResourceList;
