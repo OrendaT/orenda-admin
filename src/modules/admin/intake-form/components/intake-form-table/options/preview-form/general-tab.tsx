@@ -149,7 +149,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                     value={data?.recent_physical_exam}
                   />
                   <TabItem
-                    name="Relationship details"
+                    name="Relationship status"
                     value={data?.relationship_status}
                   />
                   <TabItem
@@ -169,7 +169,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                     value={data?.has_weapons}
                   />
                   <TabItem
-                    name="Has suicidal thoughts"
+                    name="Has suicidal thoughts?"
                     value={data?.suicidal_thoughts}
                   />
                   <TabItem
@@ -217,7 +217,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                   }
                   value={data?.insurance_card_front}
                   isFile
-                  altText="Insurance card back"
+                  altText="Insurance card front"
                 />
                 <TabItem
                   name={
