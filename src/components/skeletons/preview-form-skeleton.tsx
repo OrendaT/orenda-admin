@@ -1,6 +1,6 @@
 import { Skeleton } from '../ui/skeleton';
 
-const GeneralTabsSkeleton = () => {
+const PreviewFormSkeleton = () => {
   return (
     <div>
       <div className="mb-4 flex w-full flex-col items-center gap-2 *:w-full sm:flex-row">
@@ -23,4 +23,4 @@ const GeneralTabsSkeleton = () => {
     </div>
   );
 };
-export default GeneralTabsSkeleton;
+export default PreviewFormSkeleton;

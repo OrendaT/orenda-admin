@@ -1,6 +1,6 @@
 'use client';
 
-import GeneralTabsSkeleton from '@/components/skeletons/general-tabs-skeleton';
+import PreviewFormSkeleton from '@/components/skeletons/preview-form-skeleton';
 import { TabsContent } from '@/components/ui/tabs';
 import useForm from '@/hooks/queries/use-form';
 import TabItem from './preview-tab-item';
@@ -12,7 +12,7 @@ const GeneralTab = ({ id }: { id: string }) => {
     <TabsContent value="general">
       <section className="~text-sm/base scrollbar-w-1.5 scrollbar-none scrollbar max-h-[64dvh] overflow-y-auto rounded-2xl border px-4 py-5">
         {isPending ? (
-          <GeneralTabsSkeleton />
+          <PreviewFormSkeleton />
         ) : (
           <div className="space-y-6">
             {/*  Personal Details  */}

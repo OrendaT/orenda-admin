@@ -14,7 +14,7 @@ const ResourceFolder = ({
       href={id}
       className="flex w-full items-center gap-4 rounded-lg bg-white px-4 py-2 shadow-[0px_0px_4px_0px_rgba(0,0,0,0.10)]"
     >
-      <LuFolder className="size-7 shrink-0 text-gray-500" />
+      <LuFolder className="size-7 shrink-0" />
       <div className="flex flex-col">
         <h3 className="line-clamp-1 font-medium" title={name}>
           {name}
