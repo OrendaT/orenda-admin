@@ -138,3 +138,9 @@ export const slugify = (routes?: string[]): string => {
 
   return slug;
 };
+
+
+// so i added this function for the admin side
+export const isAdmin = (roles: string[] = []): boolean => {
+  return roles.includes('admin');
+};
