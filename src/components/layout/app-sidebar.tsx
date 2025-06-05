@@ -17,6 +17,8 @@ import {
 import Header from './header';
 import { FormIcon } from '@/assets/svgs';
 import { MdLogout } from 'react-icons/md';
+import { MdAdminPanelSettings } from "react-icons/md";
+
 import React, { useState } from 'react';
 import { MenuItem } from '@/types';
 import { logOut } from '@/app/actions/auth';
@@ -51,6 +53,17 @@ export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
               title: 'Intake Forms',
               Icon: FormIcon({ className: 'mt-0.5' }),
               href: '/',
+            },
+          ],
+        }, {
+          id: '2',
+          title: '',
+          items: [
+            {
+              id: 'admins',
+              title: 'Admins Permissions',
+              Icon: MdAdminPanelSettings({ className: 'mt-0.5' }),
+              href: 'admins-permissions',
             },
           ],
         },
