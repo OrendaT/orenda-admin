@@ -202,6 +202,10 @@ const GeneralTab = ({ id }: { id: string }) => {
                   value={data?.insurance_id}
                 />
                 <TabItem
+                  name="Insurance provider"
+                  value={data?.insurance_id}
+                />
+                <TabItem
                   name={
                     <>
                       Insurance card front
