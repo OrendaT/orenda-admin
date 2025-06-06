@@ -106,7 +106,9 @@ export interface FormData {
   relationship_with_child: string;
   for_minor_child: string;
 
+  // insurance
   insurance_id: string;
+  insurance_provider: string;
   insurance_card_front: string;
   insurance_card_back: string;
   photo_ID: string;
