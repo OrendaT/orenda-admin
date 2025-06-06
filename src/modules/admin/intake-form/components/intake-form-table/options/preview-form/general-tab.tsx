@@ -203,7 +203,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                 />
                 <TabItem
                   name="Insurance provider"
-                  value={data?.insurance_id}
+                  value={data?.insurance_provider}
                 />
                 <TabItem
                   name={

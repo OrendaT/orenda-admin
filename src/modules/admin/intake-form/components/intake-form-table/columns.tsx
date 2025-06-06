@@ -71,6 +71,21 @@ export const columns: ColumnDef<FormData>[] = [
     },
   },
   {
+    accessorKey: 'last_accessed_at',
+    header: 'Last Accessed',
+    cell: ({ getValue }) => {
+      let value = getValue();
+
+      if (!value) return '—';
+
+      const dateValue = new Date(value as string);
+      value = dateValue
+        ? format(dateValue, 'PPp').replace('PM', 'pm').replace('AM', 'am')
+        : value;
+      return value;
+    },
+  },
+  {
     id: 'actions',
     enableHiding: false,
     cell: Options,

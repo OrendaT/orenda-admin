@@ -124,6 +124,8 @@ export interface FormData {
   sex_assigned_at_birth: string;
   height: string;
   weight: string;
+
+  last_accessed_at: string;
 }
 
 export interface CreditCardInfo {
