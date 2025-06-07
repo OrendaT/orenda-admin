@@ -31,6 +31,14 @@ const ResourcePage = async ({ params }: ResourcePageProps) => {
 
   const { resource } = await params;
 
-  return <ProviderResources id={slugify(resource)} />;
+  const id = slugify(resource);
+
+  const foundResource = findResource(resources, id);
+
+  if (!foundResource) {
+    notFound();
+  }
+
+  return <ProviderResources resource={foundResource} />;
 };
 export default ResourcePage;

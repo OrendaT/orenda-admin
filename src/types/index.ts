@@ -186,3 +186,5 @@ export interface ResourceFile {
   url: string;
   image?: string | StaticImport;
 }
+
+export type FoundResource = Resource | ResourceFile | ResourceFolder;
