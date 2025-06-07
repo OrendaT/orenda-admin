@@ -19,7 +19,7 @@ const ResourceList = ({ id, className }: ResourceListProps) => {
   return (
     <div
       className={cn(
-        'grid grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))] justify-items-center gap-5',
+        'grid grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))] justify-items-center gap-5 pb-12',
         className,
       )}
     >

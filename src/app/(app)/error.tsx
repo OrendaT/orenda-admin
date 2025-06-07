@@ -17,14 +17,16 @@ export default function Error({
 
   return (
     <div className="flex h-[80dvh] w-full flex-col items-center justify-center gap-4">
-      <h2 className="text-xl font-bold">Something went wrong!</h2>
+      <h2 className="text-xl font-bold">Error</h2>
 
       <p>{error?.message || 'An unknown error occurred. Please try again.'}</p>
-      <br />
+
       <p>Digest: {error.digest || ''}</p>
 
+      <br />
+
       <Button
-      className='w-fit'
+        className="w-fit"
         variant="outline"
         onClick={
           // Attempt to recover by trying to re-render the segment
