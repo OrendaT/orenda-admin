@@ -8,7 +8,7 @@ const NotFound = () => {
   return (
     <div className="flex min-h-[75dvh] flex-col items-center justify-center gap-4">
       <h1 className="clamp-[text,xl,2xl] text-center font-semibold">
-        Resource not found
+        Page not found
       </h1>
 
       <Button className="w-fit" variant="ghost" onClick={back}>
