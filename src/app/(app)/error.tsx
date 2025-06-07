@@ -21,7 +21,7 @@ export default function Error({
 
       <p>{error?.message || 'An unknown error occurred. Please try again.'}</p>
 
-      <p>Digest: {error.digest || ''}</p>
+      {error.digest && <p>Digest: {error.digest}</p>}
 
       <br />
 
