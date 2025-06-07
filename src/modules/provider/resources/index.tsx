@@ -3,7 +3,7 @@ import ResourceTitle from './resource-title';
 
 const ProviderResources = async ({ id = '/' }: { id?: string }) => {
   return (
-    <div>
+    <div className="px-1">
       <ResourceTitle id={id} />
 
       <ResourceList id={id} />
