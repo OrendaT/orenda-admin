@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { resources } from '@/lib/data/resources';
 import ResourceList from './resource-list';
+import { findResource } from '@/lib/utils';
 
 const Resources = () => {
   return (
@@ -13,11 +14,16 @@ const Resources = () => {
         ))}
       </TabsList>
 
-      {resources.map(({ id }) => (
-        <TabsContent key={id} value={id}>
-          <ResourceList id={id} />
-        </TabsContent>
-      ))}
+      {resources.map(({ id }) => {
+        const resources = findResource(id);
+        if (!resources) return null;
+
+        return (
+          <TabsContent key={id} value={id}>
+            <ResourceList resources={resources} />
+          </TabsContent>
+        );
+      })}
     </Tabs>
   );
 };
