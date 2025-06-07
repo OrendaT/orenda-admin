@@ -1,5 +1,4 @@
 import { auth } from '@/auth';
-import { resources } from '@/lib/data/resources';
 import { findResource, isProvider, slugify } from '@/lib/utils';
 import ProviderResources from '@/modules/provider/resources';
 import { Metadata } from 'next';
@@ -14,7 +13,7 @@ export async function generateMetadata({
 }: ResourcePageProps): Promise<Metadata> {
   const { resource } = await params;
 
-  const title = `${findResource(resources, slugify(resource))?.name} | Orenda`;
+  const title = `${findResource(slugify(resource))?.name} | Orenda`;
 
   return {
     title,
@@ -33,7 +32,7 @@ const ResourcePage = async ({ params }: ResourcePageProps) => {
 
   const id = slugify(resource);
 
-  const foundResource = findResource(resources, id);
+  const foundResource = findResource(id);
 
   if (!foundResource) {
     notFound();

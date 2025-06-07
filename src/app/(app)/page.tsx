@@ -1,9 +1,9 @@
 import { auth } from '@/auth';
-import { isProvider } from '@/lib/utils';
+import { findResource, isProvider } from '@/lib/utils';
 import IntakeForm from '@/modules/admin/intake-form';
 import ProviderResources from '@/modules/provider/resources';
 import { Metadata } from 'next';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 export async function generateMetadata(): Promise<Metadata> {
   const session = await auth();
@@ -22,8 +22,15 @@ export default async function Home() {
     redirect('/login');
   }
 
-  return isProvider(session.user.roles) ? (
-    <ProviderResources />
+  const _isProvider = isProvider(session.user.roles);
+
+  const resource = findResource('/');
+
+  if (_isProvider && !resource) {
+    notFound();
+  }
+  return _isProvider ? (
+    <ProviderResources resource={resource!} />
   ) : (
     <IntakeForm />
   );
