@@ -3,6 +3,7 @@ import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import { format } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
+import { resources } from '../data/resources';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -61,7 +62,7 @@ export const downloadFile = async (
 export const isProvider = (roles?: string[]) =>
   roles?.some((role) => /provider/i.test(role));
 
-export const findResource = (resources: Resource[], id: string) => {
+export const findResource = (id: string) => {
   // First, check if the id matches any top-level Resource
   for (const res of resources) {
     if (res.id === id) {
