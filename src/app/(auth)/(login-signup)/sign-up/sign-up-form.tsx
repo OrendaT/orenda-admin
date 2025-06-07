@@ -26,12 +26,20 @@ const SignUpForm = () => {
   });
   const {
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
+    setError,
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
     const res = await register(data);
-    if (res.success) setSuccess(true);
+    if (res.success) {
+      setSuccess(true);
+    } else {
+      setError('root', {
+        type: 'custom',
+        message: res.message,
+      });
+    }
   });
 
   return (
@@ -57,6 +65,8 @@ const SignUpForm = () => {
               placeholder="Create password"
             />
           </div>
+
+          {errors.root && <p className='error_message mt-4'>{errors.root.message}</p>}
 
           <Button isLoading={isSubmitting} type="submit" className="mt-8">
             Sign up
