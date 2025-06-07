@@ -11,7 +11,7 @@ const NotFound = () => {
         Resource not found
       </h1>
 
-      <Button className="w-fit" onClick={back}>
+      <Button className="w-fit" variant="ghost" onClick={back}>
         Go back
       </Button>
     </div>
