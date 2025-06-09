@@ -10,8 +10,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const _isProvider = isProvider(session?.user?.roles || []);
 
   return {
-    title: _isProvider ? 'Provider Wall' : 'Intake Form',
-    description: _isProvider ? 'Provider Wall page' : 'Intake Form page',
+    title: _isProvider ? 'Policies & Info' : 'Intake Form',
+    description: _isProvider ? 'Policies & Info page' : 'Intake Form page',
   };
 }
 

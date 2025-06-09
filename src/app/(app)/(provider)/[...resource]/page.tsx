@@ -13,11 +13,11 @@ export async function generateMetadata({
 }: ResourcePageProps): Promise<Metadata> {
   const { resource } = await params;
 
-  const title = `${findResource(slugify(resource))?.name} | Orenda`;
+  const title = `${findResource(slugify(resource))?.name} | Orenda Admin`;
 
   return {
     title,
-    description: `This page includes all the resources for ${title}`,
+    description: `This page includes all the resources for ${title.split(' | ')[0]}`,
   };
 }
 
