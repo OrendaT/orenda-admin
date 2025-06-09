@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { findResource, isProvider } from '@/lib/utils';
+import { findResource, getUserRole } from '@/lib/utils';
 import IntakeForm from '@/modules/admin/intake-form';
 import ProviderResources from '@/modules/provider/resources';
 import { Metadata } from 'next';
@@ -7,7 +7,7 @@ import { notFound, redirect } from 'next/navigation';
 
 export async function generateMetadata(): Promise<Metadata> {
   const session = await auth();
-  const _isProvider = isProvider(session?.user?.roles || []);
+  const _isProvider = getUserRole(session?.user?.roles || []) === 'Provider';
 
   return {
     title: _isProvider ? 'Policies & Info' : 'Intake Form',
@@ -22,7 +22,7 @@ export default async function Home() {
     redirect('/login');
   }
 
-  const _isProvider = isProvider(session.user.roles);
+  const _isProvider = getUserRole(session.user.roles) === 'Provider';
 
   const resource = findResource('/');
 

@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { findResource, isProvider, slugify } from '@/lib/utils';
+import { findResource, getUserRole, slugify } from '@/lib/utils';
 import ProviderResources from '@/modules/provider/resources';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -24,7 +24,7 @@ export async function generateMetadata({
 const ResourcePage = async ({ params }: ResourcePageProps) => {
   const session = await auth();
 
-  if (!isProvider(session?.user.roles)) {
+  if (getUserRole(session?.user.roles) !== 'Provider') {
     notFound();
   }
 

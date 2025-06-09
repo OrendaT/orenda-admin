@@ -16,7 +16,7 @@ import Header from './header';
 import { FormIcon } from '@/assets/svgs';
 import { MdLogout } from 'react-icons/md';
 import React, { useState } from 'react';
-import { MenuItem } from '@/types';
+import { SidebarMenuItem, UserRole } from '@/types';
 import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
 import { cn, convertResourcesToMenu } from '@/lib/utils';
@@ -34,13 +34,13 @@ import {
 import { Button } from '../ui/button';
 import { resources } from '@/lib/data/resources';
 
-export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
+export function AppSidebar({ role }: { role: UserRole }) {
   const [open, setOpen] = useState(false);
 
-  const navMenu: MenuItem[] = isProvider
-    ? [convertResourcesToMenu(resources)]
-    : [
-        {
+  const navMenu: (SidebarMenuItem | undefined)[] = [
+    role === 'Provider' ? convertResourcesToMenu(resources) : undefined,
+    role === 'Admin' || role === 'SuperAdmin'
+      ? {
           id: '1',
           title: '',
           items: [
@@ -51,10 +51,11 @@ export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
               href: '/',
             },
           ],
-        },
-      ];
+        }
+      : undefined,
+  ];
 
-  const footerItem: MenuItem = {
+  const footerItem: SidebarMenuItem = {
     id: 'log-out',
     title: 'Log out',
     Icon: MdLogout({}),
@@ -73,17 +74,23 @@ export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
       </SidebarHeader>
       <SidebarContent>
         {/* top menu list */}
-        {navMenu.map((item) => (
-          <SidebarGroup key={item.id} className="mt-4">
-            {item.title && <SidebarGroupLabel>{item.title}</SidebarGroupLabel>}
+        {navMenu.map(
+          (item) =>
+            item && (
+              <SidebarGroup key={item.id} className="mt-4">
+                {item.title && (
+                  <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+                )}
 
-            <SidebarMenu>
-              {item.items?.map(
-                (item) => item && <SidebarListItem key={item.id} item={item} />,
-              )}
-            </SidebarMenu>
-          </SidebarGroup>
-        ))}
+                <SidebarMenu>
+                  {item.items?.map(
+                    (item) =>
+                      item && <SidebarListItem key={item.id} item={item} />,
+                  )}
+                </SidebarMenu>
+              </SidebarGroup>
+            ),
+        )}
       </SidebarContent>
       {/* footer */}
       <SidebarFooter className="border-t border-[#ECECEC]">

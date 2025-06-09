@@ -2,7 +2,7 @@ import { auth } from '@/auth';
 import { AppSidebar } from '@/components/layout/app-sidebar';
 import ProviderHeader from '@/components/layout/provider-header';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { isProvider } from '@/lib/utils';
+import { getUserRole } from '@/lib/utils';
 import { redirect } from 'next/navigation';
 
 export const metadata = {
@@ -19,10 +19,10 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <SidebarProvider>
-      <AppSidebar isProvider={isProvider(session.user.roles)} />
+      <AppSidebar role={getUserRole(session.user.roles)} />
       <main className="clamp-[p,4,8] w-full bg-[#f6f6f6] pb-[1.31rem]">
         <SidebarTrigger className="mb-4 ml-auto md:hidden" />
-        {isProvider(session.user.roles) && <ProviderHeader />}
+        {getUserRole(session.user.roles) === 'Provider' && <ProviderHeader />}
         {children}
       </main>
     </SidebarProvider>

@@ -1,4 +1,10 @@
-import { MenuItem, Resource, ResourceFile, ResourceFolder } from '@/types';
+import {
+  SidebarMenuItem,
+  Resource,
+  ResourceFile,
+  ResourceFolder,
+  UserRole,
+} from '@/types';
 import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import { format } from 'date-fns';
@@ -54,13 +60,21 @@ export const downloadFile = async (
 };
 
 /**
- * @function isProvider
- * @description takes the role from the session
- * and checks whether the user is a provider
- * or not (admin|super_admin)
+ * @function getUserRole
+ * @description Determines the user's highest role based on the provided roles array.
+ * Returns 'super_admin' if the user has a SuperAdmin role,
+ * 'admin' if the user has an admin role,
+ * otherwise returns 'provider'.
  */
-export const isProvider = (roles?: string[]) =>
-  roles?.some((role) => /provider/i.test(role));
+export const getUserRole = (roles?: string[]): UserRole => {
+  if (roles?.some((role) => /SuperAdmin/i.test(role))) {
+    return 'SuperAdmin';
+  } else if (roles?.some((role) => /Admin/i.test(role))) {
+    return 'Admin';
+  } else {
+    return 'Provider';
+  }
+};
 
 export const findResource = (id: string) => {
   // First, check if the id matches any top-level Resource
@@ -95,10 +109,10 @@ export const findResource = (id: string) => {
 
 export const convertResourcesToMenu = (
   resources: Resource[],
-): { id: string; title: string; items: MenuItem[] } => {
-  const items: MenuItem[] = resources.map(
+): { id: string; title: string; items: SidebarMenuItem[] } => {
+  const items: SidebarMenuItem[] = resources.map(
     ({ id, name, title, Icon, resources }) => {
-      const item: MenuItem = {
+      const item: SidebarMenuItem = {
         id,
         title: title || name,
         href: id,
@@ -130,7 +144,7 @@ export const convertResourcesToMenu = (
 
 export const slugify = (routes?: string[]): string => {
   if (!routes || !routes.length) return '/';
-  
+
   let slug = '';
 
   routes.forEach((route) => {
