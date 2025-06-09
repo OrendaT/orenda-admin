@@ -8,13 +8,15 @@ export interface DBUser {
   user: {
     name: string | null;
     email: string;
-    roles: string[];
+    roles: UserRole[];
     permissions: string[];
     id: string;
   };
 }
 
-export type MenuItem = {
+export type UserRole = 'Admin' | 'Provider' | 'SuperAdmin';
+
+export interface SidebarMenuItem {
   id: string;
   title: string;
   href?: string;
@@ -24,8 +26,8 @@ export type MenuItem = {
   disabled?: boolean;
   onClick?: React.MouseEventHandler;
   isActive?: boolean;
-  items?: MenuItem[];
-};
+  items?: SidebarMenuItem[];
+}
 
 export interface DashboardCardStat {
   name: string;
@@ -168,8 +170,8 @@ export interface Resource {
   id: string;
   name: string;
   resources: ResourceFolder[] | ResourceFile[];
-  title?: MenuItem['title'];
-  Icon: MenuItem['Icon'];
+  title?: SidebarMenuItem['title'];
+  Icon: SidebarMenuItem['Icon'];
 }
 
 export interface ResourceFolder {
