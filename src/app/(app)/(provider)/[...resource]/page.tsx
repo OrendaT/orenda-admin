@@ -13,7 +13,7 @@ export async function generateMetadata({
 }: ResourcePageProps): Promise<Metadata> {
   const { resource } = await params;
 
-  const title = `${findResource(slugify(resource))?.name} | Orenda Admin`;
+  const title = `${findResource(slugify(resource))?.name} | Orenda Portal`;
 
   return {
     title,
