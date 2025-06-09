@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/tooltip';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { MenuItem } from '@/types';
+import type { SidebarMenuItem as MenuItem } from '@/types';
 import {
   Collapsible,
   CollapsibleContent,
