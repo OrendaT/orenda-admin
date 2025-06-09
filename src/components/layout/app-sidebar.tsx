@@ -16,7 +16,7 @@ import Header from './header';
 import { FormIcon } from '@/assets/svgs';
 import { MdLogout } from 'react-icons/md';
 import React, { useState } from 'react';
-import { SidebarMenuItem, UserRole } from '@/types';
+import type { SidebarMenuItem, UserRole } from '@/types';
 import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
 import { cn, convertResourcesToMenu } from '@/lib/utils';
