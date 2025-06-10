@@ -2,17 +2,20 @@ import useAxios from '@/lib/api/axios-client';
 import { FORMS_EP } from '@/lib/api/endpoints';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../queries/query-keys';
+import { useSearchParams } from 'next/navigation';
 
 const useFlagForm = () => {
   const { axios } = useAxios();
   const queryClient = useQueryClient();
+  const params = useSearchParams();
 
-  const params = new URLSearchParams(window.location.search);
-  const page = params.get('page') ?? '1';
-  const search = params.get('search') ?? undefined;
-  const flag = params.get('flag') ?? undefined;
-  const from = params.get('from') ?? undefined;
-  const to = params.get('to') ?? undefined;
+  const {
+    page = '1',
+    search,
+    flag,
+    from,
+    to,
+  } = Object.fromEntries(params.entries());
 
   return useMutation({
     mutationFn: async (id: string) =>

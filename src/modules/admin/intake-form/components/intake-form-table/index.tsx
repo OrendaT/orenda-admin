@@ -22,14 +22,16 @@ import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
 const IntakeFormTable = () => {
-  const searchParams = useSearchParams();
+  const params = useSearchParams();
 
-  const page = searchParams.get('page') ?? '1';
-  const search = searchParams.get('search') ?? undefined;
-  const flag = searchParams.get('flag') ?? undefined;
-  const from = searchParams.get('from') ?? undefined;
-  const to = searchParams.get('to') ?? undefined;
-  const status = searchParams.get('status') ?? undefined;
+  const {
+    page = '1',
+    search,
+    flag,
+    from,
+    to,
+    status,
+  } = Object.fromEntries(params.entries());
 
   const { data, isPending, isError } = useAllForms({
     page,
