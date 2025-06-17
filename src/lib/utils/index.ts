@@ -67,6 +67,8 @@ export const downloadFile = async (
  * otherwise returns 'provider'.
  */
 export const getUserRole = (roles?: string[]): UserRole => {
+
+  
   if (roles?.some((role) => /SuperAdmin/i.test(role))) {
     return 'SuperAdmin';
   } else if (roles?.some((role) => /Admin/i.test(role))) {
