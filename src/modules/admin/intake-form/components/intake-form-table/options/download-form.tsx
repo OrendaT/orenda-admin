@@ -78,7 +78,7 @@ const DownloadForm = ({
   // copy url function
   const [copied, onClick] = useClipboard(data?.url || '');
 
-  // effect to add task if it doesn't exist
+  // adds download task to download form store if it doesn't exist
   useEffect(() => {
     const exportForms = async () => {
       const res = await _export({ patients: forms });
@@ -95,14 +95,15 @@ const DownloadForm = ({
     }
   }, [open, _export, forms, name, addTask, downloads, key]);
 
+
+  // checks the download status (every 1s by default)
   useRetry({
     callback: checkStatus,
-    delay: 2000,
     retries: Infinity,
-    stop: data?.ready || !Boolean(downloads[key]?.task_id), // Stop when data is ready or there's no task_id
+    stop: data?.ready || !Boolean(downloads[key]?.task_id), // Stops when data is ready or there's no task_id
   });
 
-  // set url if export successful
+  // sets the url if export is successful
   useEffect(() => {
     if (data?.url) {
       updateTask(key, {
