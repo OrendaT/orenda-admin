@@ -18,20 +18,11 @@ import { IntakeFormTablePagination } from './pagination';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
 import FormSkeleton from '../../../../../components/skeletons/form-table-skeleton';
 import { Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import useIntakeFormParams from '@/hooks/use-intake-form-params';
 
 const IntakeFormTable = () => {
-  const params = useSearchParams();
-
-  const {
-    page = '1',
-    search,
-    flag,
-    from,
-    to,
-    status,
-  } = Object.fromEntries(params.entries());
+  const { page, search, flag, from, to, status } = useIntakeFormParams();
 
   const { data, isPending, isError } = useAllForms({
     page,
