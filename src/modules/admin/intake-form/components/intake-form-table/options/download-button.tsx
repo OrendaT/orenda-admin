@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { downloadFile } from '@/lib/utils';
 
 const DownloadButton = ({ row }: CellContext<FormData, unknown>) => {
-  const { id, first_name, last_name } = row.original;
+  const { id, first_name, last_name, status } = row.original;
 
   const { mutateAsync: downloadForm } = useDownloadForm();
 
@@ -27,11 +27,11 @@ const DownloadButton = ({ row }: CellContext<FormData, unknown>) => {
   };
 
   return (
-    <LuDownload
-      title="Download"
-      className="size-4 cursor-pointer"
-      onClick={handleDownloadForm}
-    />
+    status === 'submitted' && (
+      <button type="button" title="Download" onClick={handleDownloadForm}>
+        <LuDownload />
+      </button>
+    )
   );
 };
 export default DownloadButton;
