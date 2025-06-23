@@ -3,20 +3,13 @@ import { FORMS_EP } from '@/lib/api/endpoints';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { QUERY_KEYS } from '../queries/query-keys';
-import { useSearchParams } from 'next/navigation';
+import useIntakeFormParams from '../use-intake-form-params';
 
 const useMassDownload = () => {
   const { axios } = useAxios();
   const queryClient = useQueryClient();
-  const params = useSearchParams();
 
-  const {
-    page = '1',
-    search,
-    flag,
-    from,
-    to,
-  } = Object.fromEntries(params.entries());
+  const { page, search, flag, from, to } = useIntakeFormParams();
 
   return useMutation({
     mutationFn: async (data: { from_date: string; to_date: string }) =>
