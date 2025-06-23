@@ -173,6 +173,3 @@ export const slugify = (routes?: string[]): string => {
 
   return slug;
 };
-
-export const decode = (value: string) =>
-  decodeURIComponent(value).replace(/\+/g, ' ');

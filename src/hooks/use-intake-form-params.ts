@@ -1,6 +1,5 @@
 'use client';
 
-import { decode } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
 
 const useIntakeFormParams = () => {
@@ -13,9 +12,7 @@ const useIntakeFormParams = () => {
     from,
     to,
     status,
-  } = Object.fromEntries(
-    Array.from(params.entries()).map(([key, value]) => [key, decode(value)]),
-  );
+  } = Object.fromEntries(params.entries());
 
   return {
     page,
