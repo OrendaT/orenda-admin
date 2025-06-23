@@ -7,11 +7,12 @@ import { notFound, redirect } from 'next/navigation';
 
 export async function generateMetadata(): Promise<Metadata> {
   const session = await auth();
-  const _isProvider = getUserRole(session?.user?.roles || []) === 'Provider';
+
+  const { isProvider } = getUserRole(session?.user?.roles || []);
 
   return {
-    title: _isProvider ? 'Policies & Info' : 'Intake Form',
-    description: _isProvider ? 'Policies & Info page' : 'Intake Form page',
+    title: isProvider ? 'Policies & Info' : 'Intake Form',
+    description: isProvider ? 'Policies & Info page' : 'Intake Form page',
   };
 }
 
@@ -22,14 +23,14 @@ export default async function Home() {
     redirect('/login');
   }
 
-  const _isProvider = getUserRole(session.user.roles) === 'Provider';
+  const { isProvider } = getUserRole(session.user.roles);
 
   const resource = findResource('/');
 
-  if (_isProvider && !resource) {
+  if (isProvider && !resource) {
     notFound();
   }
-  return _isProvider ? (
+  return isProvider ? (
     <ProviderResources resource={resource!} />
   ) : (
     <IntakeForm />

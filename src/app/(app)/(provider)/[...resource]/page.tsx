@@ -23,8 +23,9 @@ export async function generateMetadata({
 
 const ResourcePage = async ({ params }: ResourcePageProps) => {
   const session = await auth();
+  const { isProvider } = getUserRole(session?.user.roles);
 
-  if (getUserRole(session?.user.roles) !== 'Provider') {
+  if (!isProvider) {
     notFound();
   }
 

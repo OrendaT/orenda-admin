@@ -27,33 +27,39 @@ export const getPastDate = (daysAgo: string = '0') => {
   return format(date, 'MM-dd-yyyy');
 };
 
+export const downloadFileFromUrl = async (
+  { name, url }: { name: string; url: string },
+  callback?: () => void,
+) => {
+  const res = await axios.get(url, {
+    responseType: 'blob',
+  });
+
+  downloadFile({ name, file: res.data }, callback);
+};
+
 /**
  * @function downloadFile
  * @description this takes a name and url, then proceeds to
  * download that file. it optionally takes a callback function
  * that runs after the file has been downloaded
  */
-export const downloadFile = async (
-  { name, url }: { name: string; url: string },
+export const downloadFile = (
+  { name, file }: { name: string; file: Blob | File },
   callback?: () => void,
 ) => {
-  // create blob
-  const res = await axios.get(url, {
-    responseType: 'blob',
-  });
-  const blob = new Blob([res.data], { type: res.data.type });
-  const blobUrl = URL.createObjectURL(blob);
+  const fileUrl = URL.createObjectURL(file);
 
   // create and click link
   const link = document.createElement('a');
-  link.href = blobUrl;
+  link.href = fileUrl;
   link.setAttribute('download', `${name}.zip`);
   document.body.appendChild(link);
   link.click();
 
   // Clean up
   document.body.removeChild(link);
-  URL.revokeObjectURL(blobUrl);
+  URL.revokeObjectURL(fileUrl);
 
   // run callback function
   callback?.();
@@ -66,16 +72,31 @@ export const downloadFile = async (
  * 'admin' if the user has an admin role,
  * otherwise returns 'provider'.
  */
-export const getUserRole = (roles?: string[]): UserRole => {
+export const getUserRole = (
+  roles?: string[],
+): {
+  role: UserRole;
+  isProvider: boolean;
+  isAdmin: boolean;
+  isManager: boolean;
+} => {
+  let role: UserRole = 'Provider';
+  let isProvider = false;
+  let isAdmin = false;
+  let isManager = false;
 
-  
-  if (roles?.some((role) => /SuperAdmin/i.test(role))) {
-    return 'SuperAdmin';
-  } else if (roles?.some((role) => /Admin/i.test(role))) {
-    return 'Admin';
-  } else {
-    return 'Provider';
+  if (roles?.some((role) => /Admin/i.test(role))) {
+    isAdmin = true;
+    role = 'Admin';
+  } else if (roles?.some((role) => /Manager/i.test(role))) {
+    isManager = true;
+    role = 'Manager';
+  } else if (roles?.some((role) => /Provider/i.test(role))) {
+    isProvider = true;
+    role = 'Provider';
   }
+
+  return { role, isProvider, isAdmin, isManager };
 };
 
 export const findResource = (id: string) => {

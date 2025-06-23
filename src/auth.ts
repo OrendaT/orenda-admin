@@ -9,7 +9,7 @@ interface JWTExtension extends Omit<DBUser, 'user'> {
   id: string;
   expires_at: number;
   roles: DBUser['user']['roles'];
-  permissions: DBUser['user']['permissions'];
+  teams: DBUser['user']['teams'];
 }
 
 declare module 'next-auth' {
@@ -23,7 +23,7 @@ declare module 'next-auth' {
     user: DefaultSession['user'] & {
       email: string;
       roles: DBUser['user']['roles'];
-      permissions: DBUser['user']['permissions'];
+      teams: DBUser['user']['teams'];
     };
   }
 }

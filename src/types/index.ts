@@ -2,6 +2,8 @@ import { IconType } from 'react-icons/lib';
 import { JSX } from 'react';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
+export type UserRole = 'Admin' | 'Provider' | 'Manager';
+export type TeamRole = 'Manager' | 'Member';
 export interface DBUser {
   access_token: string;
   refresh_token?: string;
@@ -9,12 +11,18 @@ export interface DBUser {
     name: string | null;
     email: string;
     roles: UserRole[];
-    permissions: string[];
+    teams: string[];
     id: string;
   };
 }
 
-export type UserRole = 'Admin' | 'Provider' | 'SuperAdmin';
+export interface Teams {
+  Billing?: TeamRole[];
+  Communication?: TeamRole[];
+  Clinical?: TeamRole[];
+  Credentialing?: TeamRole[];
+  Intake?: TeamRole[];
+}
 
 export interface SidebarMenuItem {
   id: string;

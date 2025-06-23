@@ -13,7 +13,7 @@ import useExport from '@/hooks/mutations/use-export';
 import useCheckStatus from '@/hooks/queries/use-check-status';
 import { useClipboard } from '@/hooks/use-clipboard';
 import useRetry from '@/hooks/use-retry';
-import { cn, downloadFile } from '@/lib/utils';
+import { cn, downloadFileFromUrl } from '@/lib/utils';
 import useDownloadFormStore from '@/stores/download-form-store';
 import { Status } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -95,7 +95,6 @@ const DownloadForm = ({
     }
   }, [open, _export, forms, name, addTask, downloads, key]);
 
-
   // checks the download status (every 1s by default)
   useRetry({
     callback: checkStatus,
@@ -119,7 +118,7 @@ const DownloadForm = ({
     const { url } = downloads[key];
     if (url) {
       setIsDownloading(true);
-      downloadFile({ name, url }, () => {
+        downloadFileFromUrl({ name, url }, () => {
         setIsDownloading(false);
         setStatus('success');
       });

@@ -17,12 +17,14 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
     redirect('/login');
   }
 
+  const { role, isProvider } = getUserRole(session.user.roles);
+
   return (
     <SidebarProvider>
-      <AppSidebar role={getUserRole(session.user.roles)} />
+      <AppSidebar role={role} />
       <main className="clamp-[p,4,8] w-full bg-[#f6f6f6] pb-[1.31rem]">
         <SidebarTrigger className="mb-4 ml-auto md:hidden" />
-        {getUserRole(session.user.roles) === 'Provider' && <ProviderHeader />}
+        {isProvider && <ProviderHeader />}
         {children}
       </main>
     </SidebarProvider>
