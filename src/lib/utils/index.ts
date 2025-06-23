@@ -68,9 +68,6 @@ export const downloadFile = (
 /**
  * @function getUserRole
  * @description Determines the user's highest role based on the provided roles array.
- * Returns 'super_admin' if the user has a SuperAdmin role,
- * 'admin' if the user has an admin role,
- * otherwise returns 'provider'.
  */
 export const getUserRole = (
   roles?: string[],

@@ -39,7 +39,7 @@ export function AppSidebar({ role }: { role: UserRole }) {
 
   const navMenu: (SidebarMenuItem | undefined)[] = [
     role === 'Provider' ? convertResourcesToMenu(resources) : undefined,
-    role === 'Admin' || role === 'SuperAdmin'
+    role === 'Admin' || role === 'Manager'
       ? {
           id: '1',
           title: '',
