@@ -29,7 +29,7 @@ const DownloadButton = ({ row }: CellContext<FormData, unknown>) => {
   return (
     status === 'submitted' && (
       <button type="button" title="Download" onClick={handleDownloadForm}>
-        <LuDownload />
+        <LuDownload className="size-4" />
       </button>
     )
   );
