@@ -26,4 +26,5 @@ export const FORMS_EP = {
   MASS_DOWNLOAD: `${BASE.PATIENTS}/mass-download`,
   CHECK_TASK: (id?: string) => `${BASE.ADMIN}/check-task/${id}`,
   DOWNLOAD: (id: string) => `${BASE.ADMIN}/download/DOWNLOADS/${id}.zip`,
+  DOWNLOAD_FORM: (id: string) => `${BASE.ADMIN}/download/intake-form/${id}`,
 };

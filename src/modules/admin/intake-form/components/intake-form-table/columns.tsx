@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { MdOutlineFlag } from 'react-icons/md';
 import Options from './options';
 import { useSelectedFormsStore } from '@/stores/selected-forms-store';
+import DownloadButton from './options/download-button';
 
 export const columns: ColumnDef<FormData>[] = [
   {
@@ -84,6 +85,11 @@ export const columns: ColumnDef<FormData>[] = [
         : value;
       return value;
     },
+  },
+  {
+    id: 'download',
+    enableHiding: false,
+    cell: DownloadButton,
   },
   {
     id: 'actions',
