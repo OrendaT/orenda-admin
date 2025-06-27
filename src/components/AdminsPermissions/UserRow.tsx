@@ -1,5 +1,3 @@
-// components/AdminsPermissions/UserRow.tsx
-
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -12,8 +10,10 @@ import { ChevronDown } from 'lucide-react';
 import { User, ROLE_PERMISSIONS, Role } from '@/types/user';
 import { useUsers } from '@/hooks/useUsers';
 import { useRoles } from '@/hooks/useRoles';
-import Image from 'next/image'; // Added Next.js Image import
-// Import the modal components
+import Image from 'next/image'; 
+
+
+
 import ChangeRoleModal from './ChangeRoleModal';
 import DeleteUserModal from './DeleteUserModal';
 import SendMessageModal from './SendMessageModal';
@@ -22,14 +22,14 @@ interface UserRowProps {
   user: User;
 }
 
-// Define UI permission options
+
 type UIPermission = 'Add contents' | 'Edit contents' | 'Approve contents' | 'All controls';
 
-// Mapping from backend permissions to UI permissions (simplified for single selection)
+
 const getUIPermission = (role: Role): UIPermission => {
   const rolePermissions = ROLE_PERMISSIONS[role] || [];
   
-  // Check which UI permission best matches this role
+
   if (rolePermissions.length >= 4 && rolePermissions.includes('create_user') && 
       rolePermissions.includes('edit_user') && rolePermissions.includes('view_all')) {
     return 'All controls';
@@ -47,25 +47,26 @@ const getUIPermission = (role: Role): UIPermission => {
     return 'Add contents';
   }
   
-  // Default for Provider or roles with minimal permissions
+
   return 'Add contents';
 };
 
-// Mapping from UI permission to appropriate role
+
 const getRoleFromUIPermission = (permission: UIPermission): Role => {
   switch (permission) {
     case 'All controls':
-      return 'SuperAdmin';
+      return 'Admin';
     case 'Approve contents':
-      return 'ContentManager';
+      return 'Manager';
     case 'Edit contents':
-      return 'ContentManager';
+      return 'Manager';
     case 'Add contents':
-      return 'ProviderManager';
+      return 'Provider';
     default:
-      return 'ProviderManager';
+      return 'Provider';
   }
 };
+
 
 const UserRow: React.FC<UserRowProps> = ({ user }) => {
   const [isActionMenuOpen, setIsActionMenuOpen] = useState<boolean>(false);

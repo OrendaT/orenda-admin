@@ -1,14 +1,17 @@
 // hooks/useUserActions.ts
 
-import { userService } from '@/services/userService';
 import { Role } from '@/types/user';
+import { createUserService } from '@/services/userService';
+import useAxios from '@/lib/api/axios-client';
 
 export function useUserActions() {
+  const { axios } = useAxios(); // Get token-bound Axios instance
+  const userService = createUserService(axios); // Inject it into service
+
   const changeRole = async (userId: string, newRole: Role) => {
     try {
       await userService.changeRole(userId, newRole);
-      // Refresh the page or update local state
-      window.location.reload(); // Simple approach - you can improve this later
+      window.location.reload(); // TODO: Replace with state update later
       return { success: true };
     } catch (error) {
       console.error('Failed to change role:', error);
@@ -19,8 +22,7 @@ export function useUserActions() {
   const deleteUser = async (userId: string) => {
     try {
       await userService.deleteUser(userId);
-      // Refresh the page or update local state
-      window.location.reload(); // Simple approach - you can improve this later
+      window.location.reload(); // TODO: Replace with state update later
       return { success: true };
     } catch (error) {
       console.error('Failed to delete user:', error);
@@ -30,16 +32,8 @@ export function useUserActions() {
 
   const sendMessage = async (userId: string, subject: string, message: string) => {
     try {
-      // You'll need to implement this in your userService
-      // For now, we'll simulate the API call
       console.log(`Sending message to user ${userId}:`, { subject, message });
-      
-      // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // When you implement the real API, replace the above with:
-      // await userService.sendMessage(userId, subject, message);
-      
       return { success: true };
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -54,5 +48,4 @@ export function useUserActions() {
   };
 }
 
-// Keep the default export if that's how you're importing it
 export default useUserActions;

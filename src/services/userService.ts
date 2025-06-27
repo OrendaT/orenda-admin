@@ -1,73 +1,84 @@
 // services/userService.ts
+import {
+  User,
+  ApiUser,
+  InviteUserPayload,
+  ApiUserPayload,
+  Role,
+} from '@/types/user';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import axios from '@/lib/api/axios';
-import { User, ApiUser, InviteUserPayload, ApiUserPayload, Role } from '@/types/user';
+type SuccessResponse = { success: boolean };
 
-// Transformation functions
-const transformUserForApi = (userData: InviteUserPayload): ApiUserPayload => {
-  // Create the base payload
-  const payload: ApiUserPayload = {
-    name: `${userData.first_name} ${userData.last_name}`.trim(),
-    email: userData.email,
-    role: userData.role
-  };
-  
-  // Only add note if it has content (since backend might not support it yet)
-  if (userData.note && userData.note.trim() !== '') {
-    payload.note = userData.note.trim();
-  }
-  
-  return payload;
-};
+// ✅ This matches what useAxios returns — a function that takes config and returns a response
+type RequestFn = <T = any>(
+  config: AxiosRequestConfig
+) => Promise<AxiosResponse<T>>;
 
 const transformUserFromApi = (apiUser: ApiUser): User => {
-  // Split the name into first_name and last_name
-  const nameParts = apiUser.name.split(' ');
-  const firstName = nameParts[0] || '';
-  const lastName = nameParts.slice(1).join(' ') || '';
-  
+  const [first_name, ...rest] = apiUser.name?.split(' ') || [''];
+  const last_name = rest.join(' ');
   return {
     ...apiUser,
-    first_name: firstName,
-    last_name: lastName,
-    name: apiUser.name // Keep the original name too
+    first_name,
+    last_name,
+    teams: apiUser.teams || {},
   };
 };
 
-export const userService = {
-  // Get all users with optional pagination and filtering
-  getUsers: async (page = 1, search = '', filters = {}): Promise<{ data: User[], total_pages: number }> => {
-    const response = await axios.get('/users', {
-      params: { page, search, ...filters }
+const transformUserForApi = (data: InviteUserPayload): ApiUserPayload => ({
+  name: `${data.first_name} ${data.last_name}`.trim().replace(/\s+/g, ' '),
+  email: data.email,
+  password: data.password,
+  roles: data.roles,
+  teams: Object.entries(data.teams).every(([_, roles]) => roles.length === 0)
+    ? undefined
+    : data.teams,
+});
+
+export const createUserService = (request: RequestFn) => ({
+  getUsers: async (page = 1, search = '') => {
+    const response = await request<{
+      data: ApiUser[];
+      total_pages: number;
+    }>({
+      url: '/admin/users',
+      method: 'GET',
+      params: { page, search },
     });
-    
-    // Transform API users to frontend users
-    const transformedUsers = response.data.data.map(transformUserFromApi);
-    
-    return {
-      ...response.data,
-      data: transformedUsers
-    };
+    const users = response.data.data.map(transformUserFromApi);
+    return { data: users, total_pages: response.data.total_pages };
   },
-  
-  // Invite a new user
-  inviteUser: async (userData: InviteUserPayload): Promise<{ success: boolean; message: string }> => {
-    // Transform the user data for the API
-    const apiPayload = transformUserForApi(userData);
-    
-    const response = await axios.post('/users/invite', apiPayload);
+
+  inviteUser: async (data: InviteUserPayload): Promise<SuccessResponse> => {
+
+  console.log('👤 roles:', data.roles);  // e.g. ['Manager']
+  console.log('📂 teams:', data.teams);  // e.g. { Credentialing: ['Member'] }
+
+    const payload = transformUserForApi(data);
+    console.log('[inviteUser payload]', payload); 
+    const response = await request<SuccessResponse>({
+      url: '/admin/users',
+      method: 'POST',
+      data: payload,
+    });
     return response.data;
   },
-  
-  // Change user role
-  changeRole: async (userId: string, role: Role): Promise<{ success: boolean; message: string }> => {
-    const response = await axios.patch(`/users/${userId}/role`, { role });
+
+  changeRole: async (userId: string, role: Role): Promise<SuccessResponse> => {
+    const response = await request<SuccessResponse>({
+      url: `/admin/users/${userId}/role`,
+      method: 'PATCH',
+      data: { role },
+    });
     return response.data;
   },
-  
-  // Delete a user
-  deleteUser: async (userId: string): Promise<{ success: boolean; message: string }> => {
-    const response = await axios.delete(`/users/${userId}`);
+
+  deleteUser: async (userId: string): Promise<SuccessResponse> => {
+    const response = await request<SuccessResponse>({
+      url: `/admin/users/${userId}`,
+      method: 'DELETE',
+    });
     return response.data;
-  }
-};
+  },
+});
