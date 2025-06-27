@@ -1,44 +1,30 @@
 // hooks/useRoles.ts
-
 import { Role } from '@/types/user';
 
 export function useRoles() {
-  // Available roles with proper spacing for display
-  const availableRoles: Role[] = [
-    'SuperAdmin',
-    'ContentManager', 
-    'ProviderManager'
-  ];
+  const availableRoles: Role[] = ['Admin', 'Manager', 'Provider'];
 
-  // Function to convert role to display format with spaces
   const getRoleDisplayName = (role: Role): string => {
     switch (role) {
-      case 'SuperAdmin':
-        return 'Super Admin';
-      case 'ContentManager':
-        return 'Content Manager';
-      case 'ProviderManager':
-        return 'Provider Manager';
-      case 'Owner':
-        return 'Owner';
+      case 'Admin':
+        return 'Admin';
+      case 'Manager':
+        return 'Manager';
+      case 'Provider':
+        return 'Provider';
       default:
         return role;
     }
   };
 
-  // Function to convert display name back to role value
   const getRoleFromDisplayName = (displayName: string): Role => {
     switch (displayName) {
-      case 'Super Admin':
-        return 'SuperAdmin';
-      case 'ContentManager':
-        return 'ContentManager';
-      case 'ProviderManager':
-        return 'ProviderManager';
-      case 'Owner':
-        return 'Owner';
+      case 'Admin':
+      case 'Manager':
+      case 'Provider':
+        return displayName;
       default:
-        return displayName as Role;
+        throw new Error(`Unknown display name: ${displayName}`);
     }
   };
 

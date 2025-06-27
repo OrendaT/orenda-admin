@@ -1,176 +1,179 @@
-// components/AdminsPermissions/InviteUserModal.tsx
-
 'use client';
 
-import React, { useState } from 'react';
-import { useUsers } from '@/hooks/useUsers';
-import { useRoles } from '@/hooks/useRoles';
-import { Button } from '@/components/ui/button';
+import React from 'react';
+import { useForm, Controller, FormProvider } from 'react-hook-form';
+import { InviteUserPayload, Role } from '@/types/user';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import Input from '@/components/ui/input';
-import { FormProvider, useForm } from 'react-hook-form'; 
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-
-import InviteSuccessModal from './InviteSuccessModal';
-import { InviteUserPayload, Role, ROLE_PERMISSIONS } from '@/types/user';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useUsers } from '@/hooks/useUsers';
 
 interface InviteUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess?: () => void;
 }
 
-const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClose, onSuccess }) => {
-  const { inviteUser } = useUsers();
-  // Removed unused usePermissions hook entirely since it's not being used
-  const { availableRoles, getRoleDisplayName } = useRoles();
-  
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
-  const [selectedRole, setSelectedRole] = useState<Role | ''>('');
+const ALL_TEAMS = ['Billing', 'Communication', 'Clinical', 'Intake'];
+const TEAM_ROLES = ['Admin', 'Member', 'Provider'];
 
-  // Initialize react-hook-form
+const ROLE_OPTIONS: Role[] = ['Admin', 'Manager', 'Provider'];
+
+const InviteUserModal: React.FC<InviteUserModalProps> = ({
+  isOpen,
+  onClose,
+  onSuccess,
+}) => {
+  const { inviteUser } = useUsers();
+
   const methods = useForm<InviteUserPayload>({
     defaultValues: {
       first_name: '',
       last_name: '',
       email: '',
-      role: '' as Role,
-      note: ''
-    }
+      password: '',
+      roles: ['Provider'],
+      teams: {},
+    },
   });
 
-  const { handleSubmit, watch, setValue, reset } = methods;
-  const watchedRole = watch('role');
-
-  const handleRoleChange = (value: string) => {
-    setValue('role', value as Role);
-    setSelectedRole(value as Role);
-  };
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    setValue,
+    reset,
+    formState: { isSubmitting },
+  } = methods;
 
   const onSubmit = async (data: InviteUserPayload) => {
-    setIsSubmitting(true);
-    
+    const cleanedTeams = Object.fromEntries(
+      Object.entries(data.teams || {}).map(([team, roles]) => [
+        team,
+        roles.filter((r) => r !== 'Lead'),
+      ])
+    );
+
     try {
-      await inviteUser(data);
-      setShowSuccessModal(true);
+      await inviteUser({ ...data, teams: cleanedTeams });
       reset();
-      setSelectedRole('');
+      onClose();
+      onSuccess?.();
     } catch (error) {
-      console.error('Failed to invite user:', error);
-    } finally {
-      setIsSubmitting(false);
+      console.error('Invite failed', error);
     }
-  };
-
-  const handleSuccessModalClose = () => {
-    setShowSuccessModal(false);
-    onSuccess();
-  };
-
-  const handleClose = () => {
-    reset();
-    setSelectedRole('');
-    onClose();
   };
 
   return (
-    <>
-      <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold">Invite new user</DialogTitle>
-          </DialogHeader>
-          
-          <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <Input
-                  name="first_name"
-                  label="First name"
-                  placeholder="enter user first name"
-                />
-                
-                <Input
-                  name="last_name"
-                  label="Last name"
-                  placeholder="enter user last name"
-                />
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogTitle className="text-lg font-semibold mb-4">
+          Invite New User
+        </DialogTitle>
+
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <Input {...register('first_name')} placeholder="First Name" />
+            <Input {...register('last_name')} placeholder="Last Name" />
+            <Input {...register('email')} placeholder="Email" type="email" />
+            <Input
+              {...register('password')}
+              placeholder="Password"
+              type="password"
+            />
+
+            <div>
+              <label className="block mb-2 text-sm font-medium">
+                Assign Roles
+              </label>
+              <div className="flex gap-4 flex-wrap">
+                {ROLE_OPTIONS.map((role) => (
+                  <label
+                    key={role}
+                    className="inline-flex items-center gap-1 text-sm"
+                  >
+                    <Checkbox
+                      checked={watch('roles')?.includes(role)}
+                      onCheckedChange={(checked) => {
+                        const currentRoles = watch('roles') || [];
+                        const updated = checked
+                          ? [...currentRoles, role]
+                          : currentRoles.filter((r) => r !== role);
+                        setValue('roles', updated as Role[]);
+                      }}
+                    />
+                    {role}
+                  </label>
+                ))}
               </div>
-              
-              <Input
-                name="email"
-                type="email"
-                label="Email address"
-                placeholder="enter user email"
-              />
-              
-              <div className="space-y-2">
-                <label className="block text-sm font-medium">
-                  Select role for user
-                </label>
-                <RadioGroup 
-                  value={watchedRole || selectedRole} 
-                  onValueChange={handleRoleChange}
-                  className="flex space-x-6"
-                >
-                  {availableRoles.map(role => (
-                    <div key={role} className="flex items-center space-x-2">
-                      <RadioGroupItem value={role} id={`role-${role}`} />
-                      <label htmlFor={`role-${role}`} className="text-sm">
-                        {getRoleDisplayName(role)}
-                      </label>
+            </div>
+
+            <div>
+              <label className="block mb-2 text-sm font-medium">
+                Assign Teams
+              </label>
+              <div className="space-y-4">
+                {ALL_TEAMS.map((team) => (
+                  <div key={team} className="p-2 border rounded">
+                    <div className="font-semibold">{team}</div>
+                    <div className="flex gap-4 mt-1">
+                      {TEAM_ROLES.map((role) => (
+                        <Controller
+                          key={`${team}-${role}`}
+                          name="teams"
+                          control={control}
+                          render={({ field }) => {
+                            const teamRoles = field.value?.[team] || [];
+                            const isChecked = teamRoles.includes(role);
+
+                            return (
+                              <label className="inline-flex items-center gap-1 text-sm">
+                                <Checkbox
+                                  checked={isChecked}
+                                  onCheckedChange={(checked) => {
+                                    const updatedRoles = checked
+                                      ? [...teamRoles, role]
+                                      : teamRoles.filter((r) => r !== role);
+
+                                    field.onChange({
+                                      ...field.value,
+                                      [team]: updatedRoles,
+                                    });
+                                  }}
+                                />
+                                {role}
+                              </label>
+                            );
+                          }}
+                        />
+                      ))}
                     </div>
-                  ))}
-                </RadioGroup>
+                  </div>
+                ))}
               </div>
-              
-              {/* Display the permissions associated with the selected role */}
-              {(watchedRole || selectedRole) && (
-                <div className="p-3 bg-gray-50 rounded-md">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Access control for this role:</p>
-                  <ul className="text-xs text-gray-600 space-y-1 ml-4 list-disc">
-                    {ROLE_PERMISSIONS[(watchedRole || selectedRole) as Role]?.map(permission => (
-                      <li key={permission}>{permission}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              
-              <div className="space-y-2">
-                <label className="block text-sm font-medium">
-                  Add Note <span className="text-gray-500">(Optional)</span>
-                </label>
-                <textarea
-                  {...methods.register('note')}
-                  className="w-full rounded-lg px-4 py-2.5 outline outline-[#E7E7E7] text-sm resize-none"
-                  placeholder="Type here..."
-                  rows={4}
-                />
-              </div>
-              
-              <div className="mt-6">
-                <Button 
-                  type="submit" 
-                  className="w-full bg-[#2e0086] hover:bg-[#25006d] text-white"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Sending...' : 'Send Invite'}
-                </Button>
-              </div>
-            </form>
-          </FormProvider>
-        </DialogContent>
-      </Dialog>
-      
-      {showSuccessModal && (
-        <InviteSuccessModal 
-          isOpen={showSuccessModal} 
-          onClose={handleSuccessModalClose} 
-          email={methods.getValues('email')}
-        />
-      )}
-    </>
+            </div>
+
+            <div className="flex justify-end gap-2 mt-6">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => {
+                  reset();
+                  onClose();
+                }}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Inviting...' : 'Invite'}
+              </Button>
+            </div>
+          </form>
+        </FormProvider>
+      </DialogContent>
+    </Dialog>
   );
 };
 

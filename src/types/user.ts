@@ -1,61 +1,79 @@
 // types/user.ts
 
-// Updated Role type to match backend exactly
-export type Role = 'SuperAdmin' | 'ContentManager' | 'ProviderManager' | 'Owner';
+/** 
+ * Core roles for users in the system.
+ * Note: these have been renamed from SuperAdmin→Admin, ContentManager→Manager, ProviderManager→Provider.
+ */
+export type Role = 'Admin' | 'Manager' | 'Provider' | 'Owner';
 
-// Updated Permission type to match backend exactly
-export type Permission = 
-  | 'create_user' 
-  | 'delete_user' 
-  | 'edit_user' 
-  | 'view_all' 
+/** 
+ * Fine-grained permissions. 
+ * If you still rely on the old ROLE_PERMISSIONS, update it to match the new Role names.
+ */
+export type Permission =
+  | 'create_user'
+  | 'delete_user'
+  | 'edit_user'
+  | 'view_all'
   | 'manage_providers'
   | 'view_own'
   | 'edit_own';
 
-// Define a mapping of roles to their permissions (for display only)
+/** 
+ * (Optional) If you need permission lookups by role, update this to use the new Role keys.
+ */
 export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
-  SuperAdmin: ['create_user', 'delete_user', 'edit_user', 'view_all', 'manage_providers'],
-  ContentManager: ['edit_user', 'view_all', 'manage_providers'],
-  ProviderManager: ['view_own', 'edit_own'],
-  Owner: ['create_user', 'delete_user', 'edit_user', 'view_all', 'manage_providers']
+  Admin:          ['create_user', 'delete_user', 'edit_user', 'view_all', 'manage_providers'],
+  Manager:        ['edit_user', 'view_all', 'manage_providers'],
+  Provider:       ['view_own', 'edit_own'],
+  Owner:          ['create_user', 'delete_user', 'edit_user', 'view_all', 'manage_providers']
 };
 
-// Frontend user interface (with separate first_name and last_name)
-export interface User {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: Role;
-  avatar?: string;
-  isCurrentUser?: boolean;
-  name?: string; // Added for completeness
-}
-
-// Backend API user interface (with combined name field)
+/** 
+ * The shape returned by your API for a user (before transformation).
+ * `teams` maps each team name to an array of arbitrary role‐strings (e.g. ['Admin'], ['Member']).
+ */
 export interface ApiUser {
   id: string;
-  name: string; // Combined first_name and last_name
+  name: string;
   email: string;
   role: Role;
   avatar?: string;
-  // Add any other fields from the API
+  teams?: Record<string, string[]>;
 }
 
-// Frontend payload for inviting users (with separate first_name and last_name)
+/** 
+ * Frontend‐friendly user object, with split first/last names.
+ * `teams` is always defined (might be an empty object).
+ */
+export interface User extends ApiUser {
+  first_name: string;
+  last_name: string;
+  isCurrentUser?: boolean;
+  teams: Record<string, string[]>;
+}
+
+/** 
+ * What we send when inviting a new user.
+ * - `roles`: array of top-level roles (usually a single entry).
+ * - `teams`: maps team name → array of strings (team-level roles).
+ */
 export interface InviteUserPayload {
   first_name: string;
   last_name: string;
   email: string;
-  role: Role;
-  note?: string; // Optional
+  password: string;
+  roles: Role[];
+  teams: Record<string, string[]>;
 }
 
-// Backend API payload for inviting users (with combined name field)
+/** 
+ * The API payload shape (closely matches InviteUserPayload, with password optional on updates).
+ */
 export interface ApiUserPayload {
-  name: string; // Combined first_name and last_name
+  name: string;
   email: string;
-  role: Role;
-  note?: string; // Optional
+  password?: string;
+  roles: Role[];
+  teams?: Record<string, string[]>;
 }
