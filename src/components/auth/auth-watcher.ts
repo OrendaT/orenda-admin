@@ -26,7 +26,7 @@ export default function AuthWatcher() {
     };
 
     maybeLogOut();
-  }, [isMounted, session, status]);
+  }, [isMounted, session?.error, status]);
 
   return null;
 }
