@@ -78,7 +78,7 @@ const MassDownload = ({
 
   // check the status until its ready
   useRetry({
-    callback: refetch,
+    func: refetch,
     delay: 2000,
     retries: Infinity,
     stop: data?.ready || !key || !taskId, // Stop when data is ready or there's no key or task id

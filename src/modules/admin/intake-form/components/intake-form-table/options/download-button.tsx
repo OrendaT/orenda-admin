@@ -1,3 +1,5 @@
+'use client';
+
 import useDownloadForm from '@/hooks/mutations/use-download-form';
 import { FormData } from '@/types';
 import { CellContext } from '@tanstack/react-table';
@@ -8,7 +10,7 @@ import { downloadFile } from '@/lib/utils';
 const DownloadButton = ({ row }: CellContext<FormData, unknown>) => {
   const { id, first_name, last_name, status } = row.original;
 
-  const { mutateAsync: downloadForm } = useDownloadForm();
+  const { isPending, mutateAsync: downloadForm } = useDownloadForm();
 
   const handleDownloadForm = async () => {
     const promise = downloadForm(id);
@@ -19,7 +21,8 @@ const DownloadButton = ({ row }: CellContext<FormData, unknown>) => {
         downloadFile({ name, file });
         return {
           message: 'Form downloaded successfully',
-          description: name,
+          description: <span className="text-black">{name}</span>,
+          icon: null,
         };
       },
       error: 'Error downloading form',
@@ -28,7 +31,7 @@ const DownloadButton = ({ row }: CellContext<FormData, unknown>) => {
 
   return (
     status === 'submitted' && (
-      <button type="button" title="Download" onClick={handleDownloadForm}>
+      <button disabled={isPending} type="button" title="Download" onClick={handleDownloadForm}>
         <LuDownload className="size-4" />
       </button>
     )

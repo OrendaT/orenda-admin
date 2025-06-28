@@ -97,7 +97,7 @@ const DownloadForm = ({
 
   // checks the download status (every 1s by default)
   useRetry({
-    callback: checkStatus,
+    func: checkStatus,
     retries: Infinity,
     stop: data?.ready || !Boolean(downloads[key]?.task_id), // Stops when data is ready or there's no task_id
   });
