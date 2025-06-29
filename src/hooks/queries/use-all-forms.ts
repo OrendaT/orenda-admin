@@ -53,7 +53,7 @@ export const useAllForms = ({
         queryFn: () => getForms(pageAfterNext),
       });
     }
-  }, [query.isSuccess, page, queryClient, status]);
+  }, [query.isSuccess, page, queryClient, status, getForms, queryKey]);
 
   return query;
 };
