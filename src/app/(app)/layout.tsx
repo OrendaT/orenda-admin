@@ -5,12 +5,7 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { getUserRole } from '@/lib/utils';
 import { redirect } from 'next/navigation';
 
-export const metadata = {
-  title: 'Dashboard',
-  description: 'Dashboard page',
-};
-
-const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
+const AppLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();
 
   if (!session) {
@@ -30,4 +25,4 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
     </SidebarProvider>
   );
 };
-export default DashboardLayout;
+export default AppLayout;
