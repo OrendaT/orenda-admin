@@ -5,7 +5,7 @@ import { QUERY_KEYS } from './query-keys';
 import { FORMS_EP } from '@/lib/api/endpoints';
 import { AllFormsResponse, UseAllFormsProps } from '@/types';
 import useAxios from '@/lib/api/axios-client';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export const useAllForms = ({
   page = '1',
@@ -15,21 +15,26 @@ export const useAllForms = ({
   const { axios, status } = useAxios();
   const queryClient = useQueryClient();
 
-  const queryKey = (page: string) =>
-    QUERY_KEYS.allForms({ page, search, filters });
+  const queryKey = useCallback(
+    (page: string) => QUERY_KEYS.allForms({ page, search, filters }),
+    [search, filters],
+  );
 
-  const getForms = async (page: string) => {
-    const res = await axios<AllFormsResponse>({
-      url: FORMS_EP.ALL_PATIENTS,
-      method: 'GET',
-      params: {
-        page,
-        search,
-        ...filters,
-      },
-    });
-    return res.data;
-  };
+  const getForms = useCallback(
+    async (page: string) => {
+      const res = await axios<AllFormsResponse>({
+        url: FORMS_EP.ALL_PATIENTS,
+        method: 'GET',
+        params: {
+          page,
+          search,
+          ...filters,
+        },
+      });
+      return res.data;
+    },
+    [axios, search, filters],
+  );
 
   const query = useQuery({
     queryKey: queryKey(page),
@@ -53,7 +58,7 @@ export const useAllForms = ({
         queryFn: () => getForms(pageAfterNext),
       });
     }
-  }, [query.isSuccess, page, queryClient, status, getForms, queryKey]);
+  }, [query.isSuccess, page, queryClient, status, queryKey, getForms]);
 
   return query;
 };
