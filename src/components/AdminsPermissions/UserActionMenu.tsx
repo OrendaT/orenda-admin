@@ -1,10 +1,11 @@
 // components/AdminsPermissions/UserActionMenu.tsx
 
 import React from 'react';
-import { User } from '@/types/user';
+// import { User } from '@/types/user';
+import { UserData } from '@/types';
 
 interface UserActionMenuProps {
-  user: User;
+  user: UserData;
   onClose: () => void;
   // Add callback functions as props
   onChangeRole: () => void;

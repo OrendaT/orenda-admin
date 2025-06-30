@@ -11,9 +11,10 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 type SuccessResponse = { success: boolean };
 
 // ✅ This matches what useAxios returns — a function that takes config and returns a response
-type RequestFn = <T = any>(
+type RequestFn = <T = unknown>(
   config: AxiosRequestConfig
 ) => Promise<AxiosResponse<T>>;
+
 
 const transformUserFromApi = (apiUser: ApiUser): User => {
   const [first_name, ...rest] = apiUser.name?.split(' ') || [''];
@@ -31,7 +32,7 @@ const transformUserForApi = (data: InviteUserPayload): ApiUserPayload => ({
   email: data.email,
   password: data.password,
   roles: data.roles,
-  teams: Object.entries(data.teams).every(([_, roles]) => roles.length === 0)
+  teams: Object.entries(data.teams).every(([ roles]) => roles.length === 0)
     ? undefined
     : data.teams,
 });

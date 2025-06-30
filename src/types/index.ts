@@ -195,6 +195,8 @@ export interface UserData {
   email: string;
   roles: string[];
   teams: Record<string, string[]>
+  avatar?: string;
+  isCurrentUser?: boolean;
 }
 export interface AllUsersResponse {
   users: UserData[]

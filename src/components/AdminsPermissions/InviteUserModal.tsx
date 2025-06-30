@@ -57,7 +57,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
     );
 
   
-  const payload = { ...data, teams: cleanedTeams }; // 👈 define it here first
+
   
 
     try {
