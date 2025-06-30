@@ -2,21 +2,21 @@
 
 import React from 'react';
 import UserRow from './UserRow';
-import { Button } from '@/components/ui/button';
-import { FiSearch, FiFilter } from 'react-icons/fi';
-import Pagination from './Pagination';
-import { UserData } from '@/types';
-import { cn } from '@/lib/utils';
+// import { Button } from '@/components/ui/button';
+// import { FiSearch, FiFilter } from 'react-icons/fi';
+// import Pagination from './Pagination';
+// import { UserData } from '@/types';
+// import { cn } from '@/lib/utils';
 import { useAllUsers } from '@/hooks/useUsers';
 
-interface UserTableProps {
-  users: UserData[];
-  isPending: boolean;
-  isError: boolean;
-}
+// interface UserTableProps {
+//   users: UserData[];
+//   isPending: boolean;
+//   isError: boolean;
+// }
 
 const UserTable: React.FC = () => {
-  const { data, isPending, isError } = useAllUsers();
+  const { data, isPending } = useAllUsers();
 
   return (
     <div className="w-full bg-[#F6F6F6] shadow-sm">

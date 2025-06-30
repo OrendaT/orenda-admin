@@ -1,9 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { SidebarProvider } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/layout/app-sidebar';
-import { useUsers } from '@/hooks/useUsers';
+// import { useUsers } from '@/hooks/useUsers';
 import UserTable from '@/components/AdminsPermissions/UserTable';
 import InviteUserModal from '@/components/AdminsPermissions/InviteUserModal';
 import { Button } from '@/components/ui/button';
@@ -13,8 +11,6 @@ import { useQueryClient } from '@tanstack/react-query';
 const AdminsPermissionsPage = () => {
 
   const queryClient = useQueryClient();
-  const { fetchUsers } = useUsers();
-
 
   const [inviteOpen, setInviteOpen] = useState(false);
 
