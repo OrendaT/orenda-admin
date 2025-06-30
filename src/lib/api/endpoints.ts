@@ -27,3 +27,7 @@ export const FORMS_EP = {
   CHECK_TASK: (id?: string) => `${BASE.ADMIN}/check-task/${id}`,
   DOWNLOAD: (id: string) => `${BASE.ADMIN}/download/DOWNLOADS/${id}.zip`,
 };
+
+export const USERS_EP = {
+  ALL_USERS: `${BASE.ADMIN}/users`
+}

@@ -141,6 +141,7 @@ export interface AllFormsResponse {
   success: boolean;
 }
 
+
 export interface UseAllFormsProps {
   page?: string;
   search?: string;
@@ -181,4 +182,20 @@ export interface ResourceFile {
   name: string;
   url: string;
   image?: string | StaticImport;
+}
+
+
+
+
+
+
+export interface UserData {
+  id: string;
+  name: string;
+  email: string;
+  roles: string[];
+  teams: Record<string, string[]>
+}
+export interface AllUsersResponse {
+  users: UserData[]
 }

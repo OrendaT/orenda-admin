@@ -16,7 +16,7 @@ interface InviteUserModalProps {
 }
 
 const ALL_TEAMS = ['Billing', 'Communication', 'Clinical', 'Intake'];
-const TEAM_ROLES = ['Admin', 'Member', 'Provider'];
+const TEAM_ROLES = ['Admin', 'Member'];
 
 const ROLE_OPTIONS: Role[] = ['Admin', 'Manager', 'Provider'];
 
@@ -55,6 +55,10 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
         roles.filter((r) => r !== 'Lead'),
       ])
     );
+
+  
+  const payload = { ...data, teams: cleanedTeams }; // 👈 define it here first
+  
 
     try {
       await inviteUser({ ...data, teams: cleanedTeams });

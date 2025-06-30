@@ -8,9 +8,10 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ChevronDown } from 'lucide-react';
 import { User, ROLE_PERMISSIONS, Role } from '@/types/user';
-import { useUsers } from '@/hooks/useUsers';
+// import { useUsers } from '@/hooks/useUsers';
 import { useRoles } from '@/hooks/useRoles';
-import Image from 'next/image'; 
+import Image from 'next/image';
+import { UserData } from '@/types';
 
 
 
@@ -19,7 +20,7 @@ import DeleteUserModal from './DeleteUserModal';
 import SendMessageModal from './SendMessageModal';
 
 interface UserRowProps {
-  user: User;
+  user: UserData;
 }
 
 
@@ -28,25 +29,25 @@ type UIPermission = 'Add contents' | 'Edit contents' | 'Approve contents' | 'All
 
 const getUIPermission = (role: Role): UIPermission => {
   const rolePermissions = ROLE_PERMISSIONS[role] || [];
-  
 
-  if (rolePermissions.length >= 4 && rolePermissions.includes('create_user') && 
-      rolePermissions.includes('edit_user') && rolePermissions.includes('view_all')) {
+
+  if (rolePermissions.length >= 4 && rolePermissions.includes('create_user') &&
+    rolePermissions.includes('edit_user') && rolePermissions.includes('view_all')) {
     return 'All controls';
   }
-  
+
   if (rolePermissions.includes('view_all') || rolePermissions.includes('manage_providers')) {
     return 'Approve contents';
   }
-  
+
   if (rolePermissions.includes('edit_user')) {
     return 'Edit contents';
   }
-  
+
   if (rolePermissions.includes('create_user')) {
     return 'Add contents';
   }
-  
+
 
   return 'Add contents';
 };
@@ -72,21 +73,21 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
   const [isActionMenuOpen, setIsActionMenuOpen] = useState<boolean>(false);
   const [isPermissionDropdownOpen, setIsPermissionDropdownOpen] = useState<boolean>(false);
   const [isUpdatingPermissions, setIsUpdatingPermissions] = useState<boolean>(false);
-  
+
   // Modal states
   const [showChangeRoleModal, setShowChangeRoleModal] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [showMessageModal, setShowMessageModal] = useState<boolean>(false);
-  
+
   // Local state for immediate UI updates
   const [localSelectedPermission, setLocalSelectedPermission] = useState<UIPermission>(getUIPermission(user.role));
-  
+
   // Refs for click outside handling
   const actionMenuRef = useRef<HTMLDivElement>(null);
   const permissionDropdownRef = useRef<HTMLDivElement>(null);
 
   // Get the useUsers hook for role changing and role display
-  const { changeUserRole } = useUsers();
+  // const { changeUserRole } = useUsers();
   const { getRoleDisplayName } = useRoles();
 
   // Update local state when user prop changes
@@ -105,9 +106,8 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
     return '?';
   };
 
-  const displayName = user.first_name && user.last_name 
-    ? `${user.first_name} ${user.last_name}`
-    : user.name || 'Unknown User';
+  const displayName = user.name || "NO NAME"
+
 
   // All available UI permission options
   const allUIPermissions: UIPermission[] = ['Add contents', 'Edit contents', 'Approve contents', 'All controls'];
@@ -121,10 +121,10 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
 
     // Update local state immediately for instant UI feedback
     setLocalSelectedPermission(permission);
-    
+
     // Determine the appropriate role for the selected permission
     const newRole = getRoleFromUIPermission(permission);
-    
+
     // Only update if the role would actually change
     if (newRole !== user.role) {
       setIsUpdatingPermissions(true);
@@ -172,44 +172,54 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
     };
   }, []);
 
-  return (
-    <>
-      <div className="grid grid-cols-12 p-4 border-b items-center hover:bg-gray-50">
-        {/* User column */}
-        <div className="col-span-4 flex items-center gap-3">
-          <Avatar className="h-10 w-10 bg-purple-100 text-purple-800">
-            {user.avatar ? (
-              <Image 
-                src={user.avatar} 
-                alt={displayName} 
-                width={40}
-                height={40}
-                className="h-full w-full object-cover rounded-full"
-              />
-            ) : (
-              <AvatarFallback className="bg-purple-100 text-purple-800 font-medium">
-                {getInitials(user.first_name, user.last_name, user.name)}
-              </AvatarFallback>
-            )}
-          </Avatar>
-          <div>
-            <div className="font-medium text-[13.4px] text-gray-900">
-              {displayName}
-              {user.isCurrentUser && <span className="text-gray-500 ml-1">(You)</span>}
-            </div>
-            <div className="text-[11.9px] text-gray-500">{user.email}</div>
+  let teams = "";
+
+  for (let key in user.teams) {
+    if (user.teams.hasOwnProperty(key)) {
+    teams += `${ key }  => ${ user.teams[key] }, `;
+  }
+
+return (
+  <>
+    <div className="grid grid-cols-12 p-4 border-b items-center hover:bg-gray-50">
+      {/* User column */}
+      <div className="col-span-4 flex items-center gap-3">
+        <Avatar className="h-10 w-10 bg-purple-100 text-purple-800">
+          {user.avatar ? (
+            <Image
+              src={user.avatar}
+              alt={displayName}
+              width={40}
+              height={40}
+              className="h-full w-full object-cover rounded-full"
+            />
+          ) : (
+            <AvatarFallback className="bg-purple-100 text-purple-800 font-medium">
+              {/* {getInitials(user.name.split(" ")[0], user.name.split(" ")[1])} */}
+            </AvatarFallback>
+          )}
+        </Avatar>
+        <div>
+          <div className="font-medium text-[13.4px] text-gray-900">
+            {displayName}
+            {user.isCurrentUser && <span className="text-gray-500 ml-1">(You)</span>}
           </div>
+          <div className="text-[11.9px] text-gray-500">{user.email}</div>
         </div>
+      </div>
 
-        {/* Role column - Updated to show spaced names */}
-        <div className="col-span-3">
-          <span className="text-gray-900 text-[13px]">{getRoleDisplayName(user.role)}</span>
-        </div>
+      {/* Role column - Updated to show spaced names */}
+      <div className="col-span-3">
+        <span className="text-gray-900 text-[13px]">{user.roles.join(",")}</span>
+      </div>
 
-        {/* Access control column - Updated with single-select checkboxes */}
-        <div className="col-span-4" ref={permissionDropdownRef}>
-          <div className="relative">
-            <Button 
+      {/* Access control column - Updated with single-select checkboxes */}
+      <div className="col-span-4" ref={permissionDropdownRef}>
+        <div className="relative">
+          {
+            teams
+          }
+          {/* <Button 
               variant="ghost" 
               className="w-[50%] justify-start text-sm h-9 hover:bg-gray-100 border-none px-2"
               onClick={() => setIsPermissionDropdownOpen(!isPermissionDropdownOpen)}
@@ -219,9 +229,9 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
                 {isUpdatingPermissions ? "Updating..." : localSelectedPermission}
               </span>
               <ChevronDown className={`h-4 w-4 transition-transform ${isPermissionDropdownOpen ? 'transform rotate-180' : ''}`} />
-            </Button>
-            
-            {isPermissionDropdownOpen && (
+            </Button> */}
+
+          {/* {isPermissionDropdownOpen && (
               <div className="absolute mt-1 w-48 rounded-md shadow-lg bg-white border border-gray-100 z-10">
                 <div className="py-3 px-4 space-y-3">
                   {allUIPermissions.map((permission) => {
@@ -246,59 +256,60 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
                   })}
                 </div>
               </div>
-            )}
-          </div>
-        </div>
-
-        {/* Actions column */}
-        <div className="col-span-1 relative" ref={actionMenuRef}>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="h-8 w-8 rounded-full hover:bg-gray-100"
-            onClick={() => setIsActionMenuOpen(!isActionMenuOpen)}
-          >
-            <FiMoreVertical className="h-4 w-4" />
-          </Button>
-          
-          {isActionMenuOpen && (
-            <UserActionMenu 
-              user={user} 
-              onClose={() => setIsActionMenuOpen(false)}
-              onChangeRole={handleChangeRole}
-              onDeleteUser={handleDeleteUser}
-              onSendMessage={handleSendMessage}
-            />
-          )}
+            )} */}
         </div>
       </div>
 
-      {/* Modals */}
-      {showChangeRoleModal && (
-        <ChangeRoleModal
-          user={user}
-          isOpen={showChangeRoleModal}
-          onClose={() => setShowChangeRoleModal(false)}
-        />
-      )}
+      {/* Actions column */}
+      <div className="col-span-1 relative" ref={actionMenuRef}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 rounded-full hover:bg-gray-100"
+          onClick={() => setIsActionMenuOpen(!isActionMenuOpen)}
+        >
+          <FiMoreVertical className="h-4 w-4" />
+        </Button>
 
-      {showDeleteConfirm && (
-        <DeleteUserModal
-          user={user}
-          isOpen={showDeleteConfirm}
-          onClose={() => setShowDeleteConfirm(false)}
-        />
-      )}
+        {isActionMenuOpen && (
+          <UserActionMenu
+            user={user}
+            onClose={() => setIsActionMenuOpen(false)}
+            onChangeRole={handleChangeRole}
+            onDeleteUser={handleDeleteUser}
+            onSendMessage={handleSendMessage}
+          />
+        )}
+      </div>
+    </div>
 
-      {showMessageModal && (
-        <SendMessageModal
-          user={user}
-          isOpen={showMessageModal}
-          onClose={() => setShowMessageModal(false)}
-        />
-      )}
-    </>
-  );
+    {/* Modals */}
+    {showChangeRoleModal && (
+      <ChangeRoleModal
+        user={user}
+        isOpen={showChangeRoleModal}
+        onClose={() => setShowChangeRoleModal(false)}
+      />
+    )}
+
+    {showDeleteConfirm && (
+      <DeleteUserModal
+        user={user}
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+      />
+    )}
+
+    {showMessageModal && (
+      <SendMessageModal
+        user={user}
+        isOpen={showMessageModal}
+        onClose={() => setShowMessageModal(false)}
+      />
+    )}
+  </>
+);
+};
 };
 
 export default UserRow;
