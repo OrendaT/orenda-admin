@@ -37,11 +37,7 @@ const RemindPatient = ({
   const onSubmit = handleSubmit(async (data) => {
     const { email, first_name } = data;
 
-    // Using the email service instead of directly calling Mail chimp
-    const res = await sendReminderEmail({
-      email,
-      first_name,
-    });
+    const res = await sendReminderEmail({ email, first_name });
 
     if (res.success) {
       setStatus('success');
