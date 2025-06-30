@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useCallback } from 'react';
 import { User, InviteUserPayload, Role } from '@/types/user';
 import { createUserService } from '@/services/userService';
@@ -89,3 +91,34 @@ export const useUsers = () => {
     deleteUser,
   };
 };
+
+
+
+
+
+
+
+import { useQuery } from '@tanstack/react-query';
+
+import { USERS_EP } from '@/lib/api/endpoints';
+import { AllUsersResponse, UseAllFormsProps } from '@/types';
+// import useAxios from '@/lib/api/axios-client';
+
+
+export const useAllUsers =()=> {
+  const { axios, status } = useAxios();
+ 
+  return useQuery({
+    queryKey: [],
+    queryFn: async () => {
+      const res = await axios<AllUsersResponse>({
+        url: USERS_EP.ALL_USERS,
+        method: 'GET',
+        
+      });
+      return res.data.users;
+    },
+    enabled: status === 'authenticated',
+  });
+};
+

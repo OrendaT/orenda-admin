@@ -1,61 +1,59 @@
-'use client';
+// 'use client';
 
-import React, { useState } from 'react';
-import { useUsers } from '@/hooks/useUsers';
-import UserTable from './UserTable';
-import InviteUserModal from './InviteUserModal';
-import { Button } from '@/components/ui/button';
-import { AppSidebar } from '../layout/app-sidebar';
-import { SidebarProvider } from '@/components/ui/sidebar';
+// import React, { useState } from 'react';
+// import { useAllUsers } from '@/hooks/useUsers';
+// import UserTable from './UserTable';
+// import InviteUserModal from './InviteUserModal';
+// import { Button } from '@/components/ui/button';
+// import { AppSidebar } from '../layout/app-sidebar';
+// import { SidebarProvider } from '@/components/ui/sidebar';
 
-const AdminsPermissionsPage: React.FC = () => {
-  const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
-  const { users, loading, fetchUsers, totalPages, currentPage } = useUsers();
+// const AdminsPermissionsPage: React.FC = () => {
+//   const [isInviteModalOpen, setIsInviteModalOpen] = useState<boolean>(false);
+//   const { data, isPending, isError } = useAllUsers();
 
 
-  return (
+//   return (
     
-      <div className=" h-screen w-full">
+//       <div className=" h-screen w-full">
        
        
 
-        {/* Main Content */}
-        <div className=" overflow-auto bg-cover bg-[#F6F6F6]">
-          <div className="w-full p-6">
-            <div className="flex items-center justify-between mb-8">
-              <h1 className="text-xl font-semibold">Admins & Permissions</h1>
-              <Button
-                onClick={() => setIsInviteModalOpen(true)}
-                className="bg-[#2e0086] hover:bg-[#25006d] w-40 h-11 text-white"
-              >
-                <span className="mr-1">+</span> Add user
-              </Button>
-            </div>
+//         {/* Main Content */}
+//         <div className=" overflow-auto bg-cover bg-[#F6F6F6]">
+//           <div className="w-full p-6">
+//             <div className="flex items-center justify-between mb-8">
+//               <h1 className="text-xl font-semibold">Admins & Permissions</h1>
+//               <Button
+//                 onClick={() => setIsInviteModalOpen(true)}
+//                 className="bg-[#2e0086] hover:bg-[#25006d] w-40 h-11 text-white"
+//               >
+//                 <span className="mr-1">+</span> Add user
+//               </Button>
+//             </div>
 
-            <UserTable
-              users={users}
-              loading={loading}
-              totalPages={totalPages}
-              currentPage={currentPage}
-              onPageChange={fetchUsers} 
-            />
+//             <UserTable
+//               users={data}
+//               isPending={isPending}
+//               isError={isError} 
+//             />
 
 
-            {isInviteModalOpen && (
-              <InviteUserModal
-                isOpen={isInviteModalOpen}
-                onClose={() => setIsInviteModalOpen(false)}
-                onSuccess={() => {
-                  setIsInviteModalOpen(false);
-                  fetchUsers(); // Refresh the user list
-                }}
-              />
-            )}
-          </div>
-        </div>
-      </div>
+//             {isInviteModalOpen && (
+//               <InviteUserModal
+//                 isOpen={isInviteModalOpen}
+//                 onClose={() => setIsInviteModalOpen(false)}
+//                 // onSuccess={() => {
+//                 //   setIsInviteModalOpen(false);
+//                 //   fetchUsers(); // Refresh the user list
+//                 // }}
+//               />
+//             )}
+//           </div>
+//         </div>
+//       </div>
     
-  );
-};
+//   );
+// };
 
-export default AdminsPermissionsPage;
+// export default AdminsPermissionsPage;

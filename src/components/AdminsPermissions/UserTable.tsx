@@ -5,24 +5,19 @@ import UserRow from './UserRow';
 import { Button } from '@/components/ui/button';
 import { FiSearch, FiFilter } from 'react-icons/fi';
 import Pagination from './Pagination';
-import { User } from '@/types/user';
+import { UserData } from '@/types';
 import { cn } from '@/lib/utils';
+import { useAllUsers } from '@/hooks/useUsers';
 
 interface UserTableProps {
-  users: User[];
-  loading: boolean;
-  totalPages: number;
-  currentPage: number;
-  onPageChange: (page: number, search?: string) => void;
+  users: UserData[];
+  isPending: boolean;
+  isError: boolean;
 }
 
-const UserTable: React.FC<UserTableProps> = ({
-  users,
-  loading,
-  totalPages,
-  currentPage,
-  onPageChange,
-}) => {
+const UserTable: React.FC = () => {
+  const { data, isPending, isError } = useAllUsers();
+
   return (
     <div className="w-full bg-[#F6F6F6] shadow-sm">
       {/* Table headers */}
@@ -34,16 +29,16 @@ const UserTable: React.FC<UserTableProps> = ({
       </div>
 
       {/* Table body with loading, empty, or populated state */}
-      {loading ? (
+      {isPending ? (
         <div className="p-8 flex justify-center">Loading...</div>
-      ) : users.length === 0 ? (
+      ) : data?.length === 0 ? (
         <div className="p-8 text-center text-gray-500">No users found.</div>
       ) : (
-        users.map((user) => <UserRow key={user.id} user={user} />)
+        data?.map((user) => <UserRow key={user.id} user={user} />)
       )}
 
       {/* Pagination controls */}
-      {totalPages > 1 && (
+      {/* {totalPages > 1 && (
         <div className="p-4 border-t">
           <Pagination
             currentPage={currentPage}
@@ -51,7 +46,7 @@ const UserTable: React.FC<UserTableProps> = ({
             onPageChange={onPageChange}
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
