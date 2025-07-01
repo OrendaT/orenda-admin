@@ -33,9 +33,8 @@ const Announcements = () => {
               </li>
             ))
           ) : (
-            <li className="text-center">
-  
-              <small>No announcements</li>
+            <li className="text-center clamp-[text,sm,base]">
+             No announcements</li>
           )}
         </ul>
       </DialogContent>
