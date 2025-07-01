@@ -11,6 +11,7 @@ export const useAllForms = ({
   page = '1',
   search,
   filters,
+  prefetchNextPages,
 }: UseAllFormsProps) => {
   const { axios, status } = useAxios();
   const queryClient = useQueryClient();
@@ -44,7 +45,7 @@ export const useAllForms = ({
 
   // Prefetch next page when current query is successful
   useEffect(() => {
-    if (query.isSuccess && status === 'authenticated') {
+    if (query.isSuccess && status === 'authenticated' && prefetchNextPages) {
       const nextPage = String(Number(page) + 1);
       const pageAfterNext = String(Number(page) + 2);
 

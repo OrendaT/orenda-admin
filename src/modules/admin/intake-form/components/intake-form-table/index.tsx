@@ -33,6 +33,7 @@ const IntakeFormTable = () => {
       to,
       status,
     },
+    prefetchNextPages: true,
   });
 
   const table = useReactTable({

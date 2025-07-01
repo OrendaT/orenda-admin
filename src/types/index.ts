@@ -164,6 +164,7 @@ export interface UseAllFormsProps {
     to?: string;
     status?: string;
   };
+  prefetchNextPages?: boolean;
 }
 
 export interface TaskStatusResponse {
