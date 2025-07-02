@@ -17,8 +17,7 @@ const AdminsPermissionsPage = () => {
   return (
 
     <div className="w-full h-screen flex">
-
-      <div className="flex-1  bg-gray-50 p-6  overflow-auto scrollbar-none">
+      <div className="flex-1 bg-gray-50 p-6 overflow-auto scrollbar-none">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-semibold">Admins & Permissions</h1>
           <Button
@@ -29,7 +28,12 @@ const AdminsPermissionsPage = () => {
             + Add User
           </Button>
         </div>
-        <UserTable />
+
+        {/* ✅ Add this wrapper */}
+        <div className="w-full overflow-x-auto">
+          <UserTable />
+        </div>
+
         <InviteUserModal
           isOpen={inviteOpen}
           onClose={() => setInviteOpen(false)}
@@ -40,6 +44,7 @@ const AdminsPermissionsPage = () => {
         />
       </div>
     </div>
+
 
   );
 };
