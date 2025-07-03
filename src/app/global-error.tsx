@@ -19,7 +19,7 @@ export default function GlobalError({
           {error?.message || 'An unknown error occurred. Please try again.'}
         </p>
 
-        <p>Digest: {error.digest || ''}</p>
+        {error.digest && <p>Digest: {error.digest}</p>}
 
         <Button className="w-fit" variant={'outline'} onClick={() => reset()}>
           Try again

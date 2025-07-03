@@ -1,10 +1,15 @@
 import useAxios from '@/lib/api/axios-client';
 import { FORMS_EP } from '@/lib/api/endpoints';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { QUERY_KEYS } from '../queries/query-keys';
+import useIntakeFormParams from '../use-intake-form-params';
 
 const useMassDownload = () => {
   const { axios } = useAxios();
+  const queryClient = useQueryClient();
+
+  const { page, search, flag, from, to } = useIntakeFormParams();
 
   return useMutation({
     mutationFn: async (data: { from_date: string; to_date: string }) =>
@@ -18,6 +23,15 @@ const useMassDownload = () => {
         method: 'POST',
         data,
       }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.allForms({
+          page,
+          search,
+          filters: { flag, from, to },
+        }),
+      });
+    },
     onError: () => {
       toast.error('Something went wrong');
     },

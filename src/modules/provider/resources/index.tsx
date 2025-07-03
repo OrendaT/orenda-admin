@@ -1,12 +1,13 @@
+import { FoundResource } from '@/types';
 import ResourceList from './resource-list';
 import ResourceTitle from './resource-title';
 
-const ProviderResources = async ({ id = '/' }: { id?: string }) => {
+const ProviderResources = async ({ resource }: { resource: FoundResource }) => {
   return (
-    <div>
-      <ResourceTitle id={id} />
+    <div className="px-1">
+      <ResourceTitle title={resource.name} />
 
-      <ResourceList id={id} />
+      <ResourceList resources={resource} />
     </div>
   );
 };

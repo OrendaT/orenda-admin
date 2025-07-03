@@ -1,10 +1,11 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from './query-keys';
 import { FORMS_EP } from '@/lib/api/endpoints';
 import { AllFormsResponse, UseAllFormsProps } from '@/types';
 import useAxios from '@/lib/api/axios-client';
+import { useCallback, useEffect } from 'react';
 
 export const useAllForms = ({
   page = '1',
@@ -12,10 +13,15 @@ export const useAllForms = ({
   filters,
 }: UseAllFormsProps) => {
   const { axios, status } = useAxios();
+  const queryClient = useQueryClient();
 
-  return useQuery({
-    queryKey: QUERY_KEYS.allForms({ page, search, filters }),
-    queryFn: async () => {
+  const queryKey = useCallback(
+    (page: string) => QUERY_KEYS.allForms({ page, search, filters }),
+    [search, filters],
+  );
+
+  const getForms = useCallback(
+    async (page: string) => {
       const res = await axios<AllFormsResponse>({
         url: FORMS_EP.ALL_PATIENTS,
         method: 'GET',
@@ -27,6 +33,32 @@ export const useAllForms = ({
       });
       return res.data;
     },
+    [axios, search, filters],
+  );
+
+  const query = useQuery({
+    queryKey: queryKey(page),
+    queryFn: () => getForms(page),
     enabled: status === 'authenticated',
   });
+
+  // Prefetch next page when current query is successful
+  useEffect(() => {
+    if (query.isSuccess && status === 'authenticated') {
+      const nextPage = String(Number(page) + 1);
+      const pageAfterNext = String(Number(page) + 2);
+
+      queryClient.prefetchQuery({
+        queryKey: queryKey(nextPage),
+        queryFn: () => getForms(nextPage),
+      });
+
+      queryClient.prefetchQuery({
+        queryKey: queryKey(pageAfterNext),
+        queryFn: () => getForms(pageAfterNext),
+      });
+    }
+  }, [query.isSuccess, page, queryClient, status, queryKey, getForms]);
+
+  return query;
 };

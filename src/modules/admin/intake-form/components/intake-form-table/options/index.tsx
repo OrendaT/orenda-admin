@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
-import DownloadForm from './download-form';
 import { CellContext } from '@tanstack/react-table';
 import { FormData } from '@/types';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
@@ -19,7 +18,6 @@ import PreviewForm from './preview-form';
 const Options = ({ row }: CellContext<FormData, unknown>) => {
   const [open, setOpen] = useState(false);
   const [module, setModule] = useState<'download' | 'preview'>();
-  const name = String(row.getValue('name'));
   const { id, flag, status } = row.original;
 
   const { mutateAsync: flagForm, isPending } = useFlagForm();
@@ -42,14 +40,7 @@ const Options = ({ row }: CellContext<FormData, unknown>) => {
               Preview Form
             </DropdownMenuItem>
           </DialogTrigger>
-          <DialogTrigger asChild>
-            <DropdownMenuItem
-              onClick={() => setModule('download')}
-              className="py-2 pr-8 text-sm"
-            >
-              Download Form
-            </DropdownMenuItem>
-          </DialogTrigger>
+
           <DropdownMenuItem
             onClick={() => flagForm(id)}
             disabled={isPending}
@@ -60,9 +51,9 @@ const Options = ({ row }: CellContext<FormData, unknown>) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {module === 'download' && (
+      {/* {module === 'download' && (
         <DownloadForm name={name} open={open} forms={[id]} />
-      )}
+      )} */}
 
       {module === 'preview' && <PreviewForm id={id} status={status} />}
     </Dialog>

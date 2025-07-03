@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { MdOutlineFlag } from 'react-icons/md';
 import Options from './options';
 import { useSelectedFormsStore } from '@/stores/selected-forms-store';
+import DownloadButton from './options/download-button';
 
 export const columns: ColumnDef<FormData>[] = [
   {
@@ -69,6 +70,26 @@ export const columns: ColumnDef<FormData>[] = [
         : value;
       return value;
     },
+  },
+  {
+    accessorKey: 'last_accessed_at',
+    header: 'Last Accessed',
+    cell: ({ getValue }) => {
+      let value = getValue();
+
+      if (!value) return '—';
+
+      const dateValue = new Date(value as string);
+      value = dateValue
+        ? format(dateValue, 'PPp').replace('PM', 'pm').replace('AM', 'am')
+        : value;
+      return value;
+    },
+  },
+  {
+    id: 'download',
+    enableHiding: false,
+    cell: DownloadButton,
   },
   {
     id: 'actions',

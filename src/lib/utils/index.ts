@@ -1,8 +1,15 @@
-import { MenuItem, Resource, ResourceFile, ResourceFolder } from '@/types';
+import {
+  SidebarMenuItem,
+  Resource,
+  ResourceFile,
+  ResourceFolder,
+  UserRole,
+} from '@/types';
 import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import { format } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
+import { resources } from '../data/resources';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -20,48 +27,76 @@ export const getPastDate = (daysAgo: string = '0') => {
   return format(date, 'MM-dd-yyyy');
 };
 
+export const downloadFileFromUrl = async (
+  { name, url }: { name: string; url: string },
+  callback?: () => void,
+) => {
+  const res = await axios.get(url, {
+    responseType: 'blob',
+  });
+
+  downloadFile({ name, file: res.data }, callback);
+};
+
 /**
  * @function downloadFile
  * @description this takes a name and url, then proceeds to
  * download that file. it optionally takes a callback function
  * that runs after the file has been downloaded
  */
-export const downloadFile = async (
-  { name, url }: { name: string; url: string },
+export const downloadFile = (
+  { name, file }: { name: string; file: Blob | File },
   callback?: () => void,
 ) => {
-  // create blob
-  const res = await axios.get(url, {
-    responseType: 'blob',
-  });
-  const blob = new Blob([res.data], { type: res.data.type });
-  const blobUrl = URL.createObjectURL(blob);
+  const fileUrl = URL.createObjectURL(file);
 
   // create and click link
   const link = document.createElement('a');
-  link.href = blobUrl;
+  link.href = fileUrl;
   link.setAttribute('download', `${name}.zip`);
   document.body.appendChild(link);
   link.click();
 
   // Clean up
   document.body.removeChild(link);
-  URL.revokeObjectURL(blobUrl);
+  URL.revokeObjectURL(fileUrl);
 
   // run callback function
   callback?.();
 };
 
 /**
- * @function isProvider
- * @description takes the role from the session
- * and checks whether the user is a provider
- * or not (admin|super_admin)
+ * @function getUserRole
+ * @description Determines the user's highest role based on the provided roles array.
  */
-export const isProvider = (roles?: string[]) =>
-  roles?.some((role) => /provider/i.test(role));
+export const getUserRole = (
+  roles?: string[],
+): {
+  role: UserRole;
+  isProvider: boolean;
+  isAdmin: boolean;
+  isManager: boolean;
+} => {
+  let role: UserRole = 'Provider';
+  let isProvider = false;
+  let isAdmin = false;
+  let isManager = false;
 
-export const findResource = (resources: Resource[], id: string) => {
+  if (roles?.some((role) => /Admin/i.test(role))) {
+    isAdmin = true;
+    role = 'Admin';
+  } else if (roles?.some((role) => /Manager/i.test(role))) {
+    isManager = true;
+    role = 'Manager';
+  } else if (roles?.some((role) => /Provider/i.test(role))) {
+    isProvider = true;
+    role = 'Provider';
+  }
+
+  return { role, isProvider, isAdmin, isManager };
+};
+
+export const findResource = (id: string) => {
   // First, check if the id matches any top-level Resource
   for (const res of resources) {
     if (res.id === id) {
@@ -94,10 +129,10 @@ export const findResource = (resources: Resource[], id: string) => {
 
 export const convertResourcesToMenu = (
   resources: Resource[],
-): { id: string; title: string; items: MenuItem[] } => {
-  const items: MenuItem[] = resources.map(
+): { id: string; title: string; items: SidebarMenuItem[] } => {
+  const items: SidebarMenuItem[] = resources.map(
     ({ id, name, title, Icon, resources }) => {
-      const item: MenuItem = {
+      const item: SidebarMenuItem = {
         id,
         title: title || name,
         href: id,
@@ -129,7 +164,7 @@ export const convertResourcesToMenu = (
 
 export const slugify = (routes?: string[]): string => {
   if (!routes || !routes.length) return '/';
-  
+
   let slug = '';
 
   routes.forEach((route) => {
