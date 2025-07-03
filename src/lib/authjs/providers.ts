@@ -77,7 +77,7 @@ const providers = [
             name: res.data.user.name,
             email,
             roles: res.data.user.roles,
-            permissions: res.data.user.permissions,
+            teams: res.data.user.teams,
           },
         };
       } catch (loginError) {
@@ -101,7 +101,7 @@ const providers = [
                 name,
                 email,
                 roles: res.data.user.roles,
-                permissions: res.data.user.permissions,
+                teams: res.data.user.teams,
               },
             };
           } catch (registerError) {

@@ -1,25 +1,27 @@
 import ResourceFile from './resource-file';
-import { cn, findResource } from '@/lib/utils';
-import { resources } from '@/lib/data/resources';
-import type { ResourceFile as File, ResourceFolder as Folder } from '@/types';
+import { cn } from '@/lib/utils';
+import type {
+  ResourceFile as File,
+  ResourceFolder as Folder,
+  FoundResource,
+} from '@/types';
 import ResourceFolder from './resource-folder';
 
 interface ResourceListProps {
-  id: string;
+  resources: FoundResource;
   className?: string;
 }
 
-const ResourceList = ({ id, className }: ResourceListProps) => {
-  const foundResource = findResource(resources, id);
+const ResourceList = ({ resources, className }: ResourceListProps) => {
   const _resources =
-    foundResource && 'resources' in foundResource
-      ? (foundResource as { resources: File[] | Folder[] }).resources
+    resources && 'resources' in resources
+      ? (resources as { resources: File[] | Folder[] }).resources
       : [];
 
   return (
     <div
       className={cn(
-        'grid grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))] justify-items-center gap-5',
+        'grid grid-cols-[repeat(auto-fill,minmax(12.5rem,1fr))] justify-items-center gap-5 pb-12',
         className,
       )}
     >

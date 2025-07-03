@@ -7,10 +7,10 @@ import Providers from '@/providers';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Orenda Admin',
-    template: '%s | Orenda Admin',
+    default: 'Orenda Portal',
+    template: '%s | Orenda Portal',
   },
-  description: 'Admin management system',
+  description: 'Orenda portal',
 };
 
 const dmSans = DM_Sans({

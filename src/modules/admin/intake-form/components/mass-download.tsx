@@ -5,7 +5,7 @@ import { FormDatePicker } from '@/components/ui/date-picker';
 import useMassDownload from '@/hooks/mutations/use-mass-download';
 import useCheckStatus from '@/hooks/queries/use-check-status';
 import useRetry from '@/hooks/use-retry';
-import { cn, downloadFile } from '@/lib/utils';
+import { cn, downloadFileFromUrl } from '@/lib/utils';
 import useDownloadFormStore from '@/stores/download-form-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
@@ -78,7 +78,7 @@ const MassDownload = ({
 
   // check the status until its ready
   useRetry({
-    callback: refetch,
+    func: refetch,
     delay: 2000,
     retries: Infinity,
     stop: data?.ready || !key || !taskId, // Stop when data is ready or there's no key or task id
@@ -102,7 +102,7 @@ const MassDownload = ({
 
       // download file when url is returned
       console.log('downloading');
-      downloadFile({ name: key, url }, () => {
+      downloadFileFromUrl({ name: key, url }, () => {
         toast.success('Mass download complete');
         reset();
         setOpen(false);

@@ -2,19 +2,29 @@ import { IconType } from 'react-icons/lib';
 import { JSX } from 'react';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
+export type UserRole = 'Admin' | 'Provider' | 'Manager';
+export type TeamRole = 'Manager' | 'Member';
 export interface DBUser {
   access_token: string;
   refresh_token?: string;
   user: {
     name: string | null;
     email: string;
-    roles: string[];
-    permissions: string[];
+    roles: UserRole[];
+    teams: string[];
     id: string;
   };
 }
 
-export type MenuItem = {
+export interface Teams {
+  Billing?: TeamRole[];
+  Communication?: TeamRole[];
+  Clinical?: TeamRole[];
+  Credentialing?: TeamRole[];
+  Intake?: TeamRole[];
+}
+
+export interface SidebarMenuItem {
   id: string;
   title: string;
   href?: string;
@@ -24,8 +34,8 @@ export type MenuItem = {
   disabled?: boolean;
   onClick?: React.MouseEventHandler;
   isActive?: boolean;
-  items?: MenuItem[];
-};
+  items?: SidebarMenuItem[];
+}
 
 export interface DashboardCardStat {
   name: string;
@@ -86,8 +96,6 @@ export interface FormData {
   symptoms_past_six_months_other: string;
 
   hospitalized_psych: string;
-  suicidal_thoughts: string;
-  suicidal_thoughts_details: string;
 
   alcohol_frequency: string;
   alcohol_quantity: string;
@@ -106,7 +114,9 @@ export interface FormData {
   relationship_with_child: string;
   for_minor_child: string;
 
+  // insurance
   insurance_id: string;
+  insurance_provider: string;
   insurance_card_front: string;
   insurance_card_back: string;
   photo_ID: string;
@@ -122,6 +132,8 @@ export interface FormData {
   sex_assigned_at_birth: string;
   height: string;
   weight: string;
+
+  last_accessed_at: string;
 }
 
 export interface CreditCardInfo {
@@ -165,8 +177,8 @@ export interface Resource {
   id: string;
   name: string;
   resources: ResourceFolder[] | ResourceFile[];
-  title?: MenuItem['title'];
-  Icon: MenuItem['Icon'];
+  title?: SidebarMenuItem['title'];
+  Icon: SidebarMenuItem['Icon'];
 }
 
 export interface ResourceFolder {
@@ -184,8 +196,7 @@ export interface ResourceFile {
   image?: string | StaticImport;
 }
 
-
-
+export type FoundResource = Resource | ResourceFile | ResourceFolder;
 
 
 

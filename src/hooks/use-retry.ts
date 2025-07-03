@@ -1,24 +1,24 @@
 import { useEffect, useRef } from 'react';
 
 const useRetry = ({
-  callback,
+  func,
   retries = Infinity,
   delay = 1000,
   stop = false,
 }: {
-  callback: () => void;
+  func: () => void;
   retries?: number;
   delay?: number;
   stop?: boolean;
 }) => {
   const retryCountRef = useRef(0);
-  const callbackRef = useRef(callback);
+  const funcRef = useRef(func);
   const intervalRef = useRef<NodeJS.Timeout>(null);
 
-  // Keep callback ref updated
+  // Keep func ref updated
   useEffect(() => {
-    callbackRef.current = callback;
-  }, [callback]);
+    funcRef.current = func;
+  }, [func]);
 
   useEffect(() => {
     if (stop) {
@@ -28,7 +28,7 @@ const useRetry = ({
 
     intervalRef.current = setInterval(() => {
       if (retryCountRef.current < retries) {
-        callbackRef.current();
+        funcRef.current();
         retryCountRef.current++;
       } else {
         if (intervalRef.current) clearInterval(intervalRef.current);
@@ -37,7 +37,7 @@ const useRetry = ({
 
     // Immediate retry
     if (retryCountRef.current < retries) {
-      callbackRef.current();
+      funcRef.current();
       retryCountRef.current++;
     }
 

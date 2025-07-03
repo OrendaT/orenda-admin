@@ -18,7 +18,7 @@ import { MdLogout } from 'react-icons/md';
 import { MdAdminPanelSettings } from "react-icons/md";
 
 import React, { useState } from 'react';
-import { MenuItem } from '@/types';
+import type { SidebarMenuItem, UserRole } from '@/types';
 import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
 import { cn, convertResourcesToMenu } from '@/lib/utils';
@@ -36,38 +36,43 @@ import {
 import { Button } from '../ui/button';
 import { resources } from '@/lib/data/resources';
 
-export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
+export function AppSidebar({ role }: { role: UserRole }) {
   const [open, setOpen] = useState(false);
 
-  const navMenu: MenuItem[] = isProvider
-    ? [convertResourcesToMenu(resources)]
-    : [
-        {
-          id: '1',
-          title: '',
-          items: [
-            {
-              id: 'intake-forms',
-              title: 'Intake Forms',
-              Icon: FormIcon({ className: 'mt-0.5' }),
-              href: '/',
-            },
-          ],
-        }, {
-          id: '2',
-          title: '',
-          items: [
-            {
-              id: 'admins',
-              title: 'Admins Permissions',
-              Icon: MdAdminPanelSettings({ className: 'mt-0.5' }),
-              href: 'admins-permissions',
-            },
-          ],
-        },
-      ];
+  const navMenu: (SidebarMenuItem | undefined)[] = [
+    role === 'Provider' ? convertResourcesToMenu(resources) : undefined,
+    role === 'Admin' || role === 'Manager'
+      ? {
+        id: '1',
+        title: '',
+        items: [
+          {
+            id: 'intake-forms',
+            title: 'Intake Forms',
+            Icon: FormIcon({ className: 'mt-0.5' }),
+            href: '/',
+          },
+        ],
+      }
+      : undefined,
+    role === 'Admin'
+      ? {
+        id: '2',
+        title: '',
+        items: [
+          {
+            id: 'admins',
+            title: 'Admins Permissions',
+            Icon: MdAdminPanelSettings({ className: 'mt-0.5' }),
+            href: 'admins-permissions',
+          },
+        ],
+      }
+      : undefined,
+  ];
 
-  const footerItem: MenuItem = {
+
+  const footerItem: SidebarMenuItem = {
     id: 'log-out',
     title: 'Log out',
     Icon: MdLogout({}),
@@ -86,17 +91,23 @@ export function AppSidebar({ isProvider }: { isProvider?: boolean }) {
       </SidebarHeader>
       <SidebarContent>
         {/* top menu list */}
-        {navMenu.map((item) => (
-          <SidebarGroup key={item.id} className="mt-4">
-            {item.title && <SidebarGroupLabel>{item.title}</SidebarGroupLabel>}
+        {navMenu.map(
+          (item) =>
+            item && (
+              <SidebarGroup key={item.id} className="mt-4">
+                {item.title && (
+                  <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+                )}
 
-            <SidebarMenu>
-              {item.items?.map(
-                (item) => item && <SidebarListItem key={item.id} item={item} />,
-              )}
-            </SidebarMenu>
-          </SidebarGroup>
-        ))}
+                <SidebarMenu>
+                  {item.items?.map(
+                    (item) =>
+                      item && <SidebarListItem key={item.id} item={item} />,
+                  )}
+                </SidebarMenu>
+              </SidebarGroup>
+            ),
+        )}
       </SidebarContent>
       {/* footer */}
       <SidebarFooter className="border-t border-[#ECECEC]">
