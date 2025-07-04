@@ -96,8 +96,6 @@ export interface FormData {
   symptoms_past_six_months_other: string;
 
   hospitalized_psych: string;
-  suicidal_thoughts: string;
-  suicidal_thoughts_details: string;
 
   alcohol_frequency: string;
   alcohol_quantity: string;
