@@ -169,14 +169,6 @@ const GeneralTab = ({ id }: { id: string }) => {
                     value={data?.has_weapons}
                   />
                   <TabItem
-                    name="Has suicidal thoughts?"
-                    value={data?.suicidal_thoughts}
-                  />
-                  <TabItem
-                    name="Suicidal thoughts details"
-                    value={data?.suicidal_thoughts_details}
-                  />
-                  <TabItem
                     name="Hearing impairments"
                     value={data?.hearing_impairment}
                   />
