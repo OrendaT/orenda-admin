@@ -26,11 +26,16 @@ const Announcements = () => {
         <hr className="mx-auto w-1/3 border-gray-700" />
 
         <ul className="divide-y">
-          {announcements.map(({ id, message }) => (
-            <li className="py-2 text-sm" key={id}>
-              {message}
-            </li>
-          ))}
+          {announcements.length ? (
+            announcements.map(({ id, message }) => (
+              <li className="py-2 text-sm" key={id}>
+                {message}
+              </li>
+            ))
+          ) : (
+            <li className="text-center clamp-[text,sm,base]">
+             No announcements</li>
+          )}
         </ul>
       </DialogContent>
     </Dialog>
