@@ -10,14 +10,14 @@ interface UserActionMenuProps {
   // Add callback functions as props
   onChangeRole: () => void;
   onDeleteUser: () => void;
-  onSendMessage: () => void;
+  // onSendMessage: () => void;
 }
 
 const UserActionMenu: React.FC<UserActionMenuProps> = ({ 
   onClose, 
   onChangeRole,
   onDeleteUser,
-  onSendMessage
+  // onSendMessage
 }) => {
   const handleAction = (action: () => void) => {
     onClose(); // Close the menu first
@@ -33,12 +33,12 @@ const UserActionMenu: React.FC<UserActionMenuProps> = ({
         >
           Change role
         </button>
-        <button
+        {/* <button
           className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           onClick={() => handleAction(onSendMessage)}
         >
           Send Message
-        </button>
+        </button> */}
         <button
           className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
           onClick={() => handleAction(onDeleteUser)}

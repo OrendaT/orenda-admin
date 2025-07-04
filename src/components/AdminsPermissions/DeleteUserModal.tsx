@@ -23,12 +23,8 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ user, isOpen, onClose
     setIsDeleting(true);
     
     try {
-      const result = await deleteUser(user.id);
-      if (result.success) {
+     await deleteUser(user.id);
         onClose();
-      } else {
-        alert('Failed to delete user. Please try again.');
-      }
     } catch (error) {
       console.error('Failed to delete user:', error);
       alert('Failed to delete user. Please try again.');

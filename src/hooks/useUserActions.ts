@@ -1,44 +1,54 @@
 // hooks/useUserActions.ts
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Role } from '@/types/user';
 import { createUserService } from '@/services/userService';
 import useAxios from '@/lib/api/axios-client';
 
-export function useUserActions() {
-  const { axios } = useAxios(); // Get token-bound Axios instance
-  const userService = createUserService(axios); // Inject it into service
+type SuccessResponse = { success: boolean };
 
-  const changeRole = async (userId: string, newRole: Role) => {
-    try {
-      await userService.changeRole(userId, newRole);
-      window.location.reload(); // TODO: Replace with state update later
-      return { success: true };
-    } catch (error) {
-      console.error('Failed to change role:', error);
-      return { success: false, error };
-    }
+export default function useUserActions() {
+  const { axios } = useAxios();
+  const userService = createUserService(axios);
+  const qc = useQueryClient();
+
+  // ─── Change Role Mutation ────────────────
+  const changeRoleMutation = useMutation({
+    mutationFn: ({ userId, newRole }: { userId: string; newRole: Role }): Promise<SuccessResponse> =>
+      userService.changeRole(userId, newRole),
+
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['all_users'] });
+    },
+  });
+
+  // ─── Delete User Mutation ────────────────
+  const deleteUserMutation = useMutation({
+    mutationFn: (userId: string): Promise<SuccessResponse> =>
+      userService.deleteUser(userId),
+
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['all_users'] });
+    },
+  });
+
+  // ─── Public Handlers ─────────────────────
+  const changeRole = (userId: string, newRole: Role) => {
+    return changeRoleMutation.mutateAsync({ userId, newRole });
   };
 
-  const deleteUser = async (userId: string) => {
-    try {
-      await userService.deleteUser(userId);
-      window.location.reload(); // TODO: Replace with state update later
-      return { success: true };
-    } catch (error) {
-      console.error('Failed to delete user:', error);
-      return { success: false, error };
-    }
+  const deleteUser = (userId: string) => {
+    return deleteUserMutation.mutateAsync(userId);
   };
 
-  const sendMessage = async (userId: string, subject: string, message: string) => {
-    try {
-      console.log(`Sending message to user ${userId}:`, { subject, message });
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      return { success: true };
-    } catch (error) {
-      console.error('Failed to send message:', error);
-      return { success: false, error };
-    }
+  const sendMessage = async (
+    userId: string,
+    subject: string,
+    message: string
+  ): Promise<SuccessResponse> => {
+    console.log(`Send message to ${userId}`, { subject, message });
+    await new Promise((res) => setTimeout(res, 1000));
+    return { success: true };
   };
 
   return {
@@ -47,5 +57,3 @@ export function useUserActions() {
     sendMessage,
   };
 }
-
-export default useUserActions;

@@ -1,4 +1,5 @@
 // services/userService.ts
+
 import {
   User,
   ApiUser,
@@ -10,11 +11,9 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 type SuccessResponse = { success: boolean };
 
-// ✅ This matches what useAxios returns — a function that takes config and returns a response
 type RequestFn = <T = unknown>(
   config: AxiosRequestConfig
 ) => Promise<AxiosResponse<T>>;
-
 
 const transformUserFromApi = (apiUser: ApiUser): User => {
   const [first_name, ...rest] = apiUser.name?.split(' ') || [''];
@@ -32,7 +31,7 @@ const transformUserForApi = (data: InviteUserPayload): ApiUserPayload => ({
   email: data.email,
   password: data.password,
   roles: data.roles,
-  teams: Object.entries(data.teams).every(([ roles]) => roles.length === 0)
+  teams: Object.entries(data.teams).every(([roles]) => roles.length === 0)
     ? undefined
     : data.teams,
 });
@@ -52,26 +51,32 @@ export const createUserService = (request: RequestFn) => ({
   },
 
   inviteUser: async (data: InviteUserPayload): Promise<SuccessResponse> => {
-
-  console.log('👤 roles:', data.roles);  // e.g. ['Manager']
-  console.log('📂 teams:', data.teams);  // e.g. { Credentialing: ['Member'] }
+    console.log('👤 roles:', data.roles);
+    console.log('📂 teams:', data.teams);
 
     const payload = transformUserForApi(data);
-    console.log('[inviteUser payload]', payload); 
+    console.log('[inviteUser payload]', payload);
+
     const response = await request<SuccessResponse>({
       url: '/admin/users',
       method: 'POST',
       data: payload,
     });
+
     return response.data;
   },
 
-  changeRole: async (userId: string, role: Role): Promise<SuccessResponse> => {
+  // ✅ FIXED: use roles array instead of role string
+  changeRole: async (userId: string, newRole: Role): Promise<SuccessResponse> => {
+    const payload = { roles: [newRole] };
+    console.log('[changeRole payload]', payload);
+
     const response = await request<SuccessResponse>({
-      url: `/admin/users/${userId}/role`,
+      url: `/admin/users/${userId}`,
       method: 'PATCH',
-      data: { role },
+      data: payload,
     });
+
     return response.data;
   },
 
@@ -80,6 +85,7 @@ export const createUserService = (request: RequestFn) => ({
       url: `/admin/users/${userId}`,
       method: 'DELETE',
     });
+
     return response.data;
   },
 });

@@ -1,19 +1,18 @@
-// components/AdminsPermissions/ChangeRoleModal.tsx
-
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-
-import { User, Role, ROLE_PERMISSIONS } from '@/types/user';
+import { Role, ROLE_PERMISSIONS } from '@/types/user';
 import { useRoles } from '@/hooks/useRoles';
 import useUserActions from '@/hooks/useUserActions';
+import { toast } from 'sonner';
+import { UserData } from '@/types';
 
-// Make sure the interface is properly defined
+
 interface ChangeRoleModalProps {
-  user: User;
+  user: UserData;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -21,101 +20,85 @@ interface ChangeRoleModalProps {
 const ChangeRoleModal: React.FC<ChangeRoleModalProps> = ({ user, isOpen, onClose }) => {
   const { availableRoles, getRoleDisplayName } = useRoles();
   const { changeRole } = useUserActions();
-  const [selectedRole, setSelectedRole] = useState<Role>(user.role);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const initialRole = (user.roles[0] || 'Manager') as Role;
+  const [selectedRole, setSelectedRole] = useState<Role>(initialRole);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Reset selection whenever modal re‑opens
+  useEffect(() => {
+    if (isOpen) setSelectedRole(initialRole);
+  }, [isOpen, initialRole]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (selectedRole === user.role) {
+    if (selectedRole === initialRole) {
       onClose();
       return;
     }
-    
+
     setIsSubmitting(true);
-    
     try {
-      const result = await changeRole(user.id, selectedRole);
-      if (result.success) {
+     await changeRole(user.id, selectedRole);
+        toast.success(`Role changed to ${getRoleDisplayName(selectedRole)}`);
         onClose();
-      } else {
-        alert('Failed to change user role. Please try again.');
-      }
-    } catch (error) {
-      console.error('Failed to change user role:', error);
-      alert('Failed to change user role. Please try again.');
+    } catch (err) {
+      console.error(err);
+      toast.error('An unexpected error occurred.');
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleRoleChange = (value: string) => {
-    setSelectedRole(value as Role);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">
-            Change Role for {user.first_name} {user.last_name}
-          </DialogTitle>
-          
+          <DialogTitle>Change role for {user.name}</DialogTitle>
         </DialogHeader>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6 mt-4">
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Current Role: <span className="font-bold">{getRoleDisplayName(user.role)}</span>
-            </label>
-            <label className="block text-sm font-medium">
-              Select new role:
-            </label>
-            <RadioGroup 
-              value={selectedRole} 
-              onValueChange={handleRoleChange}
-              className="flex flex-col space-y-3"
+          <div>
+            <p className="text-sm">
+              Current role: <strong>{getRoleDisplayName(initialRole)}</strong>
+            </p>
+            <RadioGroup
+              value={selectedRole}
+              onValueChange={(v) => setSelectedRole(v as Role)}
+              className="flex flex-col space-y-3 mt-2"
             >
               {availableRoles.map((role) => (
-                <div key={role} className="flex items-center space-x-2">
-                  <RadioGroupItem value={role} id={`change-role-${role}`} />
-                  <label htmlFor={`change-role-${role}`} className="text-sm">
-                    {getRoleDisplayName(role)}
-                  </label>
-                </div>
+                <label key={role} className="flex items-center space-x-2">
+                  <RadioGroupItem value={role} id={`role-${role}`} />
+                  <span className="text-sm">{getRoleDisplayName(role)}</span>
+                </label>
               ))}
             </RadioGroup>
           </div>
-          
-          {/* Display the permissions for the selected role */}
-          {selectedRole && (
+
+          {selectedRole !== initialRole && (
             <div className="p-3 bg-gray-50 rounded-md">
-              <p className="text-sm font-medium text-gray-700 mb-2">
+              <p className="text-sm font-medium mb-2">
                 Permissions for {getRoleDisplayName(selectedRole)}:
               </p>
-              <ul className="text-xs text-gray-600 space-y-1 ml-4 list-disc">
-                {ROLE_PERMISSIONS[selectedRole]?.map((permission) => (
-                  <li key={permission}>{permission}</li>
+              <ul className="text-xs list-disc list-inside space-y-1">
+                {ROLE_PERMISSIONS[selectedRole].map((perm) => (
+                  <li key={perm}>{perm}</li>
                 ))}
               </ul>
             </div>
           )}
-          
+
           <div className="flex gap-3 mt-6">
-            <Button 
-              type="button" 
-              variant="outline" 
-              className="flex-1"
-              onClick={onClose}
-            >
+            <Button className='w-1/2' type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
               Cancel
             </Button>
-            <Button 
-              type="submit" 
-              className="flex-1 bg-[#2e0086] hover:bg-[#25006d] text-white"
-              disabled={isSubmitting || selectedRole === user.role}
+            <Button
+              type="submit"
+              className='w-1/2'
+              disabled={isSubmitting || selectedRole === initialRole}
             >
-              {isSubmitting ? 'Changing...' : 'Change Role'}
+              {isSubmitting ? 'Updating...' : 'Change Role'}
             </Button>
           </div>
         </form>

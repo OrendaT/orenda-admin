@@ -23,7 +23,7 @@ const AdminsPermissionsPage = () => {
           <Button
             onClick={() => setInviteOpen(true)}
             // style={{ width: '12rem' }}
-            className="w-[clamp(6rem,50vw,15rem)] flex items-center justify-center bg-[#2E0086] hover:bg-[#25006D] text-white py-2 rounded-3xl"
+            className="w-[clamp(6rem,50vw,12rem)] flex items-center justify-center bg-[#2E0086] hover:bg-[#25006D] text-white py-2 rounded-3xl"
           >
             + Add User
           </Button>
