@@ -33,7 +33,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
       last_name: '',
       email: '',
       password: '',
-      roles: ['Provider'],
+      roles: [],
       teams: {},
     },
   });

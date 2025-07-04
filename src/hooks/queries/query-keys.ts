@@ -1,6 +1,7 @@
 import { UseAllFormsProps } from '@/types';
 
 export const QUERY_KEYS = {
+  allUsers: ['all_users'] as const,
   allForms: ({ page, search, filters }: Partial<UseAllFormsProps>) => [
     'all_forms',
     page,

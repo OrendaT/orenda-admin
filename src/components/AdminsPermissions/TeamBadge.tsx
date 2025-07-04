@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { UserData } from '@/types';
 
 interface TeamBadgeProps {
