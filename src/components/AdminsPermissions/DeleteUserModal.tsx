@@ -6,11 +6,11 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertTriangle } from 'lucide-react';
-import { User } from '@/types/user';
+import { UserData } from '@/types';
 import useUserActions from '@/hooks/useUserActions'; // Import your existing hook
 
 interface DeleteUserModalProps {
-  user: User;
+  user: UserData;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -51,7 +51,7 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ user, isOpen, onClose
                 Are you sure you want to delete this user?
               </p>
               <p className="text-sm text-gray-600 mt-2">
-                <strong>{user.first_name} {user.last_name}</strong> ({user.email})
+                <strong>{user.name}</strong> ({user.email})
               </p>
               <p className="text-sm text-gray-600 mt-2">
                 This action cannot be undone. The user will lose access to the system immediately.
