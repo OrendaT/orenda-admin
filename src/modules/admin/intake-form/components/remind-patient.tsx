@@ -14,13 +14,13 @@ import { cn } from '@/lib/utils';
 
 const url = 'https://orenda-intake.vercel.app/';
 
-// Define send via options with correct typing
+
 const options = [
   { label: 'Email', value: 'email' as const, icon: RiMailSendLine },
   { label: 'SMS', value: 'sms' as const, icon: FaRegMessage },
 ];
 
-// Create a dynamic schema based on selected options
+
 const createRemindPatientSchema = (via: string[]) => {
   return z.object({
     first_name: z.string().optional(),
@@ -60,19 +60,17 @@ const RemindPatient = ({
     trigger,
   } = methods;
 
-  // Watch for via changes to update schema validation
   const via = useWatch({
     control,
     name: 'via',
     defaultValue: ['email'],
   });
 
-  // Update validation when via changes
+ 
   useEffect(() => {
     // Clear errors when switching methods
     clearErrors(['email', 'phone']);
 
-    // Re-validate the form with the new schema
     trigger();
   }, [via, clearErrors, trigger]);
 
@@ -83,26 +81,22 @@ const RemindPatient = ({
       let emailResult = { success: true };
       let smsResult = { success: true };
 
-      // Create an array of promises to execute
       const promises = [];
 
-      // Add email promise if selected
-      // In the RemindPatient component
       if (via.includes('email') && email) {
         promises.push(
           sendReminderEmail({
             email,
             url,
             first_name,
-            via, // Include the via parameter
+            via, 
           })
             .then(result => { emailResult = result; })
         );
       }
 
-      // Add SMS promise if selected
       if (via.includes('sms') && phone) {
-        // Prepare SMS message
+      
         const smsMessage = `Hello ${first_name || ''}. Reminder to complete your Orenda Psychiatry intake form: ${url}`;
 
         promises.push(
@@ -127,7 +121,7 @@ const RemindPatient = ({
         setStatus('success');
         reset();
       } else {
-        // Handle case where all methods failed
+  
         const errorMessage = 'Failed to send reminder. Please try again.';
         setError('root', { message: errorMessage });
       }

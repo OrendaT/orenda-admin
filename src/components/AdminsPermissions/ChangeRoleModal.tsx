@@ -25,7 +25,7 @@ const ChangeRoleModal: React.FC<ChangeRoleModalProps> = ({ user, isOpen, onClose
   const [selectedRole, setSelectedRole] = useState<Role>(initialRole);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Reset selection whenever modal re‑opens
+  //This one is to reset selection whenever modal re‑opens
   useEffect(() => {
     if (isOpen) setSelectedRole(initialRole);
   }, [isOpen, initialRole]);

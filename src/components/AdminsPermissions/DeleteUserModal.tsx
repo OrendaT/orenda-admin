@@ -1,5 +1,3 @@
-// components/AdminsPermissions/DeleteUserModal.tsx
-
 'use client';
 
 import React, { useState } from 'react';
@@ -7,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertTriangle } from 'lucide-react';
 import { UserData } from '@/types';
-import useUserActions from '@/hooks/useUserActions'; // Import your existing hook
+import useUserActions from '@/hooks/useUserActions'; 
 
 interface DeleteUserModalProps {
   user: UserData;
@@ -16,7 +14,7 @@ interface DeleteUserModalProps {
 }
 
 const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ user, isOpen, onClose }) => {
-  const { deleteUser } = useUserActions(); // Use your existing hook
+  const { deleteUser } = useUserActions();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
