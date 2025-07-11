@@ -67,7 +67,7 @@ const UserTable: React.FC = () => {
   const { data, isPending } = useAllUsers();
 
   return (
-    <div className="w-full bg-[#F6F6F6] shadow-sm overflow-x-auto">
+    <div className="w-full min-w-[700px] bg-[#F6F6F6] shadow-sm overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>

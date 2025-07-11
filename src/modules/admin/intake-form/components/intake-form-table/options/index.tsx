@@ -14,13 +14,26 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
 import useFlagForm from '@/hooks/mutations/use-flag-form';
 import PreviewForm from './preview-form';
+import { toast } from 'sonner';
+import { sendReminderEmail } from '@/services/email-service';
 
 const Options = ({ row }: CellContext<FormData, unknown>) => {
   const [open, setOpen] = useState(false);
   const [module, setModule] = useState<'download' | 'preview'>();
-  const { id, flag, status } = row.original;
+  const { id, flag, status, email, first_name } = row.original;
 
-  const { mutateAsync: flagForm, isPending } = useFlagForm();
+  const { mutateAsync: flagForm } = useFlagForm();
+
+  const handlePatientRemind = () =>
+    toast.promise(sendReminderEmail({ email, first_name }), {
+      loading: 'Sending reminder...',
+      success: () => {
+        return 'Reminder sent successfully!';
+      },
+      error: () => {
+        return 'Failed to send reminder. Please try again.';
+      },
+    });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -43,11 +56,18 @@ const Options = ({ row }: CellContext<FormData, unknown>) => {
 
           <DropdownMenuItem
             onClick={() => flagForm(id)}
-            disabled={isPending}
             className="py-2 pr-8 text-sm"
           >
             {flag ? 'Unflag' : 'Flag'} Form
           </DropdownMenuItem>
+          {status === 'pending' && (
+            <DropdownMenuItem
+              onClick={handlePatientRemind}
+              className="py-2 pr-8 text-sm"
+            >
+              Remind Patient
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

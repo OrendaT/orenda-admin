@@ -87,7 +87,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                     value={data?.reason_for_visit}
                   />
                   <TabItem
-                    name="Mental health care needed"
+                    name="What would you like your sessions to focus on?"
                     value={data?.mental_health_care_type}
                   />
                   <TabItem
