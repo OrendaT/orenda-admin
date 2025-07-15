@@ -17,8 +17,8 @@ export const useAllForms = <T = unknown>({
   const queryClient = useQueryClient();
 
   const queryKey = useCallback(
-    (page: string) => QUERY_KEYS.allForms({ page, search, filters }),
-    [search, filters],
+    (page: string) => QUERY_KEYS.allForms({ page, search, filters, url }),
+    [search, filters, url],
   );
 
   const getForms = useCallback(
