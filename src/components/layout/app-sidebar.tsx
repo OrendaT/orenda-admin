@@ -21,7 +21,7 @@ import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
 import { cn, convertResourcesToMenu } from '@/lib/utils';
 import { LuPanelLeftClose } from 'react-icons/lu';
-import { HiOutlineCreditCard } from "react-icons/hi2";
+import { HiOutlineCreditCard } from 'react-icons/hi2';
 import {
   AlertDialog,
   AlertDialogCancel,
