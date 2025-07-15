@@ -23,7 +23,7 @@ const Export = () => {
         </Button>
       </DialogTrigger>
 
-      <DownloadForm open={open} forms={forms} />
+      <DownloadForm open={open} forms={forms.intake} />
     </Dialog>
   );
 };

@@ -21,6 +21,7 @@ import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
 import { cn, convertResourcesToMenu } from '@/lib/utils';
 import { LuPanelLeftClose } from 'react-icons/lu';
+import { BsCreditCard2Front } from "react-icons/bs";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -53,7 +54,7 @@ export function AppSidebar({ role }: { role: UserRole }) {
             {
               id: 'credit-card-forms',
               title: 'Credit Card Forms',
-              Icon: FormIcon({ className: 'mt-0.5' }),
+              Icon: BsCreditCard2Front({}),
               href: '/credit-card-forms',
             },
           ],
