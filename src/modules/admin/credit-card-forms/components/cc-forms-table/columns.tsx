@@ -3,7 +3,10 @@ import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { MdOutlineFlag } from 'react-icons/md';
-import { SelectCell, SelectHeader } from '@/components/shared/forms-select-checkbox';
+import {
+  SelectCell,
+  SelectHeader,
+} from '@/components/shared/forms-select-checkbox';
 
 export const columns: ColumnDef<CreditCardFormData>[] = [
   {
