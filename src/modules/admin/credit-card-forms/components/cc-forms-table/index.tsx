@@ -6,7 +6,7 @@ import { useAllForms } from '@/hooks/queries/use-all-forms';
 import useIntakeFormParams from '@/hooks/use-forms-params';
 import FormsTable from '@/components/shared/forms-table';
 import { CREDIT_CARD_FORMS_EP } from '@/lib/api/endpoints';
-import { CreditCardFormData} from '@/types';
+import { CreditCardFormData } from '@/types';
 
 const CCFormsTable = () => {
   const { page, search, flag, from, to, status } = useIntakeFormParams();
