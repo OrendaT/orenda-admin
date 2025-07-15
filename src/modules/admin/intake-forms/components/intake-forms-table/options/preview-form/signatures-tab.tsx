@@ -29,7 +29,7 @@ export const _signatures: {
 ];
 
 const SignaturesTab = ({ id }: { id: string }) => {
-  const { data, isPending } = useForm(id);
+  const { data, isPending } = useForm<IntakeFormData>(id);
 
   const signatures = useMemo(() => {
     if (!data) return [];
