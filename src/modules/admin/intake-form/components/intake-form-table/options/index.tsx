@@ -21,11 +21,12 @@ const Options = ({ row }: CellContext<FormData, unknown>) => {
   const [open, setOpen] = useState(false);
   const [module, setModule] = useState<'download' | 'preview'>();
   const { id, flag, status, email, first_name } = row.original;
+  const url = 'https://orenda-intake.vercel.app/';
 
   const { mutateAsync: flagForm } = useFlagForm();
 
   const handlePatientRemind = () =>
-    toast.promise(sendReminderEmail({ email, first_name }), {
+    toast.promise(sendReminderEmail({ email, first_name, url }), {
       loading: 'Sending reminder...',
       success: () => {
         return 'Reminder sent successfully!';

@@ -12,12 +12,27 @@ interface TeamBadgeProps {
 
 const TeamBadge: React.FC<TeamBadgeProps> = ({ teams }) => {
   const [open, setOpen] = React.useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   const teamNames = Object.keys(teams);
   const hasTeams = teamNames.length > 0;
 
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current && 
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-block" ref={dropdownRef}>
       {hasTeams ? (
         <>
           <Button
