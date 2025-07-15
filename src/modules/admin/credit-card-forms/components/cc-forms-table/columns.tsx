@@ -7,6 +7,8 @@ import {
   SelectCell,
   SelectHeader,
 } from '@/components/shared/forms-select-checkbox';
+import DownloadButton from './options/download-button';
+import Options from './options';
 
 export const columns: ColumnDef<CreditCardFormData>[] = [
   {
@@ -85,4 +87,15 @@ export const columns: ColumnDef<CreditCardFormData>[] = [
   //     return value;
   //   },
   // },
+
+  {
+    id: 'download',
+    enableHiding: false,
+    cell: DownloadButton,
+  },
+  {
+    id: 'actions',
+    enableHiding: false,
+    cell: Options,
+  },
 ];

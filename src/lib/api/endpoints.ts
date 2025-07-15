@@ -32,6 +32,8 @@ export const INTAKE_FORMS_EP = {
 
 export const CREDIT_CARD_FORMS_EP = {
   ALL_FORMS: BASE.CREDIT_CARDS,
-  CREDIT_CARD: (id: string) => `${BASE.CREDIT_CARDS}/${id}`,
-
-}
+  FORM: (id: string) => `${BASE.CREDIT_CARDS}/${id}`,
+  FLAG: (id: string) => `${BASE.CREDIT_CARDS}/${id}/flag`,
+  CREDIT_CARD: (id: string) => `${BASE.FORMS}/${id}/credit-card`,
+  DOWNLOAD_FORM: (id: string) => `${BASE.ADMIN}/download/credit-card/${id}`,
+};

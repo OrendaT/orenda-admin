@@ -4,9 +4,10 @@ import PreviewFormSkeleton from '@/components/skeletons/preview-form-skeleton';
 import { TabsContent } from '@/components/ui/tabs';
 import useForm from '@/hooks/queries/use-form';
 import TabItem from './preview-tab-item';
+import { IntakeFormData } from '@/types';
 
 const GeneralTab = ({ id }: { id: string }) => {
-  const { data, isPending } = useForm(id);
+  const { data, isPending } = useForm<IntakeFormData>(id);
 
   return (
     <TabsContent value="general">
