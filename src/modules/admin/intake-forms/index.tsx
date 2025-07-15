@@ -7,7 +7,7 @@ import IntakeFormsTable from './components/intake-forms-table';
 import Export from './components/export';
 import { Suspense } from 'react';
 import SearchFilterSkeleton from '../../../components/skeletons/search-filter-skeleton';
-import IntakeFormsTableSkeleton from '../../../components/skeletons/intake-forms-table-skeleton';
+import FormsTableSkeleton from '../../../components/skeletons/forms-table-skeleton';
 
 const IntakeForms = async () => {
   return (
@@ -41,7 +41,7 @@ const IntakeForms = async () => {
         <Suspense fallback={<SearchFilterSkeleton />}>
           <SearchFilter />
         </Suspense>
-        <Suspense fallback={<IntakeFormsTableSkeleton />}>
+        <Suspense fallback={<FormsTableSkeleton />}>
           <IntakeFormsTable />
         </Suspense>
       </section>
