@@ -13,7 +13,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import Header from './header';
-import { FormIcon } from '@/assets/svgs';
+import { IntakeFormsIcon } from '@/assets/svgs';
 import { MdLogout } from 'react-icons/md';
 import React, { useState } from 'react';
 import type { SidebarMenuItem, UserRole } from '@/types';
@@ -21,7 +21,7 @@ import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
 import { cn, convertResourcesToMenu } from '@/lib/utils';
 import { LuPanelLeftClose } from 'react-icons/lu';
-import { BsCreditCard2Front } from "react-icons/bs";
+import { HiOutlineCreditCard } from "react-icons/hi2";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -48,13 +48,13 @@ export function AppSidebar({ role }: { role: UserRole }) {
             {
               id: 'intake-forms',
               title: 'Intake Forms',
-              Icon: FormIcon({ className: 'mt-0.5' }),
+              Icon: IntakeFormsIcon({ className: 'mt-0.5' }),
               href: '/',
             },
             {
               id: 'credit-card-forms',
               title: 'Credit Card Forms',
-              Icon: BsCreditCard2Front({}),
+              Icon: HiOutlineCreditCard({}),
               href: '/credit-card-forms',
             },
           ],
