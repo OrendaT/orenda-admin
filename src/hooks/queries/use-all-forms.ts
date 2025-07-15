@@ -2,12 +2,12 @@
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from './query-keys';
-import { FORMS_EP } from '@/lib/api/endpoints';
 import { AllFormsResponse, UseAllFormsProps } from '@/types';
 import useAxios from '@/lib/api/axios-client';
 import { useCallback, useEffect } from 'react';
 
-export const useAllForms = ({
+export const useAllForms = <T = unknown>({
+  url,
   page = '1',
   search,
   filters,
@@ -23,8 +23,8 @@ export const useAllForms = ({
 
   const getForms = useCallback(
     async (page: string) => {
-      const res = await axios<AllFormsResponse>({
-        url: FORMS_EP.ALL_PATIENTS,
+      const res = await axios<AllFormsResponse<T>>({
+        url,
         method: 'GET',
         params: {
           page,
@@ -34,7 +34,7 @@ export const useAllForms = ({
       });
       return res.data;
     },
-    [axios, search, filters],
+    [axios, search, filters, url],
   );
 
   const query = useQuery({
@@ -59,7 +59,7 @@ export const useAllForms = ({
         queryFn: () => getForms(pageAfterNext),
       });
     }
-  }, [query.isSuccess, page, queryClient, status, queryKey, getForms]);
+  }, [query.isSuccess, page, queryClient, status, queryKey, getForms, prefetchNextPages]);
 
   return query;
 };

@@ -1,12 +1,6 @@
 'use client';
 
 import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
-import { columns } from './columns';
-import {
   Table,
   TableBody,
   TableCell,
@@ -14,40 +8,35 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { IntakeFormTablePagination } from './pagination';
-import { useAllForms } from '@/hooks/queries/use-all-forms';
-import FormSkeleton from '../../../../../components/skeletons/form-table-skeleton';
+import {
+  flexRender,
+  type Table as TTable,
+  type ColumnDef,
+} from '@tanstack/react-table';
+import TablePagination from '@/components/shared/table-pagination';
+import FormSkeleton from '@/components/skeletons/forms-table-skeleton';
 import { Suspense } from 'react';
 import { Button } from '@/components/ui/button';
-import useIntakeFormParams from '@/hooks/use-intake-form-params';
+import { cn } from '@/lib/utils';
 
-const IntakeFormTable = () => {
-  const { page, search, flag, from, to, status } = useIntakeFormParams();
+interface FormsTableProps<T = unknown> {
+  table: TTable<T>;
+  columns: ColumnDef<T>[];
+  isPending: boolean;
+  isError: boolean;
+  className?: string;
+}
 
-  const { data, isPending, isError } = useAllForms({
-    page,
-    search,
-    filters: {
-      flag,
-      from,
-      to,
-      status,
-    },
-    prefetchNextPages: true,
-  });
-
-  const table = useReactTable({
-    data: data?.data ?? [],
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getRowId: (row) => row.id,
-    manualPagination: true,
-    pageCount: data?.total_pages ?? 0,
-    autoResetPageIndex: false,
-  });
+export default function FormsTable<T>({
+  table,
+  columns,
+  isError,
+  isPending,
+  className,
+}: FormsTableProps<T>) {
   return (
     <>
-      <Table className="mt-8 mb-3">
+      <Table className={cn('mt-8 mb-3', className)}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow className="hover:bg-transparent" key={headerGroup.id}>
@@ -86,7 +75,7 @@ const IntakeFormTable = () => {
             </TableRow>
           ) : isPending ? (
             // Show skeleton while loading
-            <FormSkeleton />
+            <FormSkeleton length={columns.length} />
           ) : table.getRowModel().rows?.length > 0 ? (
             // Show actual data rows
             table.getRowModel().rows.map((row) => (
@@ -113,13 +102,9 @@ const IntakeFormTable = () => {
       </Table>
       <Suspense fallback={<div>Loading...</div>}>
         {table.getPageCount() > 1 && (
-          <IntakeFormTablePagination
-            className="mb-8 flex justify-end"
-            table={table}
-          />
+          <TablePagination className="mb-8 flex justify-end" table={table} />
         )}
       </Suspense>
     </>
   );
-};
-export default IntakeFormTable;
+}

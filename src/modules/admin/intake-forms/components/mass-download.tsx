@@ -101,7 +101,6 @@ const MassDownload = ({
       });
 
       // download file when url is returned
-      console.log('downloading');
       downloadFileFromUrl({ name: key, url }, () => {
         toast.success('Mass download complete');
         reset();

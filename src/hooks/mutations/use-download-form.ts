@@ -1,8 +1,8 @@
 import useAxios from '@/lib/api/axios-client';
-import { FORMS_EP } from '@/lib/api/endpoints';
+import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../queries/query-keys';
-import useIntakeFormParams from '../use-intake-form-params';
+import useIntakeFormParams from '../use-forms-params';
 
 const useDownloadForm = () => {
   const { axios } = useAxios();
@@ -13,7 +13,7 @@ const useDownloadForm = () => {
   return useMutation({
     mutationFn: async (id: string) =>
       await axios<Blob>({
-        url: FORMS_EP.DOWNLOAD_FORM(id),
+        url: INTAKE_FORMS_EP.DOWNLOAD_FORM(id),
         responseType: 'blob',
       }),
     onSuccess: () => {

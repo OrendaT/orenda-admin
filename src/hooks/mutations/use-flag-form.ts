@@ -1,8 +1,8 @@
 import useAxios from '@/lib/api/axios-client';
-import { FORMS_EP } from '@/lib/api/endpoints';
+import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../queries/query-keys';
-import useIntakeFormParams from '../use-intake-form-params';
+import useIntakeFormParams from '../use-forms-params';
 
 const useFlagForm = () => {
   const { axios } = useAxios();
@@ -13,7 +13,7 @@ const useFlagForm = () => {
   return useMutation({
     mutationFn: async (id: string) =>
       await axios({
-        url: FORMS_EP.FLAG(id),
+        url: INTAKE_FORMS_EP.FLAG(id),
         method: 'PATCH',
       }),
     onSuccess: () => {
