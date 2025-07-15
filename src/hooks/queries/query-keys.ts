@@ -6,7 +6,7 @@ export const QUERY_KEYS = {
     page,
     search,
     filters,
-    url
+    url,
   ],
   form: (id: string) => ['form', id],
   downloadTask: (id?: string) => ['download-task', id],
