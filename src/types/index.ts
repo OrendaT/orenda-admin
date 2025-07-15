@@ -158,11 +158,11 @@ export interface CreditCardFormData {
   signature: string;
   signature_date: string;
   status: FormStatus;
+  zip_code: string;
 
   credit_card_csv: string;
   credit_card_exp_date: string;
   credit_card_number: string;
-  zip_code: string;
 
   flag: boolean;
 
