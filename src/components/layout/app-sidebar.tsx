@@ -50,6 +50,12 @@ export function AppSidebar({ role }: { role: UserRole }) {
               Icon: FormIcon({ className: 'mt-0.5' }),
               href: '/',
             },
+            {
+              id: 'credit-card-forms',
+              title: 'Credit Card Forms',
+              Icon: FormIcon({ className: 'mt-0.5' }),
+              href: '/credit-card-forms',
+            },
           ],
         }
       : undefined,
