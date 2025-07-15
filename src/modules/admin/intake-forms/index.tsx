@@ -3,13 +3,13 @@ import FormsInProgress from './components/forms-in-progress';
 import QuickActions from './components/quick-actions';
 import RangeSelect from '@/components/shared/range-select';
 import SearchFilter from './components/search-filter';
-import IntakeFormTable from './components/intake-form-table';
+import IntakeFormsTable from './components/intake-forms-table';
 import Export from './components/export';
 import { Suspense } from 'react';
 import SearchFilterSkeleton from '../../../components/skeletons/search-filter-skeleton';
-import IntakeFormTableSkeleton from '../../../components/skeletons/intake-form-table-skeleton';
+import FormsTableSkeleton from '../../../components/skeletons/forms-table-skeleton';
 
-const IntakeForm = async () => {
+const IntakeForms = async () => {
   return (
     <div className="grid gap-4">
       <div className="flex w-full flex-col gap-4 xl:flex-row">
@@ -41,12 +41,12 @@ const IntakeForm = async () => {
         <Suspense fallback={<SearchFilterSkeleton />}>
           <SearchFilter />
         </Suspense>
-        <Suspense fallback={<IntakeFormTableSkeleton />}>
-          <IntakeFormTable />
+        <Suspense fallback={<FormsTableSkeleton />}>
+          <IntakeFormsTable />
         </Suspense>
       </section>
     </div>
   );
 };
 
-export default IntakeForm;
+export default IntakeForms;

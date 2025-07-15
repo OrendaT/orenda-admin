@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { findResource, getUserRole } from '@/lib/utils';
-import IntakeForm from '@/modules/admin/intake-form';
+import IntakeForms from '@/modules/admin/intake-forms';
 import ProviderResources from '@/modules/provider/resources';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
@@ -11,8 +11,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const { isProvider } = getUserRole(session?.user?.roles || []);
 
   return {
-    title: isProvider ? 'Policies & Info' : 'Intake Form',
-    description: isProvider ? 'Policies & Info page' : 'Intake Form page',
+    title: isProvider ? 'Policies & Info' : 'Intake Forms',
+    description: isProvider ? 'Policies & Info page' : 'Intake Forms page',
   };
 }
 
@@ -33,6 +33,6 @@ export default async function Home() {
   return isProvider ? (
     <ProviderResources resource={resource!} />
   ) : (
-    <IntakeForm />
+    <IntakeForms />
   );
 }

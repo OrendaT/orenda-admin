@@ -9,17 +9,16 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { cn } from '@/lib/utils';
-import { FormData } from '@/types';
-import { Table } from '@tanstack/react-table';
+import { type Table } from '@tanstack/react-table';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 
-export function IntakeFormTablePagination({
+export default function TablePagination<T = unknown>({
   className,
   table,
 }: {
   className?: string;
-  table: Table<FormData>;
+  table: Table<T>;
 }) {
   const { replace } = useRouter(); // replace to set the query params
   const pathname = usePathname();
@@ -72,7 +71,7 @@ export function IntakeFormTablePagination({
         : undefined, // Ensure the index is within bounds
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPageIndex, table, status, flag, from]);
+  }, [currentPageIndex, table, searchParams]);
 
   return (
     <Pagination className={cn(className)}>
