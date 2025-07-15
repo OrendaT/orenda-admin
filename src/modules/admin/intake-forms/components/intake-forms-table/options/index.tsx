@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import { CellContext } from '@tanstack/react-table';
-import { FormData } from '@/types';
+import { IntakeFormData } from '@/types';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
 import useFlagForm from '@/hooks/mutations/use-flag-form';
@@ -17,7 +17,7 @@ import PreviewForm from './preview-form';
 import { toast } from 'sonner';
 import { sendReminderEmail } from '@/services/email-service';
 
-const Options = ({ row }: CellContext<FormData, unknown>) => {
+const Options = ({ row }: CellContext<IntakeFormData, unknown>) => {
   const [open, setOpen] = useState(false);
   const [module, setModule] = useState<'download' | 'preview'>();
   const { id, flag, status, email, first_name } = row.original;

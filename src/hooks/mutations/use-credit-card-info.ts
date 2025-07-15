@@ -1,5 +1,5 @@
 import useAxios from '@/lib/api/axios-client';
-import { FORMS_EP } from '@/lib/api/endpoints';
+import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
 import { CreditCardInfo } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -17,7 +17,7 @@ const useCreditCardInfo = () => {
       data: { password: string };
     }) =>
       await axios<{ success: boolean; message: string; data: CreditCardInfo }>({
-        url: FORMS_EP.CREDIT_CARD(id),
+        url: INTAKE_FORMS_EP.CREDIT_CARD(id),
         method: 'POST',
         data,
       }),

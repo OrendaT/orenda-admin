@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from './query-keys';
 import useAxios from '@/lib/api/axios-client';
-import { FORMS_EP } from '@/lib/api/endpoints';
-import { FormData } from '@/types';
+import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
+import { IntakeFormData } from '@/types';
 
 const useForm = (id: string) => {
   const { axios, status } = useAxios();
@@ -10,9 +10,9 @@ const useForm = (id: string) => {
   return useQuery({
     queryKey: QUERY_KEYS.form(id),
     queryFn: async () => {
-      const res = await axios<{ data: FormData }>({
+      const res = await axios<{ data: IntakeFormData }>({
         method: 'GET',
-        url: FORMS_EP.PATIENT(id),
+        url: INTAKE_FORMS_EP.FORM(id),
       });
 
       return res.data.data;

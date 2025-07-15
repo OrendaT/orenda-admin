@@ -1,13 +1,13 @@
 'use client';
 
 import useDownloadForm from '@/hooks/mutations/use-download-form';
-import { FormData } from '@/types';
+import { IntakeFormData } from '@/types';
 import { CellContext } from '@tanstack/react-table';
 import { LuDownload } from 'react-icons/lu';
 import { toast } from 'sonner';
 import { downloadFile } from '@/lib/utils';
 
-const DownloadButton = ({ row }: CellContext<FormData, unknown>) => {
+const DownloadButton = ({ row }: CellContext<IntakeFormData, unknown>) => {
   const { id, first_name, last_name, status } = row.original;
 
   const { isPending, mutateAsync: downloadForm } = useDownloadForm();
@@ -31,7 +31,12 @@ const DownloadButton = ({ row }: CellContext<FormData, unknown>) => {
 
   return (
     status === 'submitted' && (
-      <button disabled={isPending} type="button" title="Download" onClick={handleDownloadForm}>
+      <button
+        disabled={isPending}
+        type="button"
+        title="Download"
+        onClick={handleDownloadForm}
+      >
         <LuDownload className="size-4" />
       </button>
     )

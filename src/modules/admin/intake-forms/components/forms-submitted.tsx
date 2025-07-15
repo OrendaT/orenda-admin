@@ -6,7 +6,8 @@ import StatsCardSkeleton from '@/components/skeletons/stats-card-skeleton';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
 import { getPastDate } from '@/lib/utils';
 import { usePreviousDateStore } from '@/stores/previous-date-store';
-import { DashboardCardStat } from '@/types';
+import { DashboardCardStat, IntakeFormData } from '@/types';
+import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
 
 const FormsSubmitted = ({ className }: { className?: string }) => {
   const days = usePreviousDateStore((state) => state.days);
@@ -14,7 +15,8 @@ const FormsSubmitted = ({ className }: { className?: string }) => {
   const from = getPastDate(days);
   const to = getPastDate();
 
-  const { data, isPending } = useAllForms({
+  const { data, isPending } = useAllForms<IntakeFormData>({
+    url: INTAKE_FORMS_EP.ALL_FORMS,
     filters: { from, to, status: 'submitted' },
   });
 

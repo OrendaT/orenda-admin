@@ -1,11 +1,11 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { TableCell, TableRow } from '@/components/ui/table';
 
-const FormSkeleton = () => {
+const FormsSkeleton = ({length}: {length: number}) => {
   return [...Array(10)].map((_, rowIndex) => (
     // rows
     <TableRow className="hover:bg-transparent" key={rowIndex}>
-      {Array.from({ length: 7}).map((_, colIndex) => (
+      {Array.from({ length}).map((_, colIndex) => (
         // cols
         <TableCell key={colIndex}>
           <Skeleton className="h-8 w-full" />
@@ -14,4 +14,4 @@ const FormSkeleton = () => {
     </TableRow>
   ));
 };
-export default FormSkeleton;
+export default FormsSkeleton;

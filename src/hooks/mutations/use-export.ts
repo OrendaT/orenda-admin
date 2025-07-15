@@ -1,10 +1,10 @@
 import useAxios from '@/lib/api/axios-client';
-import { FORMS_EP } from '@/lib/api/endpoints';
+import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { QUERY_KEYS } from '../queries/query-keys';
-import useIntakeFormParams from '../use-intake-form-params';
+import useIntakeFormParams from '../use-forms-params';
 
 const useExport = () => {
   const { axios } = useAxios();
@@ -15,7 +15,7 @@ const useExport = () => {
   return useMutation({
     mutationFn: async (data: { patients: string[] }) =>
       await axios<{ success: boolean; message: string; task_id: string }>({
-        url: FORMS_EP.EXPORT,
+        url: INTAKE_FORMS_EP.EXPORT,
         method: 'POST',
         data,
       }),
