@@ -59,7 +59,15 @@ export const useAllForms = <T = unknown>({
         queryFn: () => getForms(pageAfterNext),
       });
     }
-  }, [query.isSuccess, page, queryClient, status, queryKey, getForms, prefetchNextPages]);
+  }, [
+    query.isSuccess,
+    page,
+    queryClient,
+    status,
+    queryKey,
+    getForms,
+    prefetchNextPages,
+  ]);
 
   return query;
 };
