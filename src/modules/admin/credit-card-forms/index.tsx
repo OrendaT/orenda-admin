@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 import SearchFilterSkeleton from '../../../components/skeletons/search-filter-skeleton';
-import IntakeFormsTableSkeleton from '../../../components/skeletons/intake-forms-table-skeleton';
+import FormsTableSkeleton from '../../../components/skeletons/forms-table-skeleton';
 import Export from '../intake-forms/components/export';
 import QuickActions from '../intake-forms/components/quick-actions';
 import SearchFilter from '../intake-forms/components/search-filter';
-import IntakeFormsTable from '../intake-forms/components/intake-forms-table';
+import CCFormsTable from './components/cc-forms-table';
 
 const CreditCardForms = async () => {
   return (
@@ -26,8 +26,8 @@ const CreditCardForms = async () => {
         <Suspense fallback={<SearchFilterSkeleton />}>
           <SearchFilter />
         </Suspense>
-        <Suspense fallback={<IntakeFormsTableSkeleton />}>
-          <IntakeFormsTable />
+        <Suspense fallback={<FormsTableSkeleton />}>
+          <CCFormsTable />
         </Suspense>
       </section>
     </div>

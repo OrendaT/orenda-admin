@@ -14,7 +14,7 @@ import {
   type ColumnDef,
 } from '@tanstack/react-table';
 import TablePagination from '@/components/shared/table-pagination';
-import FormSkeleton from '@/components/skeletons/forms-table-skeleton';
+import FormSkeleton from '@/components/skeletons/forms-skeleton';
 import { Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
