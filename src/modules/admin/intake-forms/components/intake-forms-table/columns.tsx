@@ -1,14 +1,16 @@
-import { FormData } from '@/types';
-import { CellContext, ColumnDef, HeaderContext } from '@tanstack/react-table';
+import { IntakeFormData } from '@/types';
+import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
 import { MdOutlineFlag } from 'react-icons/md';
 import Options from './options';
-import { useSelectedFormsStore } from '@/stores/selected-forms-store';
 import DownloadButton from './options/download-button';
+import {
+  SelectCell,
+  SelectHeader,
+} from '@/components/shared/forms-select-checkbox';
 
-export const columns: ColumnDef<FormData>[] = [
+export const columns: ColumnDef<IntakeFormData>[] = [
   {
     id: 'select',
     header: SelectHeader,
@@ -97,62 +99,3 @@ export const columns: ColumnDef<FormData>[] = [
     cell: Options,
   },
 ];
-
-function SelectHeader({ table }: HeaderContext<FormData, unknown>) {
-  const forms = useSelectedFormsStore((state) => state.forms);
-  const addForm = useSelectedFormsStore((state) => state.addForm);
-  const removeForm = useSelectedFormsStore((state) => state.removeForm);
-
-  return (
-    <Checkbox
-      checked={
-        table.getIsAllPageRowsSelected() ||
-        (table.getIsSomePageRowsSelected() && 'indeterminate')
-      }
-      onCheckedChange={(value) => {
-        // check all rows in current page
-        table.toggleAllPageRowsSelected(!!value);
-
-        // get rowIds for all rows in current page
-        const rowIds = table
-          .getPaginationRowModel()
-          .rows.map((row) => row.original.id);
-
-        // add or remove id form selected forms state
-        if (value) {
-          rowIds.forEach((id) => {
-            if (!forms.length) {
-              addForm(id);
-            } else if (!forms.includes(id)) {
-              addForm(id);
-            }
-          });
-        } else {
-          rowIds.forEach(removeForm);
-        }
-      }}
-      aria-label="Select all"
-    />
-  );
-}
-
-function SelectCell({ row }: CellContext<FormData, unknown>) {
-  const { id } = row.original;
-  const addForm = useSelectedFormsStore((state) => state.addForm);
-  const removeForm = useSelectedFormsStore((state) => state.removeForm);
-
-  return (
-    <Checkbox
-      checked={row.getIsSelected()}
-      onCheckedChange={(value) => {
-        row.toggleSelected(!!value);
-        if (value) {
-          addForm(id);
-        } else {
-          removeForm(id);
-        }
-      }}
-      aria-label="Select row"
-    />
-  );
-}

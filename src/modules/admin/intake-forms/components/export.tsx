@@ -1,7 +1,7 @@
 'use client';
 
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
-import DownloadForm from './intake-form-table/options/download-form';
+import DownloadForm from './intake-forms-table/options/download-form';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { LuUpload } from 'react-icons/lu';
@@ -23,7 +23,7 @@ const Export = () => {
         </Button>
       </DialogTrigger>
 
-      <DownloadForm open={open} forms={forms} />
+      <DownloadForm open={open} forms={forms.intake} />
     </Dialog>
   );
 };

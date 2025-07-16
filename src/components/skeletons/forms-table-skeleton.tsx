@@ -1,10 +1,10 @@
 import { Skeleton } from '../ui/skeleton';
 
-const IntakeFormTableSkeleton = () => {
+const FormsTableSkeleton = () => {
   return (
     <div>
       <Skeleton className="my-4 h-60 w-full" />
     </div>
   );
 };
-export default IntakeFormTableSkeleton;
+export default FormsTableSkeleton;

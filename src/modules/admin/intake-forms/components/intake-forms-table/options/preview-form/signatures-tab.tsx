@@ -2,12 +2,12 @@
 
 import { TabsContent } from '@/components/ui/tabs';
 import useForm from '@/hooks/queries/use-form';
-import { FormData } from '@/types';
+import { IntakeFormData } from '@/types';
 import Image from 'next/image';
 import { useMemo } from 'react';
 
 export const _signatures: {
-  id: keyof FormData;
+  id: keyof IntakeFormData;
   name: string;
   value?: string;
 }[] = [
@@ -29,7 +29,7 @@ export const _signatures: {
 ];
 
 const SignaturesTab = ({ id }: { id: string }) => {
-  const { data, isPending } = useForm(id);
+  const { data, isPending } = useForm<IntakeFormData>(id);
 
   const signatures = useMemo(() => {
     if (!data) return [];
