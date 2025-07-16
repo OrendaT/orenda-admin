@@ -20,8 +20,8 @@ const UserActionMenu: React.FC<UserActionMenuProps> = ({
   // onSendMessage
 }) => {
   const handleAction = (action: () => void) => {
-    onClose(); // Close the menu first
-    action(); // Then execute the action
+    onClose(); 
+    action(); 
   };
   
   return (

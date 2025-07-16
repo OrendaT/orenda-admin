@@ -17,6 +17,20 @@ const TeamBadge: React.FC<TeamBadgeProps> = ({ teams }) => {
   const teamNames = Object.keys(teams);
   const hasTeams = teamNames.length > 0;
 
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current && 
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
     React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

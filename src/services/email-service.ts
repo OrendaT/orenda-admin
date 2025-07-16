@@ -57,7 +57,6 @@ interface SendEmailParams {
     customMessage,
   }: SendEmailParams) {
     try {
-      // Return early if no email provided
       if (!email) {
         return { success: false, error: 'Email is required' };
       }
