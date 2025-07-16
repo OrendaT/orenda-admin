@@ -327,7 +327,7 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
           </span>
         </TableCell>
 
-        <TableCell>
+        <TableCell className="relative">
           <TeamBadge teams={user.teams} />
         </TableCell>
 
