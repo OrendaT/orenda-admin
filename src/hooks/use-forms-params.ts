@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 
-const useIntakeFormParams = () => {
+const useFormsParams = () => {
   const params = useSearchParams();
 
   const {
@@ -24,4 +24,4 @@ const useIntakeFormParams = () => {
     params: Object.fromEntries(params.entries()),
   };
 };
-export default useIntakeFormParams;
+export default useFormsParams;

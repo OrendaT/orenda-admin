@@ -130,8 +130,6 @@ const Filters = ({
       ),
     );
 
-    console.log(status);
-
     const { from, to } = queryData;
 
     if (from && to) {
