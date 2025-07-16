@@ -24,6 +24,7 @@ const Options = ({ row }: CellContext<IntakeFormData, unknown>) => {
   const [open, setOpen] = useState(false);
   const [module, setModule] = useState<'download' | 'preview'>();
   const { id, flag, status, email, first_name } = row.original;
+  const url = 'https://orenda-intake.vercel.app/';
 
   const { mutateAsync: flagForm } = useFlagForm();
 
