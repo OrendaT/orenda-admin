@@ -32,7 +32,7 @@ const TeamBadge: React.FC<TeamBadgeProps> = ({ teams }) => {
   }, []);
 
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-block" ref={dropdownRef}>
       {hasTeams ? (
         <>
           <Button
@@ -50,8 +50,8 @@ const TeamBadge: React.FC<TeamBadgeProps> = ({ teams }) => {
           </Button>
 
           {open && (
-            <div className="absolute z-20 mt-2 min-w-[7rem] w-[9rem] bg-white border border-gray-200 rounded-md shadow-lg">
-              <div className="p-2 scroll-thin space-y-2 max-h-32 overflow-y-auto">
+            <div className={`absolute z-20 mt-2 min-w-[7rem] w-[8rem] bg-white border border-gray-200 rounded-md shadow-lg origin-top transition-all duration-600 ease-in-out ${open ? 'opacity-100 scale-y-100 visible' : 'opacity-0 scale-y-95 invisible'}`}>
+              <div className="p-2 scroll-thin space-y-2 max-h-28 overflow-y-auto">
                 {teamNames.map((team) => (
                   <div key={team} className="space-y-1">
                     <div className="text-xs font-semibold text-gray-700">{team}</div>
