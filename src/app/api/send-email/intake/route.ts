@@ -65,7 +65,6 @@ export async function POST(request: NextRequest) {
         <p>Warm regards,<br/>The Orenda Psychiatry Team</p>
       `;
 
-      // Include the "Not interested" link for new form emails
       html = getBaseEmailTemplate(content);
     } else if (type === 'reminder') {
       // Reminder Email

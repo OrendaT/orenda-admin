@@ -9,11 +9,12 @@ import useFormType from '../use-form-type';
 const useMassDownload = () => {
   const { axios } = useAxios();
   const queryClient = useQueryClient();
-  const {type, url} = useFormType()
+  const { type, url } = useFormType();
 
   const { page, search, flag, from, to } = useFormsParams();
 
-  const {MASS_DOWNLOAD} = type==='intake' ? INTAKE_FORMS_EP : CREDIT_CARD_FORMS_EP;
+  const { MASS_DOWNLOAD } =
+    type === 'intake' ? INTAKE_FORMS_EP : CREDIT_CARD_FORMS_EP;
 
   return useMutation({
     mutationFn: async (data: { from_date: string; to_date: string }) =>
@@ -33,7 +34,7 @@ const useMassDownload = () => {
           page,
           search,
           filters: { flag, from, to },
-          url
+          url,
         }),
       });
     },

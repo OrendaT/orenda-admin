@@ -4,9 +4,9 @@ import axios, { AxiosError } from 'axios';
 export async function sendNewFormEmail(data: {
   email: string;
   first_name?: string;
-}) {
+}, form: string) {
   try {
-    const response = await axios.post('/api/send-email', {
+    const response = await axios.post(`/api/send-email/${form}`, {
       ...data,
       type: 'new-form',
     });
@@ -28,9 +28,10 @@ export async function sendNewFormEmail(data: {
 export async function sendReminderEmail(data: {
   email: string;
   first_name?: string;
-}) {
+
+}, form: string) {
   try {
-    const response = await axios.post('/api/send-email', {
+    const response = await axios.post(`/api/send-email/${form}`, {
       ...data,
       type: 'reminder',
     });

@@ -10,7 +10,11 @@ import { Status } from '@/types';
 import { LuCheck, LuCopy } from 'react-icons/lu';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { sendNewFormEmail } from '@/services/email-service';
-import { INTAKE_FORM_URL as url } from '@/lib/data';
+import {
+  INTAKE_FORM_URL as intake_url,
+  CREDIT_CARD_FORM_URL as cc_url,
+} from '@/lib/data';
+import useFormType from '@/hooks/use-form-type';
 
 const SendNewFormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -22,6 +26,8 @@ export default function SendNewForm({
 }: {
   setStatus: Dispatch<SetStateAction<Status>>;
 }) {
+  const { type } = useFormType();
+  const url = type === 'intake' ? intake_url : cc_url;
   const methods = useForm({
     defaultValues: {
       email: '',
@@ -40,7 +46,7 @@ export default function SendNewForm({
   const onSubmit = handleSubmit(async (data) => {
     const { email, first_name } = data;
 
-    const res = await sendNewFormEmail({ email, first_name });
+    const res = await sendNewFormEmail({ email, first_name }, type);
 
     if (res.success) {
       setStatus('success');

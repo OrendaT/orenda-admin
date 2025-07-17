@@ -1,6 +1,7 @@
 import { LuCircleCheckBig, LuTimer } from 'react-icons/lu';
 
 export const INTAKE_FORM_URL = 'https://forms.orendapsych.com/intake';
+export const CREDIT_CARD_FORM_URL = 'https://forms.orendapsych.com/credit-card';
 
 //  INTAKE FORM FILTERS DATA
 export const initialFilters = {
