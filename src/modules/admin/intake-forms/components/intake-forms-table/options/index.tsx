@@ -18,8 +18,6 @@ import { toast } from 'sonner';
 import { sendReminderEmail } from '@/services/email-service';
 
 
-const url = 'https://orenda-intake.vercel.app/';
-
 const Options = ({ row }: CellContext<IntakeFormData, unknown>) => {
   const [open, setOpen] = useState(false);
   const [module, setModule] = useState<'download' | 'preview'>();

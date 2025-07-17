@@ -25,9 +25,7 @@ export default function TablePagination<T = unknown>({
   const searchParams = useSearchParams(); // get current searchParams
 
   const currentPageIndex = Number(searchParams.get('page') ?? 1) - 1
-  const status = searchParams.get('status') ?? undefined;
-  const flag = searchParams.get('flag') ?? undefined;
-  const from = searchParams.get('from') ?? undefined;
+
  
   const createQueryString = useCallback(
     (page: number) => {
