@@ -35,6 +35,8 @@ const DownloadForm = ({
   open: boolean;
   forms: string[];
 }) => {
+  console.log(forms);
+
   // Dialog Functionality
   const [allowEdit, setAllowEdit] = useState(!name);
   const [status, setStatus] = useState<Status>('default');
@@ -118,7 +120,7 @@ const DownloadForm = ({
     const { url } = downloads[key];
     if (url) {
       setIsDownloading(true);
-        downloadFileFromUrl({ name, url }, () => {
+      downloadFileFromUrl({ name, url }, () => {
         setIsDownloading(false);
         setStatus('success');
       });

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import SearchFilterSkeleton from '../../../components/skeletons/search-filter-skeleton';
 import FormsTableSkeleton from '../../../components/skeletons/forms-table-skeleton';
-import Export from '../intake-forms/components/export';
+import Export from '../../../components/shared/export';
 import QuickActions from '../intake-forms/components/quick-actions';
 import SearchFilter from '../intake-forms/components/search-filter';
 import CCFormsTable from './components/cc-forms-table';

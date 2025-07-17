@@ -1,16 +1,18 @@
 'use client';
 
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
-import DownloadForm from './intake-forms-table/options/download-form';
+import DownloadForm from './download-form';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { LuUpload } from 'react-icons/lu';
 import { useSelectedFormsStore } from '@/stores/selected-forms-store';
+import useFormType from '@/hooks/use-form-type';
 
 const Export = () => {
   const [open, setOpen] = useState(false);
 
   const forms = useSelectedFormsStore((state) => state.forms);
+  const { snake_type } = useFormType();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -23,7 +25,7 @@ const Export = () => {
         </Button>
       </DialogTrigger>
 
-      <DownloadForm open={open} forms={forms.intake} />
+      <DownloadForm open={open} forms={forms[snake_type]} />
     </Dialog>
   );
 };

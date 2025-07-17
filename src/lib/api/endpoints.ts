@@ -36,4 +36,6 @@ export const CREDIT_CARD_FORMS_EP = {
   FLAG: (id: string) => `${BASE.CREDIT_CARDS}/${id}/flag`,
   CREDIT_CARD: (id: string) => `${BASE.CREDIT_CARDS}/${id}/preview`,
   DOWNLOAD_FORM: (id: string) => `${BASE.ADMIN}/download/credit-card/${id}`,
+  EXPORT: `${BASE.CREDIT_CARDS}/export`,
+  MASS_DOWNLOAD: `${BASE.CREDIT_CARDS}/mass-download`,
 };
