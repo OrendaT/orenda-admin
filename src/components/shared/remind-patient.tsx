@@ -7,8 +7,8 @@ import { Dispatch, SetStateAction } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Status } from '@/types';
-import { sendReminderEmail } from '@/services/email-service';
-import useFormType from '@/hooks/use-form-type';
+import useSendEmail from '@/hooks/use-send-email';
+import { isAxiosError } from 'axios';
 
 const RemindPatientSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -20,7 +20,7 @@ const RemindPatient = ({
 }: {
   setStatus: Dispatch<SetStateAction<Status>>;
 }) => {
-  const { type } = useFormType();
+  const { mutateAsync: sendReminderEmail } = useSendEmail();
   const methods = useForm({
     defaultValues: {
       email: '',
@@ -39,16 +39,22 @@ const RemindPatient = ({
   const onSubmit = handleSubmit(async (data) => {
     const { email, first_name } = data;
 
-    const res = await sendReminderEmail({ email, first_name }, type);
-
-    if (res.success) {
-      setStatus('success');
-      reset(); // Clear the form
-    } else {
-      const errorMessage = res.error || 'Failed. Please try again.';
-      setError('root', { message: errorMessage });
-      console.error('Error in form submission:', errorMessage);
-    }
+    await sendReminderEmail(
+      { data: { email, first_name }, type: 'reminder' },
+      {
+        onSuccess: () => {
+          setStatus('success');
+          reset(); // Clear the form
+        },
+        onError: (error) => {
+          const errorMessage = isAxiosError(error)
+            ? error.response?.data?.message
+            : error.message || 'Failed. Please try again.';
+          setError('root', { message: errorMessage });
+          console.error('Error in form submission:', errorMessage);
+        },
+      },
+    );
   });
 
   return (

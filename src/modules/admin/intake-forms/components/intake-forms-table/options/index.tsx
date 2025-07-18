@@ -13,27 +13,31 @@ import { IntakeFormData } from '@/types';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
 import useFlagForm from '@/hooks/mutations/use-flag-form';
+import useSendEmail from '@/hooks/use-send-email';
 import PreviewForm from './preview-form';
 import { toast } from 'sonner';
-import { sendReminderEmail } from '@/services/email-service';
 
 const Options = ({ row }: CellContext<IntakeFormData, unknown>) => {
   const [open, setOpen] = useState(false);
   const [module, setModule] = useState<'download' | 'preview'>();
+  const { mutateAsync: sendReminderEmail } = useSendEmail();
   const { id, flag, status, email, first_name } = row.original;
 
   const { mutateAsync: flagForm } = useFlagForm();
 
   const handlePatientRemind = () =>
-    toast.promise(sendReminderEmail({ email, first_name }), {
-      loading: 'Sending reminder...',
-      success: () => {
-        return 'Reminder sent successfully!';
+    toast.promise(
+      sendReminderEmail({ data: { email, first_name }, type: 'reminder' }),
+      {
+        loading: 'Sending reminder...',
+        success: () => {
+          return 'Reminder sent successfully!';
+        },
+        error: () => {
+          return 'Failed to send reminder. Please try again.';
+        },
       },
-      error: () => {
-        return 'Failed to send reminder. Please try again.';
-      },
-    });
+    );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

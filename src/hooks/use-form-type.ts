@@ -1,16 +1,17 @@
 import { CREDIT_CARD_FORMS_EP, INTAKE_FORMS_EP } from '@/lib/api/endpoints';
+import { FormType, SnakeFormType } from '@/types';
 import { usePathname } from 'next/navigation';
 
 const useFormType = () => {
   const pathname = usePathname();
   let url = INTAKE_FORMS_EP.ALL_FORMS;
-  let type: 'intake' | 'credit-card' = 'intake';
-  let snake_type: 'intake' |'credit_card' = 'intake'
+  let type: FormType = 'intake';
+  let snake_type: SnakeFormType = 'intake';
 
   switch (pathname) {
     case '/credit-card-forms':
       type = 'credit-card';
-      snake_type = 'credit_card'
+      snake_type = 'credit_card';
       url = CREDIT_CARD_FORMS_EP.ALL_FORMS;
       break;
     default:

@@ -9,12 +9,13 @@ import { z } from 'zod';
 import { Status } from '@/types';
 import { LuCheck, LuCopy } from 'react-icons/lu';
 import { useClipboard } from '@/hooks/use-clipboard';
-import { sendNewFormEmail } from '@/services/email-service';
 import {
   INTAKE_FORM_URL as intake_url,
   CREDIT_CARD_FORM_URL as cc_url,
 } from '@/lib/data';
 import useFormType from '@/hooks/use-form-type';
+import useSendEmail from '@/hooks/use-send-email';
+import { isAxiosError } from 'axios';
 
 const SendNewFormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -27,7 +28,7 @@ export default function SendNewForm({
   setStatus: Dispatch<SetStateAction<Status>>;
 }) {
   const { type } = useFormType();
-  const url = type === 'intake' ? intake_url : cc_url;
+  const { mutateAsync: sendNewFormEmail } = useSendEmail();
   const methods = useForm({
     defaultValues: {
       email: '',
@@ -46,17 +47,25 @@ export default function SendNewForm({
   const onSubmit = handleSubmit(async (data) => {
     const { email, first_name } = data;
 
-    const res = await sendNewFormEmail({ email, first_name }, type);
-
-    if (res.success) {
-      setStatus('success');
-      reset();
-    } else {
-      const errorMessage = res.error || 'Failed. Please try again.';
-      setError('root', { message: errorMessage });
-      console.error('Error in form submission:', errorMessage);
-    }
+    await sendNewFormEmail(
+      { data: { email, first_name }, type: 'new-form' },
+      {
+        onSuccess: () => {
+          setStatus('success');
+          reset(); // Clear the form
+        },
+        onError: (error) => {
+          const errorMessage = isAxiosError(error)
+            ? error.response?.data?.message
+            : error.message || 'Failed. Please try again.';
+          setError('root', { message: errorMessage });
+          console.error('Error in form submission:', errorMessage);
+        },
+      },
+    );
   });
+
+  const url = type === 'intake' ? intake_url : cc_url;
 
   return (
     <FormProvider {...methods}>

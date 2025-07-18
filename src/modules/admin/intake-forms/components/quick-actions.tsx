@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { LuBell, LuDownload, LuSend } from 'react-icons/lu';
-import SendNewForm from './send-new-form';
+import SendNewForm from '@/components/shared/send-new-form';
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import RemindPatient from './remind-patient';
+import RemindPatient from '@/components/shared/remind-patient';
 import MassDownload from './mass-download';
 import { useState } from 'react';
 import { Status } from '@/types';

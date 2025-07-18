@@ -5,6 +5,9 @@ import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 export type UserRole = 'Admin' | 'Provider' | 'Manager';
 export type TeamRole = 'Manager' | 'Member';
 
+export type FormType = 'intake' | 'credit-card';
+export type SnakeFormType = 'intake' | 'credit_card';
+
 type FormStatus = 'pending' | 'submitted';
 
 export interface DBUser {
