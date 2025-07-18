@@ -17,7 +17,10 @@ const useExport = () => {
   const { EXPORT } = type === 'intake' ? INTAKE_FORMS_EP : CREDIT_CARD_FORMS_EP;
 
   return useMutation({
-    mutationFn: async (data: { patients: string[] }) =>
+    mutationFn: async (data: {
+      patients?: string[];
+      credit_cards?: string[];
+    }) =>
       await axios<{ success: boolean; message: string; task_id: string }>({
         url: EXPORT,
         method: 'POST',
@@ -33,13 +36,18 @@ const useExport = () => {
         }),
       });
     },
-    onError: (error: AxiosError<{ message: string }>, { patients }) => {
-      toast.error(
-        patients.length
-          ? error.response?.data?.message?.split(':')?.[0] ||
-              'Something went wrong'
-          : 'No forms selected',
-      );
+    onError: (
+      error: AxiosError<{ message: string }>,
+      { patients, credit_cards },
+    ) => {
+      const forms = patients || credit_cards;
+      if (forms)
+        toast.error(
+          forms.length
+            ? error.response?.data?.message?.split(':')?.[0] ||
+                'Something went wrong'
+            : 'No forms selected',
+        );
     },
   });
 };

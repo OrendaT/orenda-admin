@@ -12,6 +12,7 @@ import Input from '@/components/ui/input';
 import useExport from '@/hooks/mutations/use-export';
 import useCheckStatus from '@/hooks/queries/use-check-status';
 import { useClipboard } from '@/hooks/use-clipboard';
+import useFormType from '@/hooks/use-form-type';
 import useRetry from '@/hooks/use-retry';
 import { cn, downloadFileFromUrl } from '@/lib/utils';
 import useDownloadFormStore from '@/stores/download-form-store';
@@ -66,6 +67,7 @@ const DownloadForm = ({
   // -------------------
   // Export Functionality
   const [isDownloading, setIsDownloading] = useState(false);
+  const { type } = useFormType();
   const { mutateAsync: _export } = useExport();
   const key =
     forms.length > 1 ? `${forms[0]}_${forms[forms.length - 1]}` : forms[0];
@@ -82,8 +84,9 @@ const DownloadForm = ({
 
   // adds download task to download form store if it doesn't exist
   useEffect(() => {
+    const dataKey = type === 'intake' ? 'patients' : 'credit_cards';
     const exportForms = async () => {
-      const res = await _export({ patients: forms });
+      const res = await _export({ [dataKey]: forms });
       if (res.status === 200) {
         addTask(key, {
           status: 'pending',
