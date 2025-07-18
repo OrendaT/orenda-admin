@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { FormDatePicker } from '@/components/ui/date-picker';
 import useMassDownload from '@/hooks/mutations/use-mass-download';
 import useCheckStatus from '@/hooks/queries/use-check-status';
+import useFormType from '@/hooks/use-form-type';
 import useRetry from '@/hooks/use-retry';
 import { cn, downloadFileFromUrl } from '@/lib/utils';
 import useDownloadFormStore from '@/stores/download-form-store';
@@ -49,6 +50,7 @@ const MassDownload = ({
   const downloads = useDownloadFormStore((state) => state.downloads);
   const addTask = useDownloadFormStore((state) => state.addTask);
   const updateTask = useDownloadFormStore((state) => state.updateTask);
+  const { snake_type } = useFormType();
 
   const { mutateAsync: massDownload } = useMassDownload();
   const { data, refetch } = useCheckStatus(taskId);
@@ -56,7 +58,7 @@ const MassDownload = ({
   const onSubmit = handleSubmit(async (data) => {
     const from_date = format(data.from, 'MM-dd-yyyy');
     const to_date = format(data.to, 'MM-dd-yyyy');
-    const generatedKey = `${from_date}_${to_date}`;
+    const generatedKey = `${from_date}_${to_date}_${snake_type}`;
     setKey(generatedKey);
 
     if (!downloads[generatedKey]) {
