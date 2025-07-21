@@ -98,7 +98,7 @@ const DownloadForm = ({
     if (open && !downloads[key]) {
       exportForms();
     }
-  }, [open, _export, forms, name, addTask, downloads, key]);
+  }, [open, _export, forms, name, addTask, downloads, key, type]);
 
   // checks the download status (every 1s by default)
   useRetry({
