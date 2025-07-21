@@ -19,7 +19,7 @@ import SuccessMessage from '@/components/shared/action-success-message';
 import { cn } from '@/lib/utils';
 import useFormType from '@/hooks/use-form-type';
 
-const QuickActions = ({ className }: { className?: string }) => {
+const QuickActions = ({ className,  actionClassName }: { className?: string; actionClassName?:string }) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<Status>('default');
   const { type } = useFormType();
@@ -65,7 +65,7 @@ const QuickActions = ({ className }: { className?: string }) => {
                 <DialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="flex justify-start text-sm font-normal"
+                    className={cn("flex justify-start text-sm font-normal", actionClassName)}
                   >
                     <span className="bg-purple-mist flex size-6 flex-shrink-0 items-center justify-center rounded-full *:size-4 *:flex-shrink-0">
                       <action.Icon className="text-orenda-purple" />

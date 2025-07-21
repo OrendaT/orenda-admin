@@ -11,7 +11,7 @@ const CreditCardForms = async () => {
       <div className="flex w-full flex-col gap-4 xl:flex-row">
         <section className="db_section">
           <h2 className="heading">Quick Actions</h2>
-          <QuickActions className="flex w-full gap-4" />
+          <QuickActions className="flex w-full gap-4 *:w-full" actionClassName='py-4 rounded-lg' />
         </section>
       </div>
 

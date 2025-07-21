@@ -3,21 +3,17 @@ import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { MdOutlineFlag } from 'react-icons/md';
-import {
-  SelectCell,
-  SelectHeader,
-} from '@/components/shared/forms-select-checkbox';
 import DownloadButton from './options/download-button';
 import Options from './options';
 
 export const columns: ColumnDef<CreditCardFormData>[] = [
-  {
-    id: 'select',
-    header: SelectHeader,
-    cell: SelectCell,
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: 'select',
+  //   header: SelectHeader,
+  //   cell: SelectCell,
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: 'patient_name',
     header: 'Patient Name',
