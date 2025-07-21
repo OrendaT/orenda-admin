@@ -1,13 +1,14 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
-import { InviteUserPayload, Role } from '@/types/user';
+import { InviteUserPayload, Role, TeamRole } from '@/types/user';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import Input from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useUsers } from '@/hooks/useUsers';
+
 
 interface InviteUserModalProps {
   isOpen: boolean;
@@ -15,10 +16,25 @@ interface InviteUserModalProps {
   onSuccess?: () => void;
 }
 
-const ALL_TEAMS = ['Billing', 'Communication', 'Clinical', 'Intake'];
-const TEAM_ROLES = ['Admin', 'Member'];
+// Updated teams and role options
+const ALL_TEAMS = [
+  'Billing',
+  'Clinical',
+  'Comms',
+  'Credentialling',
+  'Doxy',
+  'Intake',
+  'Prior Auths',
+];
 
+const TEAM_ROLES: TeamRole[] = ['Admin', 'Member'];
 const ROLE_OPTIONS: Role[] = ['Admin', 'Manager', 'Provider'];
+
+// Utility to generate a password
+function generatePassword(length = 10) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$_';
+  return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
 
 const InviteUserModal: React.FC<InviteUserModalProps> = ({
   isOpen,
@@ -48,20 +64,16 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
     formState: { isSubmitting },
   } = methods;
 
+  // Auto-generate password when modal opens if none exists
+  useEffect(() => {
+    if (isOpen && !watch('password')) {
+      setValue('password', generatePassword());
+    }
+  }, [isOpen]);
+
   const onSubmit = async (data: InviteUserPayload) => {
-    const cleanedTeams = Object.fromEntries(
-      Object.entries(data.teams || {}).map(([team, roles]) => [
-        team,
-        roles.filter((r) => r !== 'Lead'),
-      ])
-    );
-
-  
-
-  
-
     try {
-      await inviteUser({ ...data, teams: cleanedTeams });
+      await inviteUser(data);
       reset();
       onClose();
       onSuccess?.();
@@ -82,22 +94,14 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
             <Input {...register('first_name')} placeholder="First Name" />
             <Input {...register('last_name')} placeholder="Last Name" />
             <Input {...register('email')} placeholder="Email" type="email" />
-            <Input
-              {...register('password')}
-              placeholder="Password"
-              type="password"
-            />
+            <Input {...register('password')} placeholder="Password" type="text" readOnly />
 
+            {/* Role Assignment */}
             <div>
-              <label className="block mb-2 text-sm font-medium">
-                Assign Roles
-              </label>
+              <label className="block mb-2 text-sm font-medium">Assign Roles</label>
               <div className="flex gap-4 flex-wrap">
                 {ROLE_OPTIONS.map((role) => (
-                  <label
-                    key={role}
-                    className="inline-flex items-center gap-1 text-sm"
-                  >
+                  <label key={role} className="inline-flex items-center gap-1 text-sm">
                     <Checkbox
                       checked={watch('roles')?.includes(role)}
                       onCheckedChange={(checked) => {
@@ -114,10 +118,9 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
               </div>
             </div>
 
+            {/* Team Assignment */}
             <div>
-              <label className="block mb-2 text-sm font-medium">
-                Assign Teams
-              </label>
+              <label className="block mb-2 text-sm font-medium">Assign Teams</label>
               <div className="space-y-4">
                 {ALL_TEAMS.map((team) => (
                   <div key={team} className="p-2 border rounded">
@@ -159,6 +162,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
               </div>
             </div>
 
+            {/* Actions */}
             <div className="flex justify-end gap-2 mt-6">
               <Button
                 type="button"
