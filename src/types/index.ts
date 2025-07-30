@@ -17,7 +17,7 @@ export interface DBUser {
     name: string | null;
     email: string;
     roles: UserRole[];
-    teams: string[];
+    teams: Teams;
     id: string;
   };
 }
@@ -41,6 +41,7 @@ export interface SidebarMenuItem {
   onClick?: React.MouseEventHandler;
   isActive?: boolean;
   items?: SidebarMenuItem[];
+  hidden?: boolean;
 }
 
 export interface DashboardCardStat {

@@ -12,14 +12,20 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import RemindPatient from '@/components/shared/remind-patient';
-import MassDownload from '../../modules/admin/intake-forms/components/mass-download';
+import MassDownload from '../../modules/admin/intake/components/mass-download';
 import { useState } from 'react';
 import { Status } from '@/types';
 import SuccessMessage from '@/components/shared/action-success-message';
 import { cn } from '@/lib/utils';
 import useFormType from '@/hooks/use-form-type';
 
-const QuickActions = ({ className,  actionClassName }: { className?: string; actionClassName?:string }) => {
+const QuickActions = ({
+  className,
+  actionClassName,
+}: {
+  className?: string;
+  actionClassName?: string;
+}) => {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<Status>('default');
   const { type } = useFormType();
@@ -65,7 +71,10 @@ const QuickActions = ({ className,  actionClassName }: { className?: string; act
                 <DialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className={cn("flex justify-start text-sm font-normal", actionClassName)}
+                    className={cn(
+                      'flex justify-start text-sm font-normal',
+                      actionClassName,
+                    )}
                   >
                     <span className="bg-purple-mist flex size-6 flex-shrink-0 items-center justify-center rounded-full *:size-4 *:flex-shrink-0">
                       <action.Icon className="text-orenda-purple" />

@@ -9,7 +9,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import GeneralTab from './general-tab';
 import SignaturesTab from './signatures-tab';
-import CreditCardTab from '@/modules/admin/intake-forms/components/intake-forms-table/options/preview-form/credit-card-tab';
+import CreditCardTab from '@/modules/admin/intake/components/intake-forms-table/options/preview-form/credit-card-tab';
 
 const PreviewForm = ({ id, status }: { id: string; status: string }) => {
   return (

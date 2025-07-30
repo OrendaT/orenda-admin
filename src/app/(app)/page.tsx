@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { findResource, getUserRole } from '@/lib/utils';
-import IntakeForms from '@/modules/admin/intake-forms';
+import IntakeForms from '@/modules/admin/intake';
 import ProviderResources from '@/modules/provider/resources';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
