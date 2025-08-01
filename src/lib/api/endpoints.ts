@@ -1,3 +1,5 @@
+import { FormType } from '@/types';
+
 const BASE = {
   AUTH: 'auth',
   ADMIN: 'admin',
@@ -38,4 +40,16 @@ export const CREDIT_CARD_FORMS_EP = {
   DOWNLOAD_FORM: (id: string) => `${BASE.ADMIN}/download/credit-card/${id}`,
   EXPORT: `${BASE.CREDIT_CARDS}/export`,
   MASS_DOWNLOAD: `${BASE.CREDIT_CARDS}/mass-download`,
+  CHECK_TASK: (id?: string) => id,
+};
+
+export const getEP = ({ type }: { type: FormType }) => {
+  switch (type) {
+    case 'intake':
+      return INTAKE_FORMS_EP;
+    case 'credit-card':
+      return CREDIT_CARD_FORMS_EP;
+    default:
+      return INTAKE_FORMS_EP;
+  }
 };

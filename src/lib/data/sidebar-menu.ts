@@ -3,6 +3,7 @@ import { SidebarMenuItem, Teams, UserRole } from '@/types';
 import { HiOutlineCreditCard } from 'react-icons/hi2';
 import { convertResourcesToMenu } from '../utils';
 import { resources } from './resources';
+import { Users } from 'lucide-react';
 
 export const getSidebarMenu = ({
   roles,
@@ -32,6 +33,12 @@ export const getSidebarMenu = ({
           Icon: HiOutlineCreditCard({}),
           href: '/credit-card-forms',
           hidden: !(_teams.includes('Billing') || _teams.includes('Intake')),
+        },
+        {
+          id: 'providers',
+          title: 'Providers',
+          Icon: Users({}),
+          href: '/providers',
         },
       ],
     },

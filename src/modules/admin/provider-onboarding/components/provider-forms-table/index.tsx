@@ -8,7 +8,7 @@ import FormsTable from '@/components/shared/forms-table';
 import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
 import { IntakeFormData } from '@/types';
 
-const IntakeFormsTable = () => {
+const ProviderFormsTable = () => {
   const { page, search, flag, from, to, status } = useFormsParams();
 
   const { data, isPending, isError } = useAllForms<IntakeFormData>({
@@ -42,4 +42,4 @@ const IntakeFormsTable = () => {
     />
   );
 };
-export default IntakeFormsTable;
+export default ProviderFormsTable;

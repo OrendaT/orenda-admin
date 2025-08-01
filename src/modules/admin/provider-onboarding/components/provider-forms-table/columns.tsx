@@ -19,9 +19,8 @@ export const columns: ColumnDef<IntakeFormData>[] = [
     enableHiding: false,
   },
   {
-    id: 'name',
-    accessorFn: ({ first_name, last_name }) => `${first_name} ${last_name}`,
-    header: 'Patient Name',
+    accessorKey: 'fullname',
+    header: 'Provider Name',
     cell: ({ getValue, row }) => {
       const value = String(getValue());
       const isFlagged = row.original.flag;
@@ -39,7 +38,7 @@ export const columns: ColumnDef<IntakeFormData>[] = [
   {
     accessorKey: 'type',
     header: 'Form Type',
-    cell: 'Intake Form',
+    cell: 'Credentialing Form',
   },
   {
     accessorKey: 'status',

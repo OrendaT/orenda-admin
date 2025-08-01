@@ -3,7 +3,7 @@ import FormsInProgress from './components/forms-in-progress';
 import QuickActions from '@/components/shared/quick-actions';
 import RangeSelect from '@/components/shared/range-select';
 import SearchFilter from './components/search-filter';
-import IntakeFormsTable from './components/intake-forms-table';
+import IntakeFormsTable from './components/provider-forms-table';
 import Export from '@/components/shared/export';
 import { Suspense } from 'react';
 import SearchFilterSkeleton from '@/components/skeletons/search-filter-skeleton';
