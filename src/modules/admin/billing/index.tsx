@@ -3,7 +3,7 @@ import SearchFilterSkeleton from '@/components/skeletons/search-filter-skeleton'
 import FormsTableSkeleton from '@/components/skeletons/forms-table-skeleton';
 import QuickActions from '@/components/shared/quick-actions';
 import SearchFilter from '@/components/shared/search-filter';
-import CCFormsTable from './components/cc-forms-table';
+import CCFormsTable from './components/billing-forms-table';
 
 const BillingForms = async () => {
   return (

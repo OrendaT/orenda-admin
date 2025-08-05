@@ -5,14 +5,14 @@ import { columns } from './columns';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
 import useIntakeFormParams from '@/hooks/use-forms-params';
 import FormsTable from '@/components/shared/forms-table';
-import { CREDIT_CARD_FORMS_EP } from '@/lib/api/endpoints';
+import { BILLING_FORMS_EP } from '@/lib/api/endpoints';
 import { BillingFormData } from '@/types';
 
 const CCFormsTable = () => {
   const { page, search, flag, from, to, status } = useIntakeFormParams();
 
   const { data, isPending, isError } = useAllForms<BillingFormData>({
-    url: CREDIT_CARD_FORMS_EP.ALL_FORMS,
+    url: BILLING_FORMS_EP.ALL_FORMS,
     page,
     search,
     filters: {

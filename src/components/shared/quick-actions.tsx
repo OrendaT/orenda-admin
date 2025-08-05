@@ -45,7 +45,7 @@ const QuickActions = ({
       DialogContent: <RemindPatient setStatus={setStatus} />,
       successMessage: 'Reminder successfully sent',
     },
-    type !== 'credit-card' && {
+    type !== 'billing' && {
       id: 'mass-download',
       name: 'Mass download',
       description: 'Download forms between specific dates',

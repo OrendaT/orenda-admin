@@ -6,7 +6,7 @@ import { BillingFormData } from '@/types';
 import Image from 'next/image';
 import TabItem from './preview-tab-item';
 
-const SignaturesTab = ({ id }: { id: string }) => {
+const SignatureTab = ({ id }: { id: string }) => {
   const { data, isPending } = useForm<BillingFormData>(id);
 
   if (isPending || !data?.signature) return;
@@ -30,4 +30,4 @@ const SignaturesTab = ({ id }: { id: string }) => {
     </TabsContent>
   );
 };
-export default SignaturesTab;
+export default SignatureTab;

@@ -12,7 +12,7 @@ const Export = () => {
   const [open, setOpen] = useState(false);
 
   const forms = useSelectedFormsStore((state) => state.forms);
-  const { snake_type:form } = useFormType();
+  const { type:form } = useFormType();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
