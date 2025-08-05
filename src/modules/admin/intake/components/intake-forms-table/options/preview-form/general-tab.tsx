@@ -26,6 +26,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                   <TabItem name="Last name" value={data?.last_name} />
                 </div>
 
+                <TabItem name="Preferred Name" value={data?.preferred_name} />
                 <TabItem name="Date of Birth" value={data?.date_of_birth} />
                 <TabItem name="Email" value={data?.email} />
                 <TabItem name="Phone" value={data?.phone} />
