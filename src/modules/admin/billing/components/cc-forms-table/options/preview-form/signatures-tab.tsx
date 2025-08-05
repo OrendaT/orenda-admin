@@ -2,12 +2,12 @@
 
 import { TabsContent } from '@/components/ui/tabs';
 import useForm from '@/hooks/queries/use-form';
-import { CreditCardFormData } from '@/types';
+import { BillingFormData } from '@/types';
 import Image from 'next/image';
 import TabItem from './preview-tab-item';
 
 const SignaturesTab = ({ id }: { id: string }) => {
-  const { data, isPending } = useForm<CreditCardFormData>(id);
+  const { data, isPending } = useForm<BillingFormData>(id);
 
   if (isPending || !data?.signature) return;
 

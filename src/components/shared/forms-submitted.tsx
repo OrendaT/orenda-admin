@@ -7,7 +7,6 @@ import { useAllForms } from '@/hooks/queries/use-all-forms';
 import { getPastDate } from '@/lib/utils';
 import { usePreviousDateStore } from '@/stores/previous-date-store';
 import { DashboardCardStat, IntakeFormData } from '@/types';
-import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
 import useFormEP from '@/hooks/use-form-ep';
 
 const FormsSubmitted = ({ className }: { className?: string }) => {

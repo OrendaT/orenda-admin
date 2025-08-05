@@ -9,13 +9,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import { CellContext } from '@tanstack/react-table';
-import { CreditCardFormData} from '@/types';
+import { BillingFormData } from '@/types';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
 import useFlagForm from '@/hooks/mutations/use-flag-form';
 import PreviewForm from './preview-form';
 
-const Options = ({ row }: CellContext<CreditCardFormData, unknown>) => {
+const Options = ({ row }: CellContext<BillingFormData, unknown>) => {
   const [open, setOpen] = useState(false);
   const [module, setModule] = useState<'download' | 'preview'>();
   const { id, flag, status } = row.original;

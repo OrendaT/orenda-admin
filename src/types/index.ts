@@ -150,7 +150,7 @@ export interface CreditCardInfo {
   credit_card_number: string;
 }
 
-export interface CreditCardFormData {
+export interface BillingFormData {
   id: string;
   address_one: string;
   address_two: string;

@@ -2,14 +2,14 @@ import FormsSubmitted from '@/components/shared/forms-submitted';
 import FormsInProgress from '@/components/shared/forms-in-progress';
 import QuickActions from '@/components/shared/quick-actions';
 import RangeSelect from '@/components/shared/range-select';
-import ProviderFormsTable from './components/provider-forms-table';
+import CredentialingFormsTable from './components/credentialing-forms-table';
 import Export from '@/components/shared/export';
 import { Suspense } from 'react';
 import SearchFilterSkeleton from '@/components/skeletons/search-filter-skeleton';
 import FormsTableSkeleton from '@/components/skeletons/forms-table-skeleton';
 import SearchFilter from '@/components/shared/search-filter';
 
-const ProviderOnboardingForms = async () => {
+const CredentialingForms = async () => {
   return (
     <div className="grid gap-4">
       <div className="flex w-full flex-col gap-4 xl:flex-row">
@@ -42,11 +42,11 @@ const ProviderOnboardingForms = async () => {
           <SearchFilter />
         </Suspense>
         <Suspense fallback={<FormsTableSkeleton />}>
-          <ProviderFormsTable />
+          <CredentialingFormsTable />
         </Suspense>
       </section>
     </div>
   );
 };
 
-export default ProviderOnboardingForms;
+export default CredentialingForms;

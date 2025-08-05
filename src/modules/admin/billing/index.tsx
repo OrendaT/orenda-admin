@@ -5,7 +5,7 @@ import QuickActions from '@/components/shared/quick-actions';
 import SearchFilter from '@/components/shared/search-filter';
 import CCFormsTable from './components/cc-forms-table';
 
-const CreditCardForms = async () => {
+const BillingForms = async () => {
   return (
     <div className="grid gap-4">
       <div className="flex w-full flex-col gap-4 xl:flex-row">
@@ -34,4 +34,4 @@ const CreditCardForms = async () => {
   );
 };
 
-export default CreditCardForms;
+export default BillingForms;

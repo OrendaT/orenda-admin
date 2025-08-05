@@ -4,10 +4,10 @@ import PreviewFormSkeleton from '@/components/skeletons/preview-form-skeleton';
 import { TabsContent } from '@/components/ui/tabs';
 import useForm from '@/hooks/queries/use-form';
 import TabItem from './preview-tab-item';
-import { CreditCardFormData } from '@/types';
+import { BillingFormData } from '@/types';
 
 const GeneralTab = ({ id }: { id: string }) => {
-  const { data, isPending } = useForm<CreditCardFormData>(id);
+  const { data, isPending } = useForm<BillingFormData>(id);
 
   return (
     <TabsContent value="general">
@@ -46,8 +46,6 @@ const GeneralTab = ({ id }: { id: string }) => {
                 </div>
               </section>
             )}
-
-    
           </div>
         )}
       </section>

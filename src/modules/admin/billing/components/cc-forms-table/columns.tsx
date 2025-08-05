@@ -1,4 +1,4 @@
-import { CreditCardFormData } from '@/types';
+import { BillingFormData } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
@@ -6,7 +6,7 @@ import { MdOutlineFlag } from 'react-icons/md';
 import DownloadButton from './options/download-button';
 import Options from './options';
 
-export const columns: ColumnDef<CreditCardFormData>[] = [
+export const columns: ColumnDef<BillingFormData>[] = [
   // {
   //   id: 'select',
   //   header: SelectHeader,
