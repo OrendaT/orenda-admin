@@ -47,7 +47,7 @@ export const getEP = ({ type }: { type: FormType }) => {
   switch (type) {
     case 'intake':
       return INTAKE_FORMS_EP;
-    case 'credit-card':
+    case 'billing':
       return BILLING_FORMS_EP;
     default:
       return INTAKE_FORMS_EP;
