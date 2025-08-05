@@ -4,6 +4,12 @@ import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
 export type UserRole = 'Admin' | 'Provider' | 'Manager';
 export type TeamRole = 'Manager' | 'Member';
+
+export type FormType = 'intake' | 'credit-card';
+export type SnakeFormType = 'intake' | 'credit_card';
+
+type FormStatus = 'pending' | 'submitted';
+
 export interface DBUser {
   access_token: string;
   refresh_token?: string;
@@ -11,7 +17,7 @@ export interface DBUser {
     name: string | null;
     email: string;
     roles: UserRole[];
-    teams: string[];
+    teams: Teams;
     id: string;
   };
 }
@@ -35,6 +41,7 @@ export interface SidebarMenuItem {
   onClick?: React.MouseEventHandler;
   isActive?: boolean;
   items?: SidebarMenuItem[];
+  hidden?: boolean;
 }
 
 export interface DashboardCardStat {
@@ -55,14 +62,14 @@ export type Status =
   | 'danger'
   | 'info';
 
-export interface FormData {
+export interface IntakeFormData {
   id: string;
   first_name: string;
   last_name: string;
   email: string;
   phone: string;
   gender: string;
-  status: 'pending' | 'submitted';
+  status: FormStatus;
   type: 'Intake form';
   date_of_birth: string;
   created_at: string;
@@ -143,8 +150,32 @@ export interface CreditCardInfo {
   credit_card_number: string;
 }
 
-export interface AllFormsResponse {
-  data: FormData[];
+export interface CreditCardFormData {
+  id: string;
+  address_one: string;
+  address_two: string;
+  cardholder_name: string;
+  patient_name: string;
+  city: string;
+  date_of_birth: string;
+  state: string;
+  signature: string;
+  signature_date: string;
+  status: FormStatus;
+  zip_code: string;
+
+  credit_card_csv: string;
+  credit_card_exp_date: string;
+  credit_card_number: string;
+
+  flag: boolean;
+
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AllFormsResponse<T = unknown> {
+  data: T[];
   message: string;
   page: number;
   per_page: number;
@@ -154,6 +185,7 @@ export interface AllFormsResponse {
 }
 
 export interface UseAllFormsProps {
+  url: string;
   page?: string;
   search?: string;
   filters?: {

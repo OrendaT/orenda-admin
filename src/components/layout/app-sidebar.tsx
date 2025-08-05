@@ -13,13 +13,12 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import Header from './header';
-import { FormIcon } from '@/assets/svgs';
 import { MdLogout } from 'react-icons/md';
 import React, { useState } from 'react';
-import type { SidebarMenuItem, UserRole } from '@/types';
+import type { SidebarMenuItem, Teams, UserRole } from '@/types';
 import { logOut } from '@/app/actions/auth';
 import { toast } from 'sonner';
-import { cn, convertResourcesToMenu } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { LuPanelLeftClose } from 'react-icons/lu';
 import {
   AlertDialog,
@@ -32,28 +31,18 @@ import {
   AlertDialogTrigger,
 } from '../ui/alert-dialog';
 import { Button } from '../ui/button';
-import { resources } from '@/lib/data/resources';
+import { getSidebarMenu } from '@/lib/data';
 
-export function AppSidebar({ role }: { role: UserRole }) {
+export function AppSidebar({
+  roles,
+  teams,
+}: {
+  roles: UserRole[];
+  teams: Teams;
+}) {
   const [open, setOpen] = useState(false);
 
-  const navMenu: (SidebarMenuItem | undefined)[] = [
-    role === 'Provider' ? convertResourcesToMenu(resources) : undefined,
-    role === 'Admin' || role === 'Manager'
-      ? {
-          id: '1',
-          title: '',
-          items: [
-            {
-              id: 'intake-forms',
-              title: 'Intake Forms',
-              Icon: FormIcon({ className: 'mt-0.5' }),
-              href: '/',
-            },
-          ],
-        }
-      : undefined,
-  ];
+  const navMenu = getSidebarMenu({ roles, teams });
 
   const footerItem: SidebarMenuItem = {
     id: 'log-out',
@@ -76,7 +65,7 @@ export function AppSidebar({ role }: { role: UserRole }) {
         {/* top menu list */}
         {navMenu.map(
           (item) =>
-            item && (
+            !Boolean(item.hidden) && (
               <SidebarGroup key={item.id} className="mt-4">
                 {item.title && (
                   <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
@@ -85,7 +74,9 @@ export function AppSidebar({ role }: { role: UserRole }) {
                 <SidebarMenu>
                   {item.items?.map(
                     (item) =>
-                      item && <SidebarListItem key={item.id} item={item} />,
+                      !Boolean(item.hidden) && (
+                        <SidebarListItem key={item.id} item={item} />
+                      ),
                   )}
                 </SidebarMenu>
               </SidebarGroup>
