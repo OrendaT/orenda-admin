@@ -66,6 +66,7 @@ export interface IntakeFormData {
   id: string;
   first_name: string;
   last_name: string;
+  preferred_name: string;
   email: string;
   phone: string;
   gender: string;
