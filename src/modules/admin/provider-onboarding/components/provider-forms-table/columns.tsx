@@ -19,7 +19,7 @@ export const columns: ColumnDef<IntakeFormData>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'fullname',
+    accessorKey: 'name',
     header: 'Provider Name',
     cell: ({ getValue, row }) => {
       const value = String(getValue());

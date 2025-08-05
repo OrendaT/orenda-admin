@@ -3,7 +3,7 @@ import { SidebarMenuItem, Teams, UserRole } from '@/types';
 import { HiOutlineCreditCard } from 'react-icons/hi2';
 import { convertResourcesToMenu } from '../utils';
 import { resources } from './resources';
-import { Users } from 'lucide-react';
+import { LuUsers } from 'react-icons/lu';
 
 export const getSidebarMenu = ({
   roles,
@@ -37,8 +37,8 @@ export const getSidebarMenu = ({
         {
           id: 'providers',
           title: 'Providers',
-          Icon: Users({}),
-          href: '/providers',
+          Icon: LuUsers({}),
+          href: '/provider-onboarding-forms',
         },
       ],
     },

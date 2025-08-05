@@ -1,8 +1,8 @@
-import FormsSubmitted from './components/forms-submitted';
-import FormsInProgress from './components/forms-in-progress';
+import FormsSubmitted from '@/components/shared/forms-submitted';
+import FormsInProgress from '@/components/shared/forms-in-progress';
 import QuickActions from '@/components/shared/quick-actions';
 import RangeSelect from '@/components/shared/range-select';
-import SearchFilter from './components/search-filter';
+import SearchFilter from '@/components/shared/search-filter';
 import IntakeFormsTable from './components/intake-forms-table';
 import Export from '@/components/shared/export';
 import { Suspense } from 'react';

@@ -25,6 +25,9 @@ const MassDownload = ({
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
+  // get form type
+  const { snake_type } = useFormType();
+
   // Dialog Functionality
   const methods = useForm({
     defaultValues: {
@@ -50,7 +53,6 @@ const MassDownload = ({
   const downloads = useDownloadFormStore((state) => state.downloads);
   const addTask = useDownloadFormStore((state) => state.addTask);
   const updateTask = useDownloadFormStore((state) => state.updateTask);
-  const { snake_type } = useFormType();
 
   const { mutateAsync: massDownload } = useMassDownload();
   const { data, refetch } = useCheckStatus(taskId);

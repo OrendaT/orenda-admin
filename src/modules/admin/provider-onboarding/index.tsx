@@ -1,13 +1,13 @@
-import FormsSubmitted from './components/forms-submitted';
-import FormsInProgress from './components/forms-in-progress';
+import FormsSubmitted from '@/components/shared/forms-submitted';
+import FormsInProgress from '@/components/shared/forms-in-progress';
 import QuickActions from '@/components/shared/quick-actions';
 import RangeSelect from '@/components/shared/range-select';
-import SearchFilter from './components/search-filter';
-import IntakeFormsTable from './components/provider-forms-table';
+import ProviderFormsTable from './components/provider-forms-table';
 import Export from '@/components/shared/export';
 import { Suspense } from 'react';
 import SearchFilterSkeleton from '@/components/skeletons/search-filter-skeleton';
 import FormsTableSkeleton from '@/components/skeletons/forms-table-skeleton';
+import SearchFilter from '@/components/shared/search-filter';
 
 const ProviderOnboardingForms = async () => {
   return (
@@ -42,7 +42,7 @@ const ProviderOnboardingForms = async () => {
           <SearchFilter />
         </Suspense>
         <Suspense fallback={<FormsTableSkeleton />}>
-          <IntakeFormsTable />
+          <ProviderFormsTable />
         </Suspense>
       </section>
     </div>
