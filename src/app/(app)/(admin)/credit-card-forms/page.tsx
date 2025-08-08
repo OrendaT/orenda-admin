@@ -4,8 +4,8 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: 'Billing Forms',
-  description: 'Billing Forms page',
+  title: 'Credit Card Forms',
+  description: 'Credit Card Forms page',
 };
 
 export default async function BillingFormsPage() {

@@ -4,8 +4,8 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: 'Credentialing Forms',
-  description: 'Credentialing Forms page',
+  title: 'Provider Onboarding Forms',
+  description: 'Provider Onboarding Forms page',
 };
 
 export default async function CredentialingFormsPage() {
