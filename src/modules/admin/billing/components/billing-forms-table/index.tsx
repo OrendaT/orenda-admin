@@ -3,16 +3,16 @@
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { columns } from './columns';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
-import useFormsParams from '@/hooks/use-forms-params';
+import useIntakeFormParams from '@/hooks/use-forms-params';
 import FormsTable from '@/components/shared/forms-table';
-import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
-import { IntakeFormData } from '@/types';
+import { BILLING_FORMS_EP } from '@/lib/api/endpoints';
+import { BillingFormData } from '@/types';
 
-const IntakeFormsTable = () => {
-  const { page, search, flag, from, to, status } = useFormsParams();
+const CCFormsTable = () => {
+  const { page, search, flag, from, to, status } = useIntakeFormParams();
 
-  const { data, isPending, isError } = useAllForms<IntakeFormData>({
-    url: INTAKE_FORMS_EP.ALL_FORMS,
+  const { data, isPending, isError } = useAllForms<BillingFormData>({
+    url: BILLING_FORMS_EP.ALL_FORMS,
     page,
     search,
     filters: {
@@ -42,4 +42,4 @@ const IntakeFormsTable = () => {
     />
   );
 };
-export default IntakeFormsTable;
+export default CCFormsTable;

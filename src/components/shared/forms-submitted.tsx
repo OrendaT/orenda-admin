@@ -1,31 +1,34 @@
 'use client';
 
+import { FormCheckIcon } from '@/assets/svgs';
 import StatsCard from '@/components/shared/stats-card';
 import StatsCardSkeleton from '@/components/skeletons/stats-card-skeleton';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
 import { getPastDate } from '@/lib/utils';
 import { usePreviousDateStore } from '@/stores/previous-date-store';
 import { DashboardCardStat, IntakeFormData } from '@/types';
-import { LuDownload } from 'react-icons/lu';
-import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
+import useFormEP from '@/hooks/use-form-ep';
 
-const FormsInProgress = ({ className }: { className?: string }) => {
+const FormsSubmitted = ({ className }: { className?: string }) => {
   const days = usePreviousDateStore((state) => state.days);
+
   const from = getPastDate(days);
   const to = getPastDate();
 
+  const { ALL_FORMS } = useFormEP();
+
   const { data, isPending } = useAllForms<IntakeFormData>({
-    url: INTAKE_FORMS_EP.ALL_FORMS,
-    filters: { from, to, status: 'pending' },
+    url: ALL_FORMS,
+    filters: { from, to, status: 'submitted' },
   });
 
   const stats: DashboardCardStat = {
-    name: 'Forms in progress',
+    name: 'Forms Submitted',
     value: data?.total ?? 0,
-    percentage: 35,
-    trend: 'up',
+    percentage: 10.5,
+    trend: 'down',
     range: from,
-    NameIcon: LuDownload,
+    NameIcon: FormCheckIcon,
   };
 
   if (isPending)
@@ -33,4 +36,4 @@ const FormsInProgress = ({ className }: { className?: string }) => {
 
   return <StatsCard className={className} stats={stats} />;
 };
-export default FormsInProgress;
+export default FormsSubmitted;

@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import GeneralTab from './general-tab';
-import SignaturesTab from './signatures-tab';
+import SignatureTab from './signature-tab';
 import CreditCardTab from '@/modules/admin/intake/components/intake-forms-table/options/preview-form/credit-card-tab';
 
 const PreviewForm = ({ id, status }: { id: string; status: string }) => {
@@ -32,7 +32,7 @@ const PreviewForm = ({ id, status }: { id: string; status: string }) => {
 
         <GeneralTab id={id} />
         <CreditCardTab id={id} />
-        <SignaturesTab id={id} />
+        <SignatureTab id={id} />
       </Tabs>
     </DialogContent>
   );

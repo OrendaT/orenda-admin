@@ -11,7 +11,7 @@ import { LuCheck, LuCopy } from 'react-icons/lu';
 import { useClipboard } from '@/hooks/use-clipboard';
 import {
   INTAKE_FORM_URL as intake_url,
-  CREDIT_CARD_FORM_URL as cc_url,
+  BILLING_FORM_URL as cc_url,
 } from '@/lib/data';
 import useFormType from '@/hooks/use-form-type';
 import useSendEmail from '@/hooks/use-send-email';

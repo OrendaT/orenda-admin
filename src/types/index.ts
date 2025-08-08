@@ -5,8 +5,8 @@ import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 export type UserRole = 'Admin' | 'Provider' | 'Manager';
 export type TeamRole = 'Manager' | 'Member';
 
-export type FormType = 'intake' | 'credit-card';
-export type SnakeFormType = 'intake' | 'credit_card';
+export type FormType = 'intake' | 'billing' | 'credentialing';
+export type URLFormType = 'intake' | 'credit-card';
 
 type FormStatus = 'pending' | 'submitted';
 
@@ -151,7 +151,7 @@ export interface CreditCardInfo {
   credit_card_number: string;
 }
 
-export interface CreditCardFormData {
+export interface BillingFormData {
   id: string;
   address_one: string;
   address_two: string;

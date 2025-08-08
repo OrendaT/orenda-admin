@@ -25,6 +25,9 @@ const MassDownload = ({
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
+  // get form type
+  const { type } = useFormType();
+
   // Dialog Functionality
   const methods = useForm({
     defaultValues: {
@@ -50,7 +53,6 @@ const MassDownload = ({
   const downloads = useDownloadFormStore((state) => state.downloads);
   const addTask = useDownloadFormStore((state) => state.addTask);
   const updateTask = useDownloadFormStore((state) => state.updateTask);
-  const { snake_type } = useFormType();
 
   const { mutateAsync: massDownload } = useMassDownload();
   const { data, refetch } = useCheckStatus(taskId);
@@ -58,7 +60,7 @@ const MassDownload = ({
   const onSubmit = handleSubmit(async (data) => {
     const from_date = format(data.from, 'MM-dd-yyyy');
     const to_date = format(data.to, 'MM-dd-yyyy');
-    const generatedKey = `${from_date}_${to_date}_${snake_type}`;
+    const generatedKey = `${from_date}_${to_date}_${type}`;
     setKey(generatedKey);
 
     if (!downloads[generatedKey]) {

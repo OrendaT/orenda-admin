@@ -3,16 +3,16 @@
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { columns } from './columns';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
-import useIntakeFormParams from '@/hooks/use-forms-params';
+import useFormsParams from '@/hooks/use-forms-params';
 import FormsTable from '@/components/shared/forms-table';
-import { CREDIT_CARD_FORMS_EP } from '@/lib/api/endpoints';
-import { CreditCardFormData } from '@/types';
+import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
+import { IntakeFormData } from '@/types';
 
-const CCFormsTable = () => {
-  const { page, search, flag, from, to, status } = useIntakeFormParams();
+const CredentialingFormsTable = () => {
+  const { page, search, flag, from, to, status } = useFormsParams();
 
-  const { data, isPending, isError } = useAllForms<CreditCardFormData>({
-    url: CREDIT_CARD_FORMS_EP.ALL_FORMS,
+  const { data, isPending, isError } = useAllForms<IntakeFormData>({
+    url: INTAKE_FORMS_EP.ALL_FORMS,
     page,
     search,
     filters: {
@@ -42,4 +42,4 @@ const CCFormsTable = () => {
     />
   );
 };
-export default CCFormsTable;
+export default CredentialingFormsTable;

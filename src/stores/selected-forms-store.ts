@@ -6,7 +6,7 @@ interface ActionProps {
 }
 
 type SelectedFormsState = {
-  forms: { intake: string[]; credit_card: string[] };
+  forms: { intake: string[]; billing: string[] };
 };
 
 type SelectedFormsActions = {
@@ -18,7 +18,7 @@ type SelectedFormsActions = {
 type SelectedFormsStore = SelectedFormsState & SelectedFormsActions;
 
 const useSelectedFormsStore = create<SelectedFormsStore>((set) => ({
-  forms: { intake: [], credit_card: [] },
+  forms: { intake: [], billing: [] },
   
   addForm: ({ form, id }) =>
     set((state) => ({

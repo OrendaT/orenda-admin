@@ -1,26 +1,21 @@
-import { IntakeFormData } from '@/types';
+import { BillingFormData } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { MdOutlineFlag } from 'react-icons/md';
-import Options from './options';
 import DownloadButton from './options/download-button';
-import {
-  SelectCell,
-  SelectHeader,
-} from '@/components/shared/forms-select-checkbox';
+import Options from './options';
 
-export const columns: ColumnDef<IntakeFormData>[] = [
+export const columns: ColumnDef<BillingFormData>[] = [
+  // {
+  //   id: 'select',
+  //   header: SelectHeader,
+  //   cell: SelectCell,
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
-    id: 'select',
-    header: SelectHeader,
-    cell: SelectCell,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    id: 'name',
-    accessorFn: ({ first_name, last_name }) => `${first_name} ${last_name}`,
+    accessorKey: 'patient_name',
     header: 'Patient Name',
     cell: ({ getValue, row }) => {
       const value = String(getValue());
@@ -39,7 +34,7 @@ export const columns: ColumnDef<IntakeFormData>[] = [
   {
     accessorKey: 'type',
     header: 'Form Type',
-    cell: 'Intake Form',
+    cell: 'Credit Card',
   },
   {
     accessorKey: 'status',
@@ -73,21 +68,22 @@ export const columns: ColumnDef<IntakeFormData>[] = [
       return value;
     },
   },
-  {
-    accessorKey: 'last_accessed_at',
-    header: 'Last Accessed',
-    cell: ({ getValue }) => {
-      let value = getValue();
+  // {
+  //   accessorKey: 'last_accessed_at',
+  //   header: 'Last Accessed',
+  //   cell: ({ getValue }) => {
+  //     let value = getValue();
 
-      if (!value) return '—';
+  //     if (!value) return '—';
 
-      const dateValue = new Date(value as string);
-      value = dateValue
-        ? format(dateValue, 'PPp').replace('PM', 'pm').replace('AM', 'am')
-        : value;
-      return value;
-    },
-  },
+  //     const dateValue = new Date(value as string);
+  //     value = dateValue
+  //       ? format(dateValue, 'PPp').replace('PM', 'pm').replace('AM', 'am')
+  //       : value;
+  //     return value;
+  //   },
+  // },
+
   {
     id: 'download',
     enableHiding: false,

@@ -12,7 +12,7 @@ const Export = () => {
   const [open, setOpen] = useState(false);
 
   const forms = useSelectedFormsStore((state) => state.forms);
-  const { snake_type } = useFormType();
+  const { type:form } = useFormType();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -25,7 +25,7 @@ const Export = () => {
         </Button>
       </DialogTrigger>
 
-      <DownloadForm open={open} forms={forms[snake_type]} />
+      <DownloadForm open={open} forms={forms[form]} />
     </Dialog>
   );
 };

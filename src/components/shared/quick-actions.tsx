@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import RemindPatient from '@/components/shared/remind-patient';
-import MassDownload from '../../modules/admin/intake/components/mass-download';
+import MassDownload from './mass-download';
 import { useState } from 'react';
 import { Status } from '@/types';
 import SuccessMessage from '@/components/shared/action-success-message';
@@ -45,7 +45,7 @@ const QuickActions = ({
       DialogContent: <RemindPatient setStatus={setStatus} />,
       successMessage: 'Reminder successfully sent',
     },
-    type !== 'credit-card' && {
+    type !== 'billing' && {
       id: 'mass-download',
       name: 'Mass download',
       description: 'Download forms between specific dates',

@@ -1,19 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from './query-keys';
 import useAxios from '@/lib/api/axios-client';
-import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
 import { TaskStatusResponse } from '@/types';
 import { AxiosError } from 'axios';
+import useFormEP from '../use-form-ep';
 
 const useCheckStatus = (task_id?: string) => {
   const { axios, status } = useAxios();
+
+  const { CHECK_TASK } = useFormEP();
 
   return useQuery({
     queryKey: QUERY_KEYS.downloadTask(task_id),
     queryFn: async () => {
       const res = await axios<TaskStatusResponse>({
         method: 'GET',
-        url: INTAKE_FORMS_EP.CHECK_TASK(task_id),
+        url: CHECK_TASK(task_id),
       });
 
       return res.data;
