@@ -9,11 +9,18 @@ const useFormType = () => {
   let url_type: URLFormType = 'intake';
 
   switch (pathname) {
-    case '/billing-forms':
+    case '/credit-card-forms':
       type = 'billing';
       url_type = 'credit-card';
       url = BILLING_FORMS_EP.ALL_FORMS;
       break;
+
+    // case '/provider-onboarding-forms':
+    //   type = 'credentialing';
+    //   url_type = 'intake';
+    //   url = INTAKE_FORMS_EP.ALL_FORMS;
+    //   break;
+
     default:
       break;
   }

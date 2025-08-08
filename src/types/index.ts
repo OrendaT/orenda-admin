@@ -5,7 +5,7 @@ import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 export type UserRole = 'Admin' | 'Provider' | 'Manager';
 export type TeamRole = 'Manager' | 'Member';
 
-export type FormType = 'intake' | 'billing';
+export type FormType = 'intake' | 'billing' | 'credentialing';
 export type URLFormType = 'intake' | 'credit-card';
 
 type FormStatus = 'pending' | 'submitted';
