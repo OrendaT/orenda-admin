@@ -53,6 +53,17 @@ export interface DashboardCardStat {
   NameIcon: IconType | (() => JSX.Element);
 }
 
+export interface ENDPOINT {
+  ALL_FORMS: string;
+  EXPORT: string;
+  FORM: (id: string) => string;
+  FLAG: (id: string) => string;
+  CREDIT_CARD: (id: string) => string;
+  MASS_DOWNLOAD: string;
+  CHECK_TASK: (id?: string) => string;
+  DOWNLOAD_FORM: (id: string) => string;
+}
+
 export type Status =
   | 'default'
   | 'primary'

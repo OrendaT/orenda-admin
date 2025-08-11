@@ -1,4 +1,4 @@
-import { FormType } from '@/types';
+import { ENDPOINT, FormType } from '@/types';
 
 const BASE = {
   AUTH: 'auth',
@@ -21,7 +21,7 @@ export const AUTH_EP = {
   STATUS: `${BASE.AUTH}/status`,
 };
 
-export const INTAKE_FORMS_EP = {
+export const INTAKE_FORMS_EP: ENDPOINT = {
   ALL_FORMS: BASE.INTAKE,
   EXPORT: `${BASE.INTAKE}/export`,
   FORM: (id: string) => `${BASE.INTAKE}/${id}`,
@@ -29,11 +29,10 @@ export const INTAKE_FORMS_EP = {
   CREDIT_CARD: (id: string) => `${BASE.INTAKE}/${id}/credit-card`,
   MASS_DOWNLOAD: `${BASE.INTAKE}/mass-download`,
   CHECK_TASK: (id?: string) => `${BASE.ADMIN}/check-task/${id}`,
-  DOWNLOAD: (id: string) => `${BASE.ADMIN}/download/DOWNLOADS/${id}.zip`,
   DOWNLOAD_FORM: (id: string) => `${BASE.ADMIN}/download/intake-form/${id}`,
 };
 
-export const BILLING_FORMS_EP = {
+export const BILLING_FORMS_EP: ENDPOINT = {
   ALL_FORMS: BASE.BILLING,
   FORM: (id: string) => `${BASE.BILLING}/${id}`,
   FLAG: (id: string) => `${BASE.BILLING}/${id}/flag`,
@@ -41,17 +40,18 @@ export const BILLING_FORMS_EP = {
   DOWNLOAD_FORM: (id: string) => `${BASE.ADMIN}/download/credit-card/${id}`,
   EXPORT: `${BASE.BILLING}/export`,
   MASS_DOWNLOAD: `${BASE.BILLING}/mass-download`,
-  CHECK_TASK: (id?: string) => id,
+  CHECK_TASK: (id?: string) => id || '',
 };
 
-export const CREDENTIALING_FORMS_EP = {
+export const CREDENTIALING_FORMS_EP: ENDPOINT = {
   ALL_FORMS: BASE.CREDENTIALING,
   FORM: (id: string) => `${BASE.CREDENTIALING}/${id}`,
   FLAG: (id: string) => `${BASE.CREDENTIALING}/${id}/flag`,
+  CREDIT_CARD: (id: string) => id,
   DOWNLOAD_FORM: (id: string) => `${BASE.ADMIN}/download/provider/${id}`,
   EXPORT: `${BASE.CREDENTIALING}/export`,
   MASS_DOWNLOAD: `${BASE.CREDENTIALING}/mass-download`,
-  CHECK_TASK: (id?: string) => id,
+  CHECK_TASK: (id?: string) => id || '',
 };
 
 export const getEP = ({ type }: { type: FormType }) => {
