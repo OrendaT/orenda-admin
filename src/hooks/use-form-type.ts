@@ -1,5 +1,5 @@
 import { BILLING_FORMS_EP, INTAKE_FORMS_EP } from '@/lib/api/endpoints';
-import { ExportKey, FormType, URLFormType } from '@/types';
+import { ExportKey, FormType } from '@/types';
 import { usePathname } from 'next/navigation';
 
 const useFormType = () => {
