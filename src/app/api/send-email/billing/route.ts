@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mailchimpTransactional from '@mailchimp/mailchimp_transactional';
-import { INTAKE_FORM_URL as url, ORENDA_LOGO as logo } from '@/lib/data';
+import { BILLING_FORM_URL as url, ORENDA_LOGO as logo } from '@/lib/data';
 
 // Initialize with server-side API key
 const mailchimpClient = mailchimpTransactional(
@@ -8,8 +8,8 @@ const mailchimpClient = mailchimpTransactional(
 );
 
 // HTML email template with logo and styling
-const getBaseEmailTemplate = (content: string) =>
-  `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+const getBaseEmailTemplate = (content: string) => `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <!-- Logo -->
         <header style="text-align: center; margin-bottom: 30px;">
           <img src="${logo}" alt="Orenda Psychiatry" style="max-width: 180px;">
@@ -42,12 +42,12 @@ export async function POST(request: NextRequest) {
 
     if (type === 'new-form') {
       // New Form Email
-      subject = 'Invite to fill out Orenda Intake Form';
+      subject = 'Invite to fill out Credit Card Authorization Form';
 
       const content = `
         <p>Hello ${first_name || ''},</p>
         
-        <p>Welcome to Orenda Psychiatry. To get started, please complete your intake form using the link below:</p>
+        <p>Please complete your credit card form using the link below:</p>
         
         <div style="display: flex; justify-content: flex-start; margin: 30px 0;">
           <a href="${url}" style="background-color: #2e0086; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: 500; font-size: 16px;">
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
         </div>
         
         <p>If you have any questions or need support, feel free to reply to this email.</p>
-        
+                <br/>
         <p>Warm regards,<br/>The Orenda Psychiatry Team</p>
       `;
 
@@ -64,26 +64,31 @@ export async function POST(request: NextRequest) {
     } else if (type === 'reminder') {
       // Reminder Email
 
-      subject = 'Reminder: Complete Your Orenda Intake Form';
+      subject = 'Reminder: Complete Your Credit Card Authorization Form';
 
       const content = `
         <p>Hello ${first_name || ''},</p>
         
-        <p>We noticed you started your intake form but haven't finished it yet. To continue your journey with Orenda Psychiatry and get matched with the right provider</p>
+        <p>We noticed you started your Credit Card Authorization form but haven't finished it yet.</p>
 
-        <p>Please click on the link or respond to this message at your convenience.</p>
+        <p>Please complete your credit card form using the link below:</p>
         
         <div style="display: flex; justify-content: flex-start; margin: 30px 0;">
           <a href="${url}" style="background-color: #2e0086; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: 500; font-size: 16px;">
-            Schedule a Visit
+            Complete Form
           </a>
         </div>
         
-        <p>Completing the form helps us prepare for your visit and provide you with the best care possible. If you need help, just reply to this email.</p>
+        <p>Please click on the link or respond to this message at your convenience.
+          If you have any questions or need support, feel free to reply to this email.
+          </p>
         
-        <p>Thank you,<br/>The Orenda Psychiatry Team</p>
+          <br/>
+          
+        <p>Warm regards,<br/>The Orenda Psychiatry Team</p>
       `;
 
+      // Include the "Not interested" link for reminder emails
       html = getBaseEmailTemplate(content);
     } else {
       return NextResponse.json(

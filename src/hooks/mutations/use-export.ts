@@ -17,10 +17,7 @@ const useExport = () => {
   const { EXPORT } = useFormEP();
 
   return useMutation({
-    mutationFn: async (data: {
-      patients?: string[];
-      credit_cards?: string[];
-    }) =>
+    mutationFn: async (data: Record<string, string[]>) =>
       await axios<{ success: boolean; message: string; task_id: string }>({
         url: EXPORT,
         method: 'POST',
@@ -36,11 +33,9 @@ const useExport = () => {
         }),
       });
     },
-    onError: (
-      error: AxiosError<{ message: string }>,
-      { patients, credit_cards },
-    ) => {
-      const forms = patients || credit_cards;
+    onError: (error: AxiosError<{ message: string }>, data) => {
+      const key = Object.keys(data)[0];
+      const forms = data[key];
       if (forms)
         toast.error(
           forms.length

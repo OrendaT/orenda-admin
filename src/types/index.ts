@@ -7,6 +7,7 @@ export type TeamRole = 'Manager' | 'Member';
 
 export type FormType = 'intake' | 'billing' | 'credentialing';
 export type URLFormType = 'intake' | 'credit-card' | 'credentialing';
+export type ExportKey = 'patients' | 'credit_cards' | 'providers';
 
 type FormStatus = 'pending' | 'submitted';
 
