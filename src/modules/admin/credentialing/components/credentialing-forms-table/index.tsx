@@ -5,14 +5,14 @@ import { columns } from './columns';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
 import useFormsParams from '@/hooks/use-forms-params';
 import FormsTable from '@/components/shared/forms-table';
-import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
+import { CREDENTIALING_FORMS_EP } from '@/lib/api/endpoints';
 import { CredentialingFormData } from '@/types';
 
 const CredentialingFormsTable = () => {
   const { page, search, flag, from, to, status } = useFormsParams();
 
   const { data, isPending, isError } = useAllForms<CredentialingFormData>({
-    url: INTAKE_FORMS_EP.ALL_FORMS,
+    url: CREDENTIALING_FORMS_EP.ALL_FORMS,
     page,
     search,
     filters: {
