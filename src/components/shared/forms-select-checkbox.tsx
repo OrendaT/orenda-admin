@@ -57,7 +57,7 @@ export function SelectCell<T extends BaseRow = BaseRow>({
   const addForm = useSelectedFormsStore((state) => state.addForm);
   const removeForm = useSelectedFormsStore((state) => state.removeForm);
 
-   const { type: form } = useFormType();
+  const { type: form } = useFormType();
 
   return (
     <Checkbox

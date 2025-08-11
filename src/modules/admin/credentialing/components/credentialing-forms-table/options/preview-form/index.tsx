@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import GeneralTab from './general-tab';
-import SignatureTab from '@/modules/admin/billing/components/billing-forms-table/options/preview-form/signature-tab'
+import SignatureTab from './signature-tab';
 
 const PreviewForm = ({ id, status }: { id: string; status: string }) => {
   return (
@@ -23,9 +23,8 @@ const PreviewForm = ({ id, status }: { id: string; status: string }) => {
       <Tabs defaultValue="general" className="mt-4">
         <TabsList className="w-full">
           <TabsTrigger value="general">General</TabsTrigger>
-          <TabsTrigger value="cc_info">Credit Card Info</TabsTrigger>
           {status === 'submitted' && (
-            <TabsTrigger value="signatures">Signature</TabsTrigger>
+            <TabsTrigger value="signature">Signature</TabsTrigger>
           )}
         </TabsList>
 

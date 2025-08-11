@@ -8,8 +8,8 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { LuFileLock2 } from 'react-icons/lu';
 import { z } from 'zod';
-import TabItem from './preview-tab-item';
 import useCreditCardInfo from '@/hooks/mutations/use-credit-card-info';
+import TabItem from '@/components/shared/preview-tab-item';
 
 export default function CreditCardTab({ id }: { id: string }) {
   const [data, setData] = useState<CreditCardInfo | null>(null);

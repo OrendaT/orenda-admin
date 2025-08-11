@@ -26,7 +26,7 @@ const PreviewForm = ({ id, status }: { id: string; status: string }) => {
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="cc_info">Credit Card Info</TabsTrigger>
           {status === 'submitted' && (
-            <TabsTrigger value="signatures">Signature</TabsTrigger>
+            <TabsTrigger value="signature">Signature</TabsTrigger>
           )}
         </TabsList>
 

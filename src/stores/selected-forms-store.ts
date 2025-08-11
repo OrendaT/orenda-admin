@@ -6,46 +6,46 @@ interface ActionProps {
 }
 
 type SelectedFormsState = {
-  forms: { intake: string[]; billing: string[] };
+  forms: { intake: string[]; billing: string[]; credentialing: string[] };
 };
 
 type SelectedFormsActions = {
   addForm: (props: ActionProps) => void;
-  removeForm: (props: ActionProps) => void; 
+  removeForm: (props: ActionProps) => void;
   clearForms: (form: ActionProps['form']) => void;
 };
 
 type SelectedFormsStore = SelectedFormsState & SelectedFormsActions;
 
 const useSelectedFormsStore = create<SelectedFormsStore>((set) => ({
-  forms: { intake: [], billing: [] },
-  
+  forms: { intake: [], billing: [], credentialing: [] },
+
   addForm: ({ form, id }) =>
     set((state) => ({
       ...state,
       forms: {
         ...state.forms,
-        [form]: [...state.forms[form], id]
-      }
+        [form]: [...state.forms[form], id],
+      },
     })),
-    
+
   removeForm: ({ form, id }) =>
     set((state) => ({
       ...state,
       forms: {
         ...state.forms,
-        [form]: state.forms[form].filter((_id) => _id !== id)
-      }
+        [form]: state.forms[form].filter((_id) => _id !== id),
+      },
     })),
-    
+
   clearForms: (form) =>
     set((state) => ({
       ...state,
       forms: {
         ...state.forms,
-        [form]: []
-      }
+        [form]: [],
+      },
     })),
 }));
 
-export {useSelectedFormsStore}
+export { useSelectedFormsStore };

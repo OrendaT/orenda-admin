@@ -5,6 +5,7 @@ const BASE = {
   ADMIN: 'admin',
   INTAKE: 'patients',
   BILLING: 'credit-cards',
+  CREDENTIALING: 'providers',
 };
 
 // auth
@@ -43,12 +44,24 @@ export const BILLING_FORMS_EP = {
   CHECK_TASK: (id?: string) => id,
 };
 
+export const CREDENTIALING_FORMS_EP = {
+  ALL_FORMS: BASE.CREDENTIALING,
+  FORM: (id: string) => `${BASE.CREDENTIALING}/${id}`,
+  FLAG: (id: string) => `${BASE.CREDENTIALING}/${id}/flag`,
+  DOWNLOAD_FORM: (id: string) => `${BASE.ADMIN}/download/provider/${id}`,
+  EXPORT: `${BASE.CREDENTIALING}/export`,
+  MASS_DOWNLOAD: `${BASE.CREDENTIALING}/mass-download`,
+  CHECK_TASK: (id?: string) => id,
+};
+
 export const getEP = ({ type }: { type: FormType }) => {
   switch (type) {
     case 'intake':
       return INTAKE_FORMS_EP;
     case 'billing':
       return BILLING_FORMS_EP;
+    case 'credentialing':
+      return CREDENTIALING_FORMS_EP;
     default:
       return INTAKE_FORMS_EP;
   }

@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import { CellContext } from '@tanstack/react-table';
-import { IntakeFormData } from '@/types';
+import { CredentialingFormData } from '@/types';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
 import useFlagForm from '@/hooks/mutations/use-flag-form';
@@ -17,17 +17,20 @@ import useSendEmail from '@/hooks/use-send-email';
 import PreviewForm from './preview-form';
 import { toast } from 'sonner';
 
-const Options = ({ row }: CellContext<IntakeFormData, unknown>) => {
+const Options = ({ row }: CellContext<CredentialingFormData, unknown>) => {
   const [open, setOpen] = useState(false);
   const [module, setModule] = useState<'download' | 'preview'>();
   const { mutateAsync: sendReminderEmail } = useSendEmail();
-  const { id, flag, status, email, first_name } = row.original;
+  const { id, flag, status, email, name } = row.original;
 
   const { mutateAsync: flagForm } = useFlagForm();
 
   const handlePatientRemind = () =>
     toast.promise(
-      sendReminderEmail({ data: { email, first_name }, type: 'reminder' }),
+      sendReminderEmail({
+        data: { email, first_name: name },
+        type: 'reminder',
+      }),
       {
         loading: 'Sending reminder...',
         success: () => {

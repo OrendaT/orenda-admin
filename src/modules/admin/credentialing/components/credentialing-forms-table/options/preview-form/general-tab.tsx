@@ -3,11 +3,11 @@
 import PreviewFormSkeleton from '@/components/skeletons/preview-form-skeleton';
 import { TabsContent } from '@/components/ui/tabs';
 import useForm from '@/hooks/queries/use-form';
-import TabItem from './preview-tab-item';
-import { IntakeFormData } from '@/types';
+import TabItem from '@/components/shared/preview-tab-item';
+import { CredentialingFormData } from '@/types';
 
 const GeneralTab = ({ id }: { id: string }) => {
-  const { data, isPending } = useForm<IntakeFormData>(id);
+  const { data, isPending } = useForm<CredentialingFormData>(id);
 
   return (
     <TabsContent value="general">
@@ -16,240 +16,278 @@ const GeneralTab = ({ id }: { id: string }) => {
           <PreviewFormSkeleton />
         ) : (
           <div className="space-y-6">
+            <h2 className="preview_heading text-center">
+              Part 1: Document Information
+            </h2>
+
             {/*  Personal Details  */}
             <section>
-              <h2 className="preview_heading">Personal Details</h2>
+              <h2 className="preview_heading">Personal Information</h2>
 
               <div className="space-y-3">
                 <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
-                  <TabItem name="First name" value={data?.first_name} />
-                  <TabItem name="Last name" value={data?.last_name} />
+                  <TabItem name="Full name" value={data?.name} />
                 </div>
 
                 <TabItem name="Date of Birth" value={data?.date_of_birth} />
+                <TabItem
+                  name="Social security number"
+                  value={data?.social_security_number}
+                />
                 <TabItem name="Email" value={data?.email} />
-                <TabItem name="Phone" value={data?.phone} />
+              </div>
+            </section>
 
-                <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
-                  <TabItem name="Gender" value={data?.gender} />
-                  <TabItem
-                    name="Sex assigned at birth"
-                    value={data?.sex_assigned_at_birth}
-                  />
-                </div>
+            {/*  Address  */}
+            <section>
+              <h2 className="preview_heading">Address</h2>
 
+              <div className="space-y-3">
                 <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
-                  <TabItem name="Address 1" value={data?.address_one} />
+                  <TabItem name="Street Address" value={data?.street_address} />
                   <TabItem name="Address 2" value={data?.address_two} />
                 </div>
-
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <TabItem name="City" value={data?.city} />
                   <TabItem name="State" value={data?.state} />
                   <TabItem name="Zip code" value={data?.zip_code} />
                 </div>
-
-                <TabItem
-                  name="Same address for appointment?"
-                  value={data?.appointment_address}
-                />
-                <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
-                  <TabItem
-                    name="Appointment City"
-                    value={data?.appointment_city}
-                  />
-                  <TabItem
-                    name="Appointment State"
-                    value={data?.appointment_state}
-                  />
-                </div>
-
-                <TabItem
-                  name="Appointment for a minor child:"
-                  value={data?.for_minor_child}
-                />
-                <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
-                  <TabItem name="Guardian name" value={data?.guardian_name} />
-                  <TabItem
-                    name="Relationship to child"
-                    value={data?.relationship_with_child}
-                  />
-                </div>
+                <TabItem name="Residence" value={data?.residence} />
               </div>
             </section>
 
-            {/*  Patient Info & History  */}
+            {/*  CAQH  */}
             {data?.status === 'submitted' && (
               <section>
-                <h2 className="preview_heading">Patient Info & History</h2>
+                <h2 className="preview_heading">CAQH & NPI</h2>
 
                 <div className="space-y-3">
+                  <TabItem name="CAQH Number" value={data?.CAQH_number} />
+                  <TabItem name="CAQH Username" value={data?.CAQH_username} />
+                  <TabItem name="CAQH Password" value={data?.CAQH_password} />
+                  <TabItem name="NPI Number" value={data?.NPI_number} />
+                </div>
+              </section>
+            )}
+
+            {/*  Biography  */}
+            {data?.status === 'submitted' && (
+              <section>
+                <h2 className="preview_heading">Biography</h2>
+
+                <TabItem
+                  name="Professional statement"
+                  value={data?.professional_statement}
+                  isFile
+                />
+                <TabItem name="Headshot 1" value={data?.headshot_1} isFile />
+                <TabItem name="Headshot 2" value={data?.headshot_2} isFile />
+              </section>
+            )}
+
+            {/*  Other Info  */}
+            {data?.status === 'submitted' && (
+              <section>
+                <h2 className="preview_heading">Other Information</h2>
+                <div className="space-y-3">
                   <TabItem
-                    name="Reason for visit"
-                    value={data?.reason_for_visit}
+                    name="Referral Source"
+                    value={data?.referral_source}
                   />
                   <TabItem
-                    name="What would you like your sessions to focus on?"
-                    value={data?.mental_health_care_type}
+                    name="Referral Source Detail"
+                    value={data?.referral_source_detail}
                   />
                   <TabItem
-                    name="Seen mental health professional"
-                    value={data?.seen_health_professional}
+                    name="Primary State of License"
+                    value={data?.primary_state_of_license}
                   />
                   <TabItem
-                    name="Symptoms experienced in the past six months"
-                    value={data?.symptoms_past_six_months}
+                    name="Primary State of License Details"
+                    value={data?.primary_state_of_license_details}
                   />
                   <TabItem
-                    name="Symptoms experienced in the past six months (other)"
-                    value={data?.symptoms_past_six_months_other}
+                    name="Collaborating Physician"
+                    value={data?.collaborating_physician}
                   />
                   <TabItem
-                    name="Current medications and supplements being used"
-                    value={data?.current_medications}
+                    name="Collaborating Physician Name"
+                    value={data?.collaborating_physician_name}
                   />
                   <TabItem
-                    name="Medical allergies"
-                    value={data?.medication_allergies}
+                    name="Collaborating Physician NPI"
+                    value={data?.collaborating_physician_npi}
                   />
                   <TabItem
-                    name="Frequency of alcohol consumption"
-                    value={data?.alcohol_frequency}
+                    name="Collaborating Physician Email"
+                    value={data?.collaborating_physician_email}
                   />
                   <TabItem
-                    name="Drinks typically had in one sitting"
-                    value={data?.alcohol_quantity}
+                    name="Form 4NP Document"
+                    value={data?.form_4NP_doc}
+                    isFile
                   />
                   <TabItem
-                    name="Recreational drug use, amount and frequency"
-                    value={data?.recreational_drug_use}
+                    name="Consent to create PECOS Account"
+                    value={data?.consent_create_pecos_account}
+                  />
+                  <TabItem name="PECOS Username" value={data?.PECOS_username} />
+                  <TabItem name="PECOS Password" value={data?.PECOS_password} />
+                  <TabItem name="NPPES Username" value={data?.NPPES_username} />
+                  <TabItem name="NPPES Password" value={data?.NPPES_password} />
+                  <TabItem
+                    name="Patient Medicare ID"
+                    value={data?.PTAN_medicare_ID}
                   />
                   <TabItem
-                    name="Has been previously hospitalized for a psychiatric issue"
-                    value={data?.hospitalized_psych}
+                    name="Primary State License Document"
+                    value={data?.primary_state_license_doc}
+                    isFile
                   />
                   <TabItem
-                    name="Family history of mental illness"
-                    value={data?.family_history_mental_illness}
+                    name="Primary State DEA Number"
+                    value={data?.primary_state_dea_number}
                   />
                   <TabItem
-                    name="Personal medical history"
-                    value={data?.personal_medical_history}
+                    name="Primary State DEA Document"
+                    value={data?.primary_state_dea_doc}
+                    isFile
                   />
                   <TabItem
-                    name="Personal medical history (other)"
-                    value={data?.personal_medical_history_other}
-                  />
-                  <TabItem name="Current weight" value={data?.weight} />
-                  <TabItem name="Current height" value={data?.height} />
-                  <TabItem
-                    name="Pregnant or breastfeeding"
-                    value={data?.pregnant_or_breastfeeding}
+                    name="Has additional NP Licenses"
+                    value={data?.has_additional_np_licenses}
                   />
                   <TabItem
-                    name="Had a physical in the last two years"
-                    value={data?.recent_physical_exam}
+                    name="Additional NP Licenses"
+                    value={data?.additional_np_licenses}
                   />
                   <TabItem
-                    name="Relationship status"
-                    value={data?.relationship_status}
+                    name="Additional State License Document"
+                    value={data?.additional_state_license_doc}
+                    isFile
                   />
                   <TabItem
-                    name="Level of education"
-                    value={data?.education_level}
+                    name="Has additional DEA Registrations"
+                    value={data?.has_additional_dea_registrations}
                   />
                   <TabItem
-                    name="Current occupation details"
-                    value={data?.current_occupation}
+                    name="Additional DEA Registration"
+                    value={data?.additional_dea_reg}
                   />
                   <TabItem
-                    name="Current living situation"
-                    value={data?.living_situation}
+                    name="Additional DEA Document"
+                    value={data?.additional_dea_doc}
+                    isFile
                   />
                   <TabItem
-                    name="Weapons or gun at home"
-                    value={data?.has_weapons}
+                    name="PMHN/BC Document"
+                    value={data?.pmhnp_bc_doc}
+                    isFile
                   />
                   <TabItem
-                    name="Hearing impairments"
-                    value={data?.hearing_impairment}
+                    name="Has additional qualifications"
+                    value={data?.has_additional_qualifications}
                   />
                   <TabItem
-                    name="Emergency contact information"
-                    value={data?.emergency_contact_info}
+                    name="Additional qualifications"
+                    value={data?.additional_qualifications}
                   />
                   <TabItem
-                    name="Emergency contact phone"
-                    value={data?.emergency_contact_phone}
+                    name="Additional qualifications document"
+                    value={data?.additional_qualifications_doc}
+                    isFile
+                  />
+                  <TabItem
+                    name="Malpractice Insurance Document"
+                    value={data?.malpractice_insurance_doc}
+                    isFile
+                  />
+                  <TabItem
+                    name="Resume/CV Document"
+                    value={data?.resume_cv_doc}
+                    isFile
+                  />
+                  <TabItem
+                    name="Highest Nursing Degree"
+                    value={data?.highest_nursing_degree}
+                  />
+                  <TabItem name="Photo ID" value={data?.photo_ID} isFile />
+                  <TabItem
+                    name="Proof of Address ID"
+                    value={data?.proof_of_address_ID}
+                    isFile
                   />
                 </div>
               </section>
             )}
 
-            {/*  Insurance Details  */}
+            {/*  Signatures  */}
             {data?.status === 'submitted' && (
-              <section>
-                <h2 className="preview_heading">Insurance Details</h2>
-
-                <TabItem
-                  name="Insurance member ID"
-                  value={data?.insurance_id}
-                />
-                <TabItem
-                  name="Insurance provider"
-                  value={data?.insurance_provider}
-                />
-                <TabItem
-                  name={
-                    <>
-                      Insurance card front
-                      <a
-                        href={data?.insurance_card_front}
-                        className="ml-4 inline-block text-xs underline underline-offset-1 text-shadow-blue-900"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Download file
-                      </a>
-                    </>
-                  }
-                  value={data?.insurance_card_front}
-                  isFile
-                  altText="Insurance card front"
-                />
-                <TabItem
-                  name={
-                    <>
-                      Insurance card back
-                      <a
-                        href={data?.insurance_card_back}
-                        className="ml-4 inline-block text-xs underline underline-offset-1 text-shadow-blue-900"
-                      >
-                        Download file
-                      </a>
-                    </>
-                  }
-                  value={data?.insurance_card_back}
-                  isFile
-                  altText="Insurance card back"
-                />
-                <TabItem
-                  name={
-                    <>
-                      Photo ID
-                      <a
-                        href={data?.photo_ID}
-                        className="ml-4 inline-block text-xs underline underline-offset-1 text-shadow-blue-900"
-                      >
-                        Download file
-                      </a>
-                    </>
-                  }
-                  value={data?.photo_ID}
-                  isFile
-                  altText="Photo ID"
-                />
-              </section>
+              <>
+                <h2 className="preview_heading text-center">
+                  Part 2: Provider Questionnaire
+                </h2>
+                <section>
+                  <div className="space-y-3">
+                    <TabItem
+                      name="Patient Age Groups"
+                      value={data?.patient_age_groups}
+                    />
+                    <TabItem
+                      name="Follow-up Duration"
+                      value={data?.follow_up_duration}
+                    />
+                    <TabItem
+                      name="Offers therapy session"
+                      value={data?.offers_therapy_session}
+                    />
+                    <TabItem
+                      name="Therapy sessions"
+                      value={data?.therapy_session}
+                    />
+                    <TabItem
+                      name="Health conditions treated"
+                      value={data?.health_conditions_treated}
+                    />
+                    <TabItem
+                      name="Health specialties"
+                      value={data?.health_specialties}
+                    />
+                    <TabItem
+                      name="Speaks additional languages"
+                      value={data?.speaks_additional_lang}
+                    />
+                    <TabItem
+                      name="Additional languages"
+                      value={data?.additional_langs}
+                    />
+                    <TabItem
+                      name="Ketamine assisted therapy"
+                      value={data?.ketamine_assisted_therapy}
+                    />
+                    <TabItem
+                      name="Ketamine assisted therapy more info"
+                      value={data?.ketamine_assisted_therapy_more_info}
+                    />
+                    <TabItem
+                      name="Race/ethnicity"
+                      value={data?.race_ethnicity}
+                    />
+                    <TabItem
+                      name="Therapy preference response"
+                      value={data?.therapy_preference_response}
+                    />
+                    <TabItem
+                      name="Therapy policy acknowledgement"
+                      value={data?.therapy_policy_acknowledgement}
+                    />
+                    <TabItem
+                      name="Identity details"
+                      value={data?.identity_details}
+                    />
+                  </div>
+                </section>
+              </>
             )}
           </div>
         )}

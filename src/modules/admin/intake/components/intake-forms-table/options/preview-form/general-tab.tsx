@@ -1,9 +1,9 @@
 'use client';
 
+import TabItem from '@/components/shared/preview-tab-item';
 import PreviewFormSkeleton from '@/components/skeletons/preview-form-skeleton';
 import { TabsContent } from '@/components/ui/tabs';
 import useForm from '@/hooks/queries/use-form';
-import TabItem from './preview-tab-item';
 import { IntakeFormData } from '@/types';
 
 const GeneralTab = ({ id }: { id: string }) => {
@@ -201,55 +201,16 @@ const GeneralTab = ({ id }: { id: string }) => {
                   value={data?.insurance_provider}
                 />
                 <TabItem
-                  name={
-                    <>
-                      Insurance card front
-                      <a
-                        href={data?.insurance_card_front}
-                        className="ml-4 inline-block text-xs underline underline-offset-1 text-shadow-blue-900"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Download file
-                      </a>
-                    </>
-                  }
+                  name="Insurance card front"
                   value={data?.insurance_card_front}
                   isFile
-                  altText="Insurance card front"
                 />
                 <TabItem
-                  name={
-                    <>
-                      Insurance card back
-                      <a
-                        href={data?.insurance_card_back}
-                        className="ml-4 inline-block text-xs underline underline-offset-1 text-shadow-blue-900"
-                      >
-                        Download file
-                      </a>
-                    </>
-                  }
+                  name="Insurance card back"
                   value={data?.insurance_card_back}
                   isFile
-                  altText="Insurance card back"
                 />
-                <TabItem
-                  name={
-                    <>
-                      Photo ID
-                      <a
-                        href={data?.photo_ID}
-                        className="ml-4 inline-block text-xs underline underline-offset-1 text-shadow-blue-900"
-                      >
-                        Download file
-                      </a>
-                    </>
-                  }
-                  value={data?.photo_ID}
-                  isFile
-                  altText="Photo ID"
-                />
+                <TabItem name="Photo ID" value={data?.photo_ID} isFile />
               </section>
             )}
           </div>

@@ -1,4 +1,4 @@
-import { IntakeFormData } from '@/types';
+import { CredentialingFormData } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
@@ -10,7 +10,7 @@ import {
   SelectHeader,
 } from '@/components/shared/forms-select-checkbox';
 
-export const columns: ColumnDef<IntakeFormData>[] = [
+export const columns: ColumnDef<CredentialingFormData>[] = [
   {
     id: 'select',
     header: SelectHeader,
@@ -38,7 +38,7 @@ export const columns: ColumnDef<IntakeFormData>[] = [
   {
     accessorKey: 'type',
     header: 'Form Type',
-    cell: 'Credentialing Form',
+    cell: 'Onboarding Form',
   },
   {
     accessorKey: 'status',

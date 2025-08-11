@@ -23,7 +23,17 @@ const TabItem = ({
   return (
     <div className={cn(className)}>
       {/* label */}
-      <h3 className="preview_label">{name}</h3>
+      <h3 className="preview_label">
+        {name}
+        {isFile && typeof value === 'string' && (
+          <a
+            href={value}
+            className="ml-4 inline-block text-xs underline underline-offset-1 text-shadow-blue-900"
+          >
+            Download file
+          </a>
+        )}
+      </h3>
 
       {/* display value */}
       {Array.isArray(value) ? (
@@ -48,7 +58,7 @@ const TabItem = ({
             <Image
               className="size-full object-contain"
               src={value}
-              alt={altText ?? ''}
+              alt={altText ?? String(name)}
               width={320}
               height={240}
             />

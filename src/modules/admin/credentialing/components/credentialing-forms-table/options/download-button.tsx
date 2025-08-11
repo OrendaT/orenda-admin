@@ -1,14 +1,16 @@
 'use client';
 
 import useDownloadForm from '@/hooks/mutations/use-download-form';
-import { IntakeFormData } from '@/types';
+import { CredentialingFormData } from '@/types';
 import { CellContext } from '@tanstack/react-table';
 import { LuDownload } from 'react-icons/lu';
 import { toast } from 'sonner';
 import { downloadFile } from '@/lib/utils';
 
-const DownloadButton = ({ row }: CellContext<IntakeFormData, unknown>) => {
-  const { id, first_name, last_name, status } = row.original;
+const DownloadButton = ({
+  row,
+}: CellContext<CredentialingFormData, unknown>) => {
+  const { id, name, status } = row.original;
 
   const { isPending, mutateAsync: downloadForm } = useDownloadForm();
 
@@ -17,7 +19,6 @@ const DownloadButton = ({ row }: CellContext<IntakeFormData, unknown>) => {
     toast.promise(promise, {
       loading: 'Downloading...',
       success: ({ data: file }) => {
-        const name = `${first_name} ${last_name}`;
         downloadFile({ name, file });
         return {
           message: 'Form downloaded successfully',

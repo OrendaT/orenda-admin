@@ -6,7 +6,7 @@ export type UserRole = 'Admin' | 'Provider' | 'Manager';
 export type TeamRole = 'Manager' | 'Member';
 
 export type FormType = 'intake' | 'billing' | 'credentialing';
-export type URLFormType = 'intake' | 'credit-card';
+export type URLFormType = 'intake' | 'credit-card' | 'credentialing';
 
 type FormStatus = 'pending' | 'submitted';
 
@@ -26,7 +26,7 @@ export interface Teams {
   Billing?: TeamRole[];
   Communication?: TeamRole[];
   Clinical?: TeamRole[];
-  Credentialing?: TeamRole[];
+  Onboarding?: TeamRole[];
   Intake?: TeamRole[];
 }
 
@@ -170,6 +170,98 @@ export interface BillingFormData {
   credit_card_number: string;
 
   flag: boolean;
+
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CredentialingFormData {
+  id: string;
+  name: string;
+  email: string;
+  date_of_birth: string;
+  social_security_number: string;
+  street_address: string;
+  address_two: string;
+  city: string;
+  state: string;
+  zip_code: string;
+  residence: string;
+
+  CAQH_number: string;
+  CAQH_username: string;
+  CAQH_password: string;
+
+  NPI_number: string;
+  professional_statement: string;
+  headshot_1: string;
+  headshot_2: string;
+
+  referral_source: string;
+  referral_source_detail: string;
+
+  primary_state_of_license: string;
+  primary_state_of_license_details: string;
+
+  collaborating_physician: string;
+  collaborating_physician_name: string;
+  collaborating_physician_npi: string;
+  collaborating_physician_email: string;
+
+  form_4NP_doc: string;
+  consent_create_pecos_account: string;
+
+  PECOS_username: string;
+  PECOS_password: string;
+  NPPES_username: string;
+  NPPES_password: string;
+  PTAN_medicare_ID: string;
+
+  primary_state_license_doc: string;
+  primary_state_dea_number: string;
+  primary_state_dea_doc: string;
+
+  has_additional_np_licenses: string;
+  additional_np_licenses: string[];
+  additional_state_license_doc: string;
+  has_additional_dea_registrations: string;
+  additional_dea_reg: string;
+  additional_dea_doc: string;
+
+  pmhnp_bc_doc: string;
+  has_additional_qualifications: string;
+  additional_qualifications: string[];
+  additional_qualifications_doc: string;
+
+  malpractice_insurance_doc: string;
+  resume_cv_doc: string;
+
+  highest_nursing_degree: string;
+  photo_ID: string;
+  proof_of_address_ID: string;
+  patient_age_groups: string;
+
+  follow_up_duration: string;
+  offers_therapy_session: string;
+  therapy_session: string[];
+  health_conditions_treated: string[];
+  health_specialties: string[];
+  speaks_additional_lang: string;
+  additional_langs: string[];
+  ketamine_assisted_therapy: string;
+  ketamine_assisted_therapy_more_info: string;
+
+  race_ethnicity: string;
+  therapy_preference_response: string;
+  therapy_policy_acknowledgement: string;
+
+  identity_details: string;
+
+  policy_agreement: string;
+  policy_agreement_signature: string;
+
+  flag: boolean;
+  status: FormStatus;
 
   created_at: string;
   updated_at: string;

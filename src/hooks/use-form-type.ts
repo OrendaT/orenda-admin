@@ -15,11 +15,11 @@ const useFormType = () => {
       url = BILLING_FORMS_EP.ALL_FORMS;
       break;
 
-    // case '/provider-onboarding-forms':
-    //   type = 'credentialing';
-    //   url_type = 'intake';
-    //   url = INTAKE_FORMS_EP.ALL_FORMS;
-    //   break;
+    case '/provider-onboarding-forms':
+      type = 'credentialing';
+      url_type = 'intake';
+      url = INTAKE_FORMS_EP.ALL_FORMS;
+      break;
 
     default:
       break;
