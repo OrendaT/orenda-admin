@@ -3,7 +3,7 @@
 import PreviewFormSkeleton from '@/components/skeletons/preview-form-skeleton';
 import { TabsContent } from '@/components/ui/tabs';
 import useForm from '@/hooks/queries/use-form';
-import TabItem from './preview-tab-item';
+import TabItem from '@/components/shared/preview-tab-item';
 import { BillingFormData } from '@/types';
 
 const GeneralTab = ({ id }: { id: string }) => {
