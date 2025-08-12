@@ -23,9 +23,13 @@ const PreviewForm = ({ id, status }: { id: string; status: string }) => {
       <Tabs defaultValue="general" className="mt-4">
         <TabsList className="w-full">
           <TabsTrigger value="general">General</TabsTrigger>
-          {status === 'submitted' && (
-            <TabsTrigger value="signature">Signature</TabsTrigger>
-          )}
+          <TabsTrigger
+            className="disabled:cursor-not-allowed"
+            value="signature"
+            disabled={status !== 'submitted'}
+          >
+            Signature
+          </TabsTrigger>
         </TabsList>
 
         <GeneralTab id={id} />
