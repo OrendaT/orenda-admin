@@ -13,7 +13,7 @@ const BillingForms = async () => {
           <h2 className="heading">Quick Actions</h2>
           <QuickActions
             className="flex w-full gap-4 *:w-full"
-            actionClassName="py-4 rounded-lg"
+            actionClassName="clamp-[py,2.5,4] rounded-lg"
           />
         </section>
       </div>
