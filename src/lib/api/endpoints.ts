@@ -51,7 +51,7 @@ export const CREDENTIALING_FORMS_EP: ENDPOINT = {
   DOWNLOAD_FORM: (id: string) => `${BASE.ADMIN}/download/provider/${id}`,
   EXPORT: `${BASE.CREDENTIALING}/export`,
   MASS_DOWNLOAD: `${BASE.CREDENTIALING}/mass-download`,
-  CHECK_TASK: (id?: string) => id || '',
+  CHECK_TASK: (id?: string) => `${BASE.ADMIN}/check-task/${id}`,
 };
 
 export const getEP = ({ type }: { type: FormType }) => {
