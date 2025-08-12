@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     } else if (type === 'reminder') {
       // Reminder Email
 
-      subject = 'Reminder: Complete Your Orenda Onboarding Form';
+      subject = 'Reminder: Complete Your Orenda Provider Onboarding Form';
 
       const content = `
         <p>Hello ${first_name || ''},</p>

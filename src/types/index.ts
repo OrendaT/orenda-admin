@@ -74,20 +74,22 @@ export type Status =
   | 'danger'
   | 'info';
 
-export interface IntakeFormData {
+export interface BaseFormData {
   id: string;
+  flag: boolean;
+  created_at: string;
+  updated_at: string;
+  status: FormStatus;
+}
+
+export interface IntakeFormData extends BaseFormData {
   first_name: string;
   last_name: string;
   preferred_name: string;
   email: string;
   phone: string;
   gender: string;
-  status: FormStatus;
-  type: 'Intake form';
   date_of_birth: string;
-  created_at: string;
-  updated_at: string;
-  flag?: boolean;
 
   address_one: string;
   address_two: string;
@@ -163,8 +165,7 @@ export interface CreditCardInfo {
   credit_card_number: string;
 }
 
-export interface BillingFormData {
-  id: string;
+export interface BillingFormData extends BaseFormData {
   address_one: string;
   address_two: string;
   cardholder_name: string;
@@ -174,21 +175,14 @@ export interface BillingFormData {
   state: string;
   signature: string;
   signature_date: string;
-  status: FormStatus;
   zip_code: string;
 
   credit_card_csv: string;
   credit_card_exp_date: string;
   credit_card_number: string;
-
-  flag: boolean;
-
-  created_at: string;
-  updated_at: string;
 }
 
-export interface CredentialingFormData {
-  id: string;
+export interface CredentialingFormData extends BaseFormData {
   name: string;
   email: string;
   date_of_birth: string;
@@ -271,12 +265,6 @@ export interface CredentialingFormData {
 
   policy_agreement: string;
   policy_agreement_signature: string;
-
-  flag: boolean;
-  status: FormStatus;
-
-  created_at: string;
-  updated_at: string;
 }
 
 export interface AllFormsResponse<T = unknown> {
