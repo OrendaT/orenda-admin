@@ -6,7 +6,7 @@ import StatsCardSkeleton from '@/components/skeletons/stats-card-skeleton';
 import { useAllForms } from '@/hooks/queries/use-all-forms';
 import { getPastDate } from '@/lib/utils';
 import { usePreviousDateStore } from '@/stores/previous-date-store';
-import { DashboardCardStat, IntakeFormData } from '@/types';
+import { DashboardCardStat } from '@/types';
 import useFormEP from '@/hooks/use-form-ep';
 
 const FormsSubmitted = ({ className }: { className?: string }) => {
@@ -17,7 +17,7 @@ const FormsSubmitted = ({ className }: { className?: string }) => {
 
   const { ALL_FORMS } = useFormEP();
 
-  const { data, isPending } = useAllForms<IntakeFormData>({
+  const { data, isPending } = useAllForms({
     url: ALL_FORMS,
     filters: { from, to, status: 'submitted' },
   });
