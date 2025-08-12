@@ -265,6 +265,8 @@ export interface CredentialingFormData extends BaseFormData {
 
   policy_agreement: string;
   policy_agreement_signature: string;
+
+  user_id: string;
 }
 
 export interface AllFormsResponse<T = unknown> {

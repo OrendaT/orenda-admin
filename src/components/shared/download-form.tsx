@@ -36,8 +36,6 @@ const DownloadForm = ({
   open: boolean;
   forms: string[];
 }) => {
-  console.log(forms);
-
   // Dialog Functionality
   const [allowEdit, setAllowEdit] = useState(!name);
   const [status, setStatus] = useState<Status>('default');
