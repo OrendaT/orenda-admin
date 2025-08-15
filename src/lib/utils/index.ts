@@ -70,7 +70,7 @@ export const downloadFile = (
  * @description Determines the user's highest role based on the provided roles array.
  */
 export const getUserRole = (
-  roles?: string[],
+  roles?: UserRole[],
 ): {
   role: UserRole;
   isProvider: boolean;
@@ -129,7 +129,8 @@ export const findResource = (id: string) => {
 
 export const convertResourcesToMenu = (
   resources: Resource[],
-): { id: string; title: string; items: SidebarMenuItem[] } => {
+  hidden: boolean,
+): SidebarMenuItem => {
   const items: SidebarMenuItem[] = resources.map(
     ({ id, name, title, Icon, resources }) => {
       const item: SidebarMenuItem = {
@@ -159,6 +160,7 @@ export const convertResourcesToMenu = (
     id: 'resources',
     title: 'Resources',
     items,
+    hidden,
   };
 };
 
@@ -172,10 +174,4 @@ export const slugify = (routes?: string[]): string => {
   });
 
   return slug;
-};
-
-
-// so i added this function for the admin side
-export const isAdmin = (roles: string[] = []): boolean => {
-  return roles.includes('admin');
 };

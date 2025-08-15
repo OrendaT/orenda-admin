@@ -36,6 +36,7 @@ const LoginForm = () => {
     const res = await login(data);
 
     if (res.success) {
+      await update();
       toast.success(res.message);
       await update();
       push('/');

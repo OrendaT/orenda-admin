@@ -1,14 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from './query-keys';
 import useAxios from '@/lib/api/axios-client';
-import { CREDIT_CARD_FORMS_EP, INTAKE_FORMS_EP } from '@/lib/api/endpoints';
-import useFormType from '../use-form-type';
+import useFormEP from '../use-form-ep';
 
 const useForm = <T = unknown>(id: string) => {
   const { axios, status } = useAxios();
-  const { type } = useFormType();
 
-  const { FORM } = type === 'intake' ? INTAKE_FORMS_EP : CREDIT_CARD_FORMS_EP;
+  const { FORM } = useFormEP();
 
   return useQuery({
     queryKey: QUERY_KEYS.form(id),

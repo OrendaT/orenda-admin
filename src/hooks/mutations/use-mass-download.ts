@@ -1,15 +1,19 @@
 import useAxios from '@/lib/api/axios-client';
-import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { QUERY_KEYS } from '../queries/query-keys';
-import useIntakeFormParams from '../use-forms-params';
+import useFormsParams from '../use-forms-params';
+import useFormType from '../use-form-type';
+import useFormEP from '../use-form-ep';
 
 const useMassDownload = () => {
   const { axios } = useAxios();
   const queryClient = useQueryClient();
+  const { url } = useFormType();
 
-  const { page, search, flag, from, to } = useIntakeFormParams();
+  const { page, search, flag, from, to } = useFormsParams();
+
+  const { MASS_DOWNLOAD } = useFormEP();
 
   return useMutation({
     mutationFn: async (data: { from_date: string; to_date: string }) =>
@@ -19,7 +23,7 @@ const useMassDownload = () => {
         data: string[];
         task_id: string;
       }>({
-        url: INTAKE_FORMS_EP.MASS_DOWNLOAD,
+        url: MASS_DOWNLOAD,
         method: 'POST',
         data,
       }),
@@ -29,6 +33,7 @@ const useMassDownload = () => {
           page,
           search,
           filters: { flag, from, to },
+          url,
         }),
       });
     },

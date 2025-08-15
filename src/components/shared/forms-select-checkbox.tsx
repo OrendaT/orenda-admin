@@ -1,19 +1,17 @@
 import { CellContext, HeaderContext } from '@tanstack/react-table';
 import { useSelectedFormsStore } from '@/stores/selected-forms-store';
 import { Checkbox } from '@/components/ui/checkbox';
+import useFormType from '@/hooks/use-form-type';
+import { BaseFormData } from '@/types';
 
-interface BaseRow {
-  id: string;
-}
-
-export function SelectHeader<T extends BaseRow = BaseRow>({
+export function SelectHeader<T extends BaseFormData = BaseFormData>({
   table,
 }: HeaderContext<T, unknown>) {
   const _forms = useSelectedFormsStore((state) => state.forms);
   const addForm = useSelectedFormsStore((state) => state.addForm);
   const removeForm = useSelectedFormsStore((state) => state.removeForm);
 
-  const form = 'intake';
+  const { type: form } = useFormType();
   const forms = _forms[form];
 
   return (
@@ -49,14 +47,14 @@ export function SelectHeader<T extends BaseRow = BaseRow>({
   );
 }
 
-export function SelectCell<T extends BaseRow = BaseRow>({
+export function SelectCell<T extends BaseFormData = BaseFormData>({
   row,
 }: CellContext<T, unknown>) {
   const { id } = row.original;
   const addForm = useSelectedFormsStore((state) => state.addForm);
   const removeForm = useSelectedFormsStore((state) => state.removeForm);
 
-  const form = 'intake';
+  const { type: form } = useFormType();
 
   return (
     <Checkbox
