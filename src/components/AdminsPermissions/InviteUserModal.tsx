@@ -74,7 +74,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogTitle className="text-lg font-semibold mb-4">
-          Invite New User
+          Invite New Member
         </DialogTitle>
 
         <FormProvider {...methods}>
@@ -82,21 +82,21 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
             <Input {...register('first_name')} placeholder="First Name" />
             <Input {...register('last_name')} placeholder="Last Name" />
             <Input {...register('email')} placeholder="Email" type="email" />
-            <Input
+            {/* <Input
               {...register('password')}
               placeholder="Password"
               type="password"
-            />
+            /> */}
 
             <div>
-              <label className="block mb-2 text-sm font-medium">
+              <label className="block my-7 text-sm font-medium">
                 Assign Roles
               </label>
-              <div className="flex gap-4 flex-wrap">
+              <div className="flex-col flex gap-5 space-y-3 flex-wrap">
                 {ROLE_OPTIONS.map((role) => (
                   <label
                     key={role}
-                    className="inline-flex items-center gap-1 text-sm"
+                    className="inline-flex items-center gap-5 text-sm"
                   >
                     <Checkbox
                       checked={watch('roles')?.includes(role)}
@@ -114,7 +114,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <label className="block mb-2 text-sm font-medium">
                 Assign Teams
               </label>
@@ -157,7 +157,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             <div className="flex justify-end gap-2 mt-6">
               <Button
@@ -167,10 +167,11 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
                   reset();
                   onClose();
                 }}
+                className="flex-1"
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting} className="flex-1">
                 {isSubmitting ? 'Inviting...' : 'Invite'}
               </Button>
             </div>
