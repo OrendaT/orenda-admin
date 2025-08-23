@@ -1,7 +1,6 @@
 import { auth } from '@/auth';
 import { getTeams } from '@/lib/utils';
 import CreditCardForms from '@/modules/admin/credit-card';
-import { Teams } from '@/types';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
