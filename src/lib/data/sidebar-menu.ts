@@ -1,7 +1,7 @@
 import { IntakeFormsIcon } from '@/assets/svgs';
 import { SidebarMenuItem, Teams, UserRole } from '@/types';
 import { HiOutlineCreditCard } from 'react-icons/hi2';
-import { convertResourcesToMenu } from '../utils';
+import { convertResourcesToMenu, getTeams } from '../utils';
 import { resources } from './resources';
 
 export const getSidebarMenu = ({
@@ -11,7 +11,7 @@ export const getSidebarMenu = ({
   roles: UserRole[];
   teams: Teams;
 }): SidebarMenuItem[] => {
-  const _teams = Object.keys(teams) as (keyof Teams)[];
+  const _teams = getTeams(teams);
 
   return [
     convertResourcesToMenu(resources, !roles.includes('Provider')),
