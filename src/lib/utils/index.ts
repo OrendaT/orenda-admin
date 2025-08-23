@@ -4,6 +4,7 @@ import {
   ResourceFile,
   ResourceFolder,
   UserRole,
+  Teams,
 } from '@/types';
 import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
@@ -175,3 +176,5 @@ export const slugify = (routes?: string[]): string => {
 
   return slug;
 };
+
+export const getTeams = (teams: Teams) => Object.keys(teams) as (keyof Teams)[];
