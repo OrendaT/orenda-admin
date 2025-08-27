@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { XMarkIcon, CheckIcon } from '@heroicons/react/24/outline';
 import type { TeamCategory } from '@/types/team';
 
@@ -49,12 +49,6 @@ export default function TeamFilterPanel({
     setLocal(cleared);
   };
 
-  const anySelected = useMemo(
-    () => TEAM_CATEGORIES.some((t) => !!local[t]),
-    [local]
-  );
-
-  // ✅ Hooks are all above this conditional
   if (!open) return null;
 
   return (
@@ -85,7 +79,7 @@ export default function TeamFilterPanel({
             return (
               <div key={team}>
                 <label
-                  className="flex cursor-pointer items-center justify-between  py-3"
+                  className="flex cursor-pointer items-center justify-between py-3"
                   onClick={() => toggle(team)}
                 >
                   <div className="flex items-center gap-3">
@@ -94,7 +88,7 @@ export default function TeamFilterPanel({
                       aria-hidden="true"
                       className={`flex h-4 w-4 items-center justify-center rounded-[3px] border ${
                         checked
-                          ? 'border-purple-600 bg-purple-600'
+                          ? 'bg-[#2E0086] bg-[#2E0086]'
                           : 'border-gray-400 bg-white'
                       }`}
                     >
@@ -102,9 +96,8 @@ export default function TeamFilterPanel({
                     </span>
                     <span className="text-sm text-gray-900">{team} team</span>
                   </div>
-                </label>  
+                </label>
               </div>
-              
             );
           })}
         </fieldset>

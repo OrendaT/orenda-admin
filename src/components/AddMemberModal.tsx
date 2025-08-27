@@ -7,18 +7,20 @@ import type { Role } from '@/types/team';
 interface Props {
   open: boolean;
   onClose: () => void;
-  onInvite: (member: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: Role;
-  }) => void;
+  onInvite: (member: FormData) => void;
+  sending?: boolean;
 }
 
-const ROLE_OPTIONS: Role[] = ['Admin', 'Manager', 'Team Member'];
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: Role;
+}
 
-export default function AddMemberModal({ open, onClose, onInvite }: Props) {
-  // ✅ Always call hooks at the top level
+const ROLE_OPTIONS: Role[] = ['Admin', 'Manager', 'Member'];
+
+export default function AddMemberModal({ open, onClose, onInvite, sending = false }: Props) {
   const {
     register,
     handleSubmit,
@@ -26,24 +28,23 @@ export default function AddMemberModal({ open, onClose, onInvite }: Props) {
     watch,
     setValue,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormData>({
     defaultValues: {
       firstName: '',
       lastName: '',
       email: '',
-      role: 'Team Member' as Role,
+      role: 'Member',
     },
   });
 
   const selectedRole = watch('role');
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: FormData) => {
+    if (sending) return;
     onInvite(data);
     reset();
-    onClose();
   };
 
-  // ✅ Safe conditional render after hooks
   if (!open) return null;
 
   return (
@@ -61,6 +62,7 @@ export default function AddMemberModal({ open, onClose, onInvite }: Props) {
             onClick={onClose}
             className="rounded p-1 hover:bg-gray-100"
             aria-label="Close"
+            disabled={sending}
           >
             <XMarkIcon className="h-5 w-5 text-gray-600" />
           </button>
@@ -72,6 +74,7 @@ export default function AddMemberModal({ open, onClose, onInvite }: Props) {
             <input
               {...register('firstName', { required: 'First name is required' })}
               className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm"
+              disabled={sending}
             />
             {errors.firstName && (
               <p className="mt-1 text-xs text-red-500">{errors.firstName.message}</p>
@@ -83,6 +86,7 @@ export default function AddMemberModal({ open, onClose, onInvite }: Props) {
             <input
               {...register('lastName', { required: 'Last name is required' })}
               className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm"
+              disabled={sending}
             />
             {errors.lastName && (
               <p className="mt-1 text-xs text-red-500">{errors.lastName.message}</p>
@@ -101,6 +105,7 @@ export default function AddMemberModal({ open, onClose, onInvite }: Props) {
                 },
               })}
               className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm"
+              disabled={sending}
             />
             {errors.email && (
               <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
@@ -113,7 +118,7 @@ export default function AddMemberModal({ open, onClose, onInvite }: Props) {
               <div key={r}>
                 <label
                   className="flex cursor-pointer items-center gap-3 py-3"
-                  onClick={() => setValue('role', r)}
+                  onClick={() => !sending && setValue('role', r)}
                 >
                   <input
                     type="radio"
@@ -143,9 +148,10 @@ export default function AddMemberModal({ open, onClose, onInvite }: Props) {
         <div className="mt-5 flex justify-center">
           <button
             type="submit"
-            className="inline-flex items-center rounded-md bg-[#2E0086] px-5 py-2 text-sm font-medium text-white hover:bg-purple-700"
+            className="inline-flex items-center rounded-md bg-[#2E0086] px-5 py-2 text-sm font-medium text-white hover:bg-[#2E0086] disabled:bg-gray-400 disabled:cursor-not-allowed"
+            disabled={sending}
           >
-            Invite member
+            {sending ? 'Sending…' : 'Invite member'}
           </button>
         </div>
       </form>

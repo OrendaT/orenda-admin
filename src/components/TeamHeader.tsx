@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 
-type RoleFilter = 'All' | 'Admins' | 'Managers' | 'Team Members';
+type RoleFilter = 'All' | 'Admin' | 'Manager' | 'Member';
 
 interface Props {
   onAddMember: () => void;
   onFilterChange: (query: string) => void;
-  onRoleFilterChange: (role: RoleFilter) => void;
+  onRoleFilterChange: (roles: RoleFilter) => void;
   onOpenTeamFilter: () => void; // ✅ NEW prop for filter panel
 }
 
@@ -31,7 +31,7 @@ export default function TeamHeader({
     onRoleFilterChange(role);
   };
 
-  const roles: RoleFilter[] = ['All', 'Admins', 'Managers', 'Team Members'];
+  const roles: RoleFilter[] = ['All', 'Admin', 'Manager', 'Member'];
 
   return (
     <div className="mb-[3em]">
