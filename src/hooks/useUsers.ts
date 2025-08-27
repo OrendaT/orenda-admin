@@ -99,10 +99,8 @@ export const useUsers = () => {
 
 
 import { useQuery } from '@tanstack/react-query';
-
 import { USERS_EP } from '@/lib/api/endpoints';
 import { AllUsersResponse } from '@/types';
-// import useAxios from '@/lib/api/axios-client';
 
 
 export const useAllUsers =()=> {

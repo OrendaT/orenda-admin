@@ -12,6 +12,10 @@ import Input from '@/components/ui/input';
 import useExport from '@/hooks/mutations/use-export';
 import useCheckStatus from '@/hooks/queries/use-check-status';
 import { useClipboard } from '@/hooks/use-clipboard';
+<<<<<<<< HEAD:src/modules/admin/intake-forms/components/intake-forms-table/options/download-form.tsx
+========
+import useFormType from '@/hooks/use-form-type';
+>>>>>>>> origin/develop:src/components/shared/download-form.tsx
 import useRetry from '@/hooks/use-retry';
 import { cn, downloadFileFromUrl } from '@/lib/utils';
 import useDownloadFormStore from '@/stores/download-form-store';
@@ -64,6 +68,10 @@ const DownloadForm = ({
   // -------------------
   // Export Functionality
   const [isDownloading, setIsDownloading] = useState(false);
+<<<<<<<< HEAD:src/modules/admin/intake-forms/components/intake-forms-table/options/download-form.tsx
+========
+  const { export_key } = useFormType();
+>>>>>>>> origin/develop:src/components/shared/download-form.tsx
   const { mutateAsync: _export } = useExport();
   const key =
     forms.length > 1 ? `${forms[0]}_${forms[forms.length - 1]}` : forms[0];
@@ -81,7 +89,11 @@ const DownloadForm = ({
   // adds download task to download form store if it doesn't exist
   useEffect(() => {
     const exportForms = async () => {
+<<<<<<<< HEAD:src/modules/admin/intake-forms/components/intake-forms-table/options/download-form.tsx
       const res = await _export({ patients: forms });
+========
+      const res = await _export({ [export_key]: forms });
+>>>>>>>> origin/develop:src/components/shared/download-form.tsx
       if (res.status === 200) {
         addTask(key, {
           status: 'pending',
@@ -93,7 +105,11 @@ const DownloadForm = ({
     if (open && !downloads[key]) {
       exportForms();
     }
+<<<<<<<< HEAD:src/modules/admin/intake-forms/components/intake-forms-table/options/download-form.tsx
   }, [open, _export, forms, name, addTask, downloads, key]);
+========
+  }, [open, _export, forms, name, addTask, downloads, key, export_key]);
+>>>>>>>> origin/develop:src/components/shared/download-form.tsx
 
   // checks the download status (every 1s by default)
   useRetry({
@@ -118,7 +134,11 @@ const DownloadForm = ({
     const { url } = downloads[key];
     if (url) {
       setIsDownloading(true);
+<<<<<<<< HEAD:src/modules/admin/intake-forms/components/intake-forms-table/options/download-form.tsx
         downloadFileFromUrl({ name, url }, () => {
+========
+      downloadFileFromUrl({ name, url }, () => {
+>>>>>>>> origin/develop:src/components/shared/download-form.tsx
         setIsDownloading(false);
         setStatus('success');
       });

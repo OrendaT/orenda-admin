@@ -12,11 +12,12 @@ const AppLayout = async ({ children }: { children: React.ReactNode }) => {
     redirect('/login');
   }
 
-  const { role, isProvider } = getUserRole(session.user.roles);
+  const { isProvider } = getUserRole(session.user.roles);
+  const { roles, teams } = session.user;
 
   return (
     <SidebarProvider>
-      <AppSidebar role={role} />
+      <AppSidebar roles={roles} teams={teams} />
       <main className="clamp-[p,4,8] w-full bg-[#f6f6f6] pb-[1.31rem]">
         <SidebarTrigger className="mb-4 ml-auto md:hidden" />
         {isProvider && <ProviderHeader />}
