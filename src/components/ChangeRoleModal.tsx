@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import type { Role, TeamMember } from '@/types/team';
 import useAxios from '@/lib/api/axios-client';
-import { useSession } from 'next-auth/react'; // ✅ Import session hook
+import { useSession } from 'next-auth/react';
 
 interface ChangeRoleModalProps {
   open: boolean;
   member: TeamMember | null;
   onClose: () => void;
-  onSuccess?: () => void;
+  onSuccess?: (newRoles: Role[]) => void;
 }
 
 const ROLE_OPTIONS: Role[] = ['Admin', 'Manager', 'Member'];
@@ -25,14 +25,18 @@ export default function ChangeRoleModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { axios } = useAxios();
-  const { data: session, status } = useSession(); // ✅ Get session and status
+  const { data: session, status } = useSession();
 
+  // Sync role selection when modal opens with a member
   useEffect(() => {
     if (member) {
-      setSelectedRole((member.roles?.[0] as Role) || 'Member');
+      setSelectedRole(
+        (Array.isArray(member.roles) && member.roles[0] as Role) || 'Member'
+      );
     }
   }, [member]);
 
+  // Close modal on Esc
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -60,12 +64,13 @@ export default function ChangeRoleModal({
         { roles: [selectedRole] },
         {
           headers: {
-            Authorization: `Bearer ${session.access_token}`, // ✅ Include token
+            Authorization: `Bearer ${session.access_token}`,
           },
         }
       );
 
-      if (onSuccess) onSuccess();
+      // ✅ Send the updated roles back to parent
+      onSuccess?.([selectedRole]);
       onClose();
     } catch (err) {
       console.error('❌ Failed to update role:', err);
@@ -88,7 +93,10 @@ export default function ChangeRoleModal({
         aria-labelledby="change-role-title"
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 id="change-role-title" className="text-base font-semibold text-gray-900">
+          <h2
+            id="change-role-title"
+            className="text-base font-semibold text-gray-900"
+          >
             Change role
           </h2>
           <button
@@ -131,13 +139,19 @@ export default function ChangeRoleModal({
                       stroke="currentColor"
                       strokeWidth={2}
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   )}
                 </span>
                 <span className="text-sm text-gray-900">{r}</span>
               </label>
-              {idx !== ROLE_OPTIONS.length - 1 && <div className="h-px bg-gray-200" />}
+              {idx !== ROLE_OPTIONS.length - 1 && (
+                <div className="h-px bg-gray-200" />
+              )}
             </div>
           ))}
         </fieldset>

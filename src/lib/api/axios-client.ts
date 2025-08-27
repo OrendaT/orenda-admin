@@ -50,7 +50,6 @@ const useAxios = () => {
           isRefreshingRef.current = true;
 
           try {
-            const updatedSession = await update();
             const refreshedSession = await getSession(); // ensures latest token
             const newToken = refreshedSession?.access_token;
 
