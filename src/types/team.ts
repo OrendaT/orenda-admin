@@ -4,7 +4,7 @@ export type TeamCategory =
   | 'Billing'
   | 'Credentialing'
   | 'Clinical'
-  | 'Comms'
+  | 'Communication'
   | 'PriorAuths'
   | 'Doxy';
 

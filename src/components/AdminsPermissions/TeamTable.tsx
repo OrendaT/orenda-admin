@@ -1,11 +1,17 @@
 'use client';
 
+import useAxios from '@/lib/api/axios-client';
+
 import { useEffect, useRef, useState, Dispatch, SetStateAction } from 'react';
 import ToggleSwitch from '../ui/ToggleSwitch';
 import ChangeRoleModal from '../ChangeRoleModal';
 import DeleteConfirmationModal from '../DeleteConfirmationModal';
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import type { TeamMember, TeamCategory, Role } from '@/types/team';
+import { useSession } from 'next-auth/react';
+
+
+
 
 interface Props {
   members: TeamMember[];
@@ -18,17 +24,21 @@ const teamCategories: TeamCategory[] = [
   'Billing',
   'Credentialing',
   'Clinical',
-  'Comms',
+  'Communication',
   'PriorAuths',
   'Doxy',
 ];
 
 export default function TeamTable({ members, setMembers, onDelete }: Props) {
+   const { axios } = useAxios();
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [memberToDelete, setMemberToDelete] = useState<TeamMember | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const onDocClick = (e: MouseEvent) => {
@@ -49,15 +59,35 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
     return () => window.removeEventListener('keydown', onEsc);
   }, [openMenuId]);
 
-  const toggleTeam = (memberId: string, team: TeamCategory) => {
-    setMembers((prev) =>
-      prev.map((m) =>
-        m.id === memberId
-          ? { ...m, teams: { ...m.teams, [team]: !m.teams?.[team] } }
-          : m,
-      ),
+const toggleTeam = async (memberId: string, team: TeamCategory) => {
+  const updatedMembers = members.map((m) =>
+    m.id === memberId
+      ? { ...m, teams: { ...m.teams, [team]: !m.teams?.[team] } }
+      : m
+  );
+  setMembers(updatedMembers);
+
+  if (status !== 'authenticated' || !session?.access_token) {
+    console.warn('Session not ready, skipping backend update');
+    return;
+  }
+
+  try {
+    await axios.patch(
+      `/admin/users/${memberId}/teams/add`,
+      { team },
+      {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      }
     );
-  };
+  } catch (err) {
+    console.error(`Failed to update ${team} for member ${memberId}:`, err);
+    setMembers(members); // rollback
+  }
+};
+
 
   const handleDeleteClick = (member: TeamMember) => {
     setMemberToDelete(member);
