@@ -17,7 +17,6 @@ export default async function BillingFormsPage() {
   }
 
   const teams = getTeams(session.user.teams);
-
   if (!(teams.includes('Billing') || teams.includes('Intake'))) {
     notFound();
   }
