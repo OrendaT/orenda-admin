@@ -15,7 +15,7 @@ const TEAM_LIST: TeamCategory[] = [
   'Billing',
   'Credentialing',
   'Clinical',
-  'Comms',
+  'Communication',
   'PriorAuths',
   'Doxy',
 ];
