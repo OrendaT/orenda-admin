@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 import SearchFilterSkeleton from '@/components/skeletons/search-filter-skeleton';
 import FormsTableSkeleton from '@/components/skeletons/forms-table-skeleton';
 
+
 const IntakeForms = async () => {
   return (
     <div className="grid gap-4">

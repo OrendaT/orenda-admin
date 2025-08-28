@@ -24,8 +24,9 @@ export default function TablePagination<T = unknown>({
   const pathname = usePathname();
   const searchParams = useSearchParams(); // get current searchParams
 
-  const currentPageIndex = Number(searchParams.get('page') ?? 1) - 1;
+  const currentPageIndex = Number(searchParams.get('page') ?? 1) - 1
 
+ 
   const createQueryString = useCallback(
     (page: number) => {
       const params = new URLSearchParams(searchParams.toString());

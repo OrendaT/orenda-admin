@@ -3,6 +3,8 @@ import { ENDPOINT, FormType } from '@/types';
 const BASE = {
   AUTH: 'auth',
   ADMIN: 'admin',
+  FORMS: 'patients',
+  CREDIT_CARDS: 'credit-cards',
   INTAKE: 'patients',
   BILLING: 'credit-cards',
   CREDENTIALING: 'providers',
@@ -66,3 +68,14 @@ export const getEP = ({ type }: { type: FormType }) => {
       return INTAKE_FORMS_EP;
   }
 };
+export const CREDIT_CARD_FORMS_EP = {
+  ALL_FORMS: BASE.CREDIT_CARDS,
+  FORM: (id: string) => `${BASE.CREDIT_CARDS}/${id}`,
+  FLAG: (id: string) => `${BASE.CREDIT_CARDS}/${id}/flag`,
+  CREDIT_CARD: (id: string) => `${BASE.CREDIT_CARDS}/${id}/preview`,
+  DOWNLOAD_FORM: (id: string) => `${BASE.ADMIN}/download/credit-card/${id}`,
+};
+
+export const USERS_EP = {
+  ALL_USERS: `${BASE.ADMIN}/users`
+}

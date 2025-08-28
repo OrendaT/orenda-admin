@@ -65,6 +65,7 @@ const DownloadForm = ({
   // -------------------
   // Export Functionality
   const [isDownloading, setIsDownloading] = useState(false);
+
   const { export_key } = useFormType();
   const { mutateAsync: _export } = useExport();
   const key =
@@ -83,6 +84,7 @@ const DownloadForm = ({
   // adds download task to download form store if it doesn't exist
   useEffect(() => {
     const exportForms = async () => {
+
       const res = await _export({ [export_key]: forms });
       if (res.status === 200) {
         addTask(key, {
@@ -95,6 +97,7 @@ const DownloadForm = ({
     if (open && !downloads[key]) {
       exportForms();
     }
+
   }, [open, _export, forms, name, addTask, downloads, key, export_key]);
 
   // checks the download status (every 1s by default)
@@ -121,6 +124,7 @@ const DownloadForm = ({
     if (url) {
       setIsDownloading(true);
       downloadFileFromUrl({ name, url }, () => {
+
         setIsDownloading(false);
         setStatus('success');
       });

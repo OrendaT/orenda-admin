@@ -13,7 +13,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import Header from './header';
-import { MdLogout } from 'react-icons/md';
+import { MdLogout, MdGroups } from 'react-icons/md';
 import React, { useState } from 'react';
 import type { SidebarMenuItem, Teams, UserRole } from '@/types';
 import { logOut } from '@/app/actions/auth';
@@ -82,7 +82,25 @@ export function AppSidebar({
               </SidebarGroup>
             ),
         )}
+
+        {/* Team Management route */}
+        <SidebarGroup className="mt-4">
+          <SidebarGroupLabel>Management</SidebarGroupLabel>
+          <SidebarMenu>
+            <SidebarListItem
+              item={{
+                id: 'team-management',
+                title: 'Team Management',
+                href: '/team-management',
+                Icon: <MdGroups />,
+                className: 'hover:bg-gray-100',
+                itemClassName: '',
+              }}
+            />
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
+
       {/* footer */}
       <SidebarFooter className="border-t border-[#ECECEC]">
         <SidebarMenu>

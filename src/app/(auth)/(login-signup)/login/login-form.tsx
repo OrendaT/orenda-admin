@@ -38,6 +38,7 @@ const LoginForm = () => {
     if (res.success) {
       await update();
       toast.success(res.message);
+      await update();
       push('/');
     }
     if (res.error) setError('root', res.error);
