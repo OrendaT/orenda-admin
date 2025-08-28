@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> cad53dae7e97e79b8c6569488076e5c4959594b8
 import FormsSubmitted from '@/components/shared/forms-submitted';
 import FormsInProgress from '@/components/shared/forms-in-progress';
 import QuickActions from '@/components/shared/quick-actions';
@@ -12,10 +8,6 @@ import Export from '@/components/shared/export';
 import { Suspense } from 'react';
 import SearchFilterSkeleton from '@/components/skeletons/search-filter-skeleton';
 import FormsTableSkeleton from '@/components/skeletons/forms-table-skeleton';
-<<<<<<< HEAD
-
-=======
->>>>>>> cad53dae7e97e79b8c6569488076e5c4959594b8
 
 const IntakeForms = async () => {
   return (

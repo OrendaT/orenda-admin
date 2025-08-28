@@ -4,6 +4,7 @@ import {
   ResourceFile,
   ResourceFolder,
   UserRole,
+  Teams,
 } from '@/types';
 import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
@@ -181,3 +182,4 @@ export const slugify = (routes?: string[]): string => {
 export const isAdmin = (roles: string[] = []): boolean => {
   return roles.includes('admin');
 };
+export const getTeams = (teams: Teams) => Object.keys(teams) as (keyof Teams)[];

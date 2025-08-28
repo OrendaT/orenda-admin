@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-
-// import FormsSubmitted from './components/forms-submitted';
-// import FormsInProgress from './components/forms-in-progress';
-// import QuickActions from './components/quick-actions';
-// import RangeSelect from '@/components/shared/range-select';
-// import SearchFilter from './components/search-filter';
-// import IntakeFormsTable from './components/intake-forms-table';
-// import Export from './components/export';
-// import { Suspense } from 'react';
-// import SearchFilterSkeleton from '../../../components/skeletons/search-filter-skeleton';
-// import FormsTableSkeleton from '../../../components/skeletons/forms-table-skeleton';
-
-=======
->>>>>>> cad53dae7e97e79b8c6569488076e5c4959594b8
 import FormsSubmitted from '@/components/shared/forms-submitted';
 import FormsInProgress from '@/components/shared/forms-in-progress';
 import QuickActions from '@/components/shared/quick-actions';

@@ -1,16 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, Dispatch, SetStateAction } from 'react';
 import ToggleSwitch from '../ui/ToggleSwitch';
 import ChangeRoleModal from '../ChangeRoleModal';
 import DeleteConfirmationModal from '../DeleteConfirmationModal';
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import type { TeamMember, TeamCategory, Role } from '@/types/team';
-import api from '@/lib/api/axios';
 
 interface Props {
   members: TeamMember[];
-  setMembers: (members: TeamMember[]) => void;
+  setMembers: Dispatch<SetStateAction<TeamMember[]>>;
   onDelete: (memberId: string) => void;
 }
 
@@ -28,7 +27,7 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [memberToDelete, setMemberToDelete] = useState<TeamMember | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // ✅ Added this
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -44,18 +43,20 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
   }, [openMenuId]);
 
   useEffect(() => {
-    const onEsc = (e: KeyboardEvent) => e.key === 'Escape' && setOpenMenuId(null);
+    const onEsc = (e: KeyboardEvent) =>
+      e.key === 'Escape' && setOpenMenuId(null);
     if (openMenuId) window.addEventListener('keydown', onEsc);
     return () => window.removeEventListener('keydown', onEsc);
   }, [openMenuId]);
 
   const toggleTeam = (memberId: string, team: TeamCategory) => {
-    const updated = members.map((m) =>
-      m.id === memberId
-        ? { ...m, teams: { ...m.teams, [team]: !m.teams?.[team] } }
-        : m,
+    setMembers((prev) =>
+      prev.map((m) =>
+        m.id === memberId
+          ? { ...m, teams: { ...m.teams, [team]: !m.teams?.[team] } }
+          : m,
+      ),
     );
-    setMembers(updated);
   };
 
   const handleDeleteClick = (member: TeamMember) => {
@@ -73,7 +74,7 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
   const handleChangeRoleClick = (memberId: string) => {
     const m = members.find((x) => x.id === memberId) || null;
     setEditingMember(m);
-    setIsModalOpen(true); // ✅ Open the modal
+    setIsModalOpen(true);
     setOpenMenuId(null);
   };
 
@@ -82,16 +83,12 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
     setIsModalOpen(false);
   };
 
-  const refreshTeamList = async () => {
-    if (!editingMember) return;
-
-    try {
-      const response = await api.get('/api/v1/admin/users'); // ✅ Replace with your actual fetch logic
-      const updatedMembers = response.data; // ✅ Adjust based on your API response shape
-      setMembers(updatedMembers);
-    } catch (err) {
-      console.error('Failed to refresh team list:', err);
-    }
+  const handleRoleChangeSuccess = (memberId: string, newRoles: Role[]) => {
+    setMembers((prevMembers) =>
+      prevMembers.map((m) =>
+        m.id === memberId ? { ...m, roles: newRoles } : m,
+      ),
+    );
   };
 
   return (
@@ -178,7 +175,9 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
         open={isModalOpen}
         member={editingMember}
         onClose={handleClose}
-        onSuccess={refreshTeamList}
+        onSuccess={(newRoles) =>
+          handleRoleChangeSuccess(editingMember!.id, newRoles)
+        }
       />
 
       <DeleteConfirmationModal

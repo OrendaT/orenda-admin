@@ -13,13 +13,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import Header from './header';
-<<<<<<< HEAD
-import { MdLogout } from 'react-icons/md';
-import { MdAdminPanelSettings } from "react-icons/md";
-
-=======
 import { MdLogout, MdGroups } from 'react-icons/md';
->>>>>>> cad53dae7e97e79b8c6569488076e5c4959594b8
 import React, { useState } from 'react';
 import type { SidebarMenuItem, Teams, UserRole } from '@/types';
 import { logOut } from '@/app/actions/auth';

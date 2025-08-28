@@ -239,137 +239,137 @@
 
 
 
-'use client';
+// 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import { FiMoreVertical } from 'react-icons/fi';
-import ChangeRoleModal from './ChangeRoleModal';
-import DeleteUserModal from './DeleteUserModal';
-import UserActionMenu from './UserActionMenu';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import { TableRow, TableCell } from '@/components/ui/table';
-import { UserData } from '@/types';
-import TeamBadge from './TeamBadge';
+// import React, { useState, useRef, useEffect } from 'react';
+// import { FiMoreVertical } from 'react-icons/fi';
+// import ChangeRoleModal from './ChangeRoleModal';
+// import DeleteUserModal from './DeleteUserModal';
+// import UserActionMenu from './UserActionMenu';
+// import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+// import { Button } from '@/components/ui/button';
+// import Image from 'next/image';
+// import { TableRow, TableCell } from '@/components/ui/table';
+// import { UserData } from '@/types';
+// import TeamBadge from './TeamBadge';
 
-interface UserRowProps {
-  user: UserData;
-}
+// interface UserRowProps {
+//   user: UserData;
+// }
 
-const UserRow: React.FC<UserRowProps> = ({ user }) => {
-  const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
-  const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const actionMenuRef = useRef<HTMLDivElement>(null);
+// const UserRow: React.FC<UserRowProps> = ({ user }) => {
+//   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
+//   const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
+//   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+//   const actionMenuRef = useRef<HTMLDivElement>(null);
 
-  const displayName = user.name || 'NO NAME';
-
-
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        actionMenuRef.current &&
-        !actionMenuRef.current.contains(event.target as Node)
-      ) {
-        setIsActionMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  // Handlers to drive the modals or actions
-  const handleChangeRole = () => {
-    setIsRoleModalOpen(true);
-  };
-
-  const handleDeleteUser = () => {
-    setIsDeleteModalOpen(true);
-  };
+//   const displayName = user.name || 'NO NAME';
 
 
-  return (
-    <>
-      <TableRow>
-        <TableCell>
-          <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10 bg-purple-100 text-purple-800">
-              {user.avatar ? (
-                <Image
-                  src={user.avatar}
-                  alt={displayName}
-                  width={40}
-                  height={40}
-                  className="h-full w-full object-cover rounded-full"
-                />
-              ) : (
-                <AvatarFallback className="bg-purple-100 text-purple-800 font-medium" />
-              )}
-            </Avatar>
-            <div>
-              <div className="font-medium text-[13.4px] text-gray-900">
-                {displayName}
-                {user.isCurrentUser && (
-                  <span className="text-gray-500 ml-1">(You)</span>
-                )}
-              </div>
-              <div className="text-[11.9px] text-gray-500">{user.email}</div>
-            </div>
-          </div>
-        </TableCell>
+//   // Close menu when clicking outside
+//   useEffect(() => {
+//     const handleClickOutside = (event: MouseEvent) => {
+//       if (
+//         actionMenuRef.current &&
+//         !actionMenuRef.current.contains(event.target as Node)
+//       ) {
+//         setIsActionMenuOpen(false);
+//       }
+//     };
 
-        <TableCell>
-          <span className="text-gray-900 text-[13px]">
-            {user.roles.join(', ')}
-          </span>
-        </TableCell>
+//     document.addEventListener('mousedown', handleClickOutside);
+//     return () => document.removeEventListener('mousedown', handleClickOutside);
+//   }, []);
 
-        <TableCell className="relative">
-          <TeamBadge teams={user.teams} />
-        </TableCell>
+//   // Handlers to drive the modals or actions
+//   const handleChangeRole = () => {
+//     setIsRoleModalOpen(true);
+//   };
 
-        <TableCell className="relative">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 rounded-full hover:bg-gray-100"
-            onClick={() => setIsActionMenuOpen((o) => !o)}
-          >
-            <FiMoreVertical className="h-4 w-4" />
-          </Button>
+//   const handleDeleteUser = () => {
+//     setIsDeleteModalOpen(true);
+//   };
 
-          {isActionMenuOpen && (
-            <div ref={actionMenuRef}>
-              <UserActionMenu
-                user={user}
-                onClose={() => setIsActionMenuOpen(false)}
-                onChangeRole={handleChangeRole}
-                onDeleteUser={handleDeleteUser}
-                // onSendMessage={handleSendMessage}
-              />
-            </div>
-          )}
-        </TableCell>
-      </TableRow>
 
-      {/* Change Role Modal */}
-      <ChangeRoleModal
-        user={user}
-        isOpen={isRoleModalOpen}
-        onClose={() => setIsRoleModalOpen(false)}
-      />
+//   return (
+//     <>
+//       <TableRow>
+//         <TableCell>
+//           <div className="flex items-center gap-3">
+//             <Avatar className="h-10 w-10 bg-purple-100 text-purple-800">
+//               {user.avatar ? (
+//                 <Image
+//                   src={user.avatar}
+//                   alt={displayName}
+//                   width={40}
+//                   height={40}
+//                   className="h-full w-full object-cover rounded-full"
+//                 />
+//               ) : (
+//                 <AvatarFallback className="bg-purple-100 text-purple-800 font-medium" />
+//               )}
+//             </Avatar>
+//             <div>
+//               <div className="font-medium text-[13.4px] text-gray-900">
+//                 {displayName}
+//                 {user.isCurrentUser && (
+//                   <span className="text-gray-500 ml-1">(You)</span>
+//                 )}
+//               </div>
+//               <div className="text-[11.9px] text-gray-500">{user.email}</div>
+//             </div>
+//           </div>
+//         </TableCell>
 
-      {/* Delete User Modal */}
-      <DeleteUserModal
-        user={user}
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-      />
-    </>
-  );
-};
+//         <TableCell>
+//           <span className="text-gray-900 text-[13px]">
+//             {user.roles.join(', ')}
+//           </span>
+//         </TableCell>
 
-export default UserRow;
+//         <TableCell className="relative">
+//           <TeamBadge teams={user.teams} />
+//         </TableCell>
+
+//         <TableCell className="relative">
+//           <Button
+//             variant="ghost"
+//             size="icon"
+//             className="h-8 w-8 rounded-full hover:bg-gray-100"
+//             onClick={() => setIsActionMenuOpen((o) => !o)}
+//           >
+//             <FiMoreVertical className="h-4 w-4" />
+//           </Button>
+
+//           {isActionMenuOpen && (
+//             <div ref={actionMenuRef}>
+//               <UserActionMenu
+//                 user={user}
+//                 onClose={() => setIsActionMenuOpen(false)}
+//                 onChangeRole={handleChangeRole}
+//                 onDeleteUser={handleDeleteUser}
+//                 // onSendMessage={handleSendMessage}
+//               />
+//             </div>
+//           )}
+//         </TableCell>
+//       </TableRow>
+
+//       {/* Change Role Modal */}
+//       <ChangeRoleModal
+//         user={user}
+//         isOpen={isRoleModalOpen}
+//         onClose={() => setIsRoleModalOpen(false)}
+//       />
+
+//       {/* Delete User Modal */}
+//       <DeleteUserModal
+//         user={user}
+//         isOpen={isDeleteModalOpen}
+//         onClose={() => setIsDeleteModalOpen(false)}
+//       />
+//     </>
+//   );
+// };
+
+// export default UserRow;
