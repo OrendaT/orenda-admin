@@ -17,7 +17,7 @@ const TEAM_CATEGORIES: TeamCategory[] = [
   'Credentialing',
   'Clinical',
   'Communication',
-  // 'PriorAuths',
+  'PriorAuths',
   'Doxy',
 ];
 
@@ -117,7 +117,7 @@ export default function TeamFilterPanel({
           <button
             type="button"
             onClick={() => onApply(local)}
-            className="rounded bg-purple-600 px-5 py-2 text-sm font-medium text-white hover:bg-purple-700"
+            className="rounded bg-[#2E0086] px-5 py-2 text-sm font-medium text-white"
           >
             Show results
           </button>
