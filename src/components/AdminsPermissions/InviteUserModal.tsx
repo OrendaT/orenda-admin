@@ -15,7 +15,6 @@ interface InviteUserModalProps {
   onSuccess?: () => void;
 }
 
-// Updated teams and role options
 const ALL_TEAMS = [
   'Billing',
   'Clinical',
@@ -29,7 +28,6 @@ const ALL_TEAMS = [
 const TEAM_ROLES: TeamRole[] = ['Admin', 'Member'];
 const ROLE_OPTIONS: Role[] = ['Admin', 'Manager', 'Provider'];
 
-// Utility to generate a password
 function generatePassword(length = 10) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$_';
   return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
@@ -63,12 +61,12 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({
     formState: { isSubmitting },
   } = methods;
 
-  // Auto-generate password when modal opens if none exists
+  // ✅ Fixed ESLint warning by adding missing dependencies
   useEffect(() => {
     if (isOpen && !watch('password')) {
       setValue('password', generatePassword());
     }
-  }, [isOpen]);
+  }, [isOpen, watch, setValue]);
 
   const onSubmit = async (data: InviteUserPayload) => {
     try {

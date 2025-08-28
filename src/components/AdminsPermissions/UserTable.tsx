@@ -56,47 +56,47 @@
 
 
 
-'use client';
+// 'use client';
 
-import React from 'react';
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
-import UserRow from './UserRow';
-import { useAllUsers } from '@/hooks/useUsers';
+// import React from 'react';
+// import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
+// import UserRow from './UserRow';
+// import { useAllUsers } from '@/hooks/useUsers';
 
-const UserTable: React.FC = () => {
-  const { data, isPending } = useAllUsers();
+// const UserTable: React.FC = () => {
+//   const { data, isPending } = useAllUsers();
 
-  return (
-    <div className="w-full min-w-[700px] bg-[#F6F6F6] scroll-thin shadow-sm overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>User</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Team</TableHead>
-            <TableHead></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isPending ? (
-            <TableRow>
-              <TableCell colSpan={4} className="p-8 text-center">
-                Loading...
-              </TableCell>
-            </TableRow>
-          ) : data?.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={4} className="p-8 text-center text-gray-500">
-                No users found.
-              </TableCell>
-            </TableRow>
-          ) : (
-            data?.map((user) => <UserRow key={user.id} user={user} />)
-          )}
-        </TableBody>
-      </Table>
-    </div>
-  );
-};
+//   return (
+//     <div className="w-full min-w-[700px] bg-[#F6F6F6] scroll-thin shadow-sm overflow-x-auto">
+//       <Table>
+//         <TableHeader>
+//           <TableRow>
+//             <TableHead>User</TableHead>
+//             <TableHead>Role</TableHead>
+//             <TableHead>Team</TableHead>
+//             <TableHead></TableHead>
+//           </TableRow>
+//         </TableHeader>
+//         <TableBody>
+//           {isPending ? (
+//             <TableRow>
+//               <TableCell colSpan={4} className="p-8 text-center">
+//                 Loading...
+//               </TableCell>
+//             </TableRow>
+//           ) : data?.length === 0 ? (
+//             <TableRow>
+//               <TableCell colSpan={4} className="p-8 text-center text-gray-500">
+//                 No users found.
+//               </TableCell>
+//             </TableRow>
+//           ) : (
+//             data?.map((user) => <UserRow key={user.id} user={user} />)
+//           )}
+//         </TableBody>
+//       </Table>
+//     </div>
+//   );
+// };
 
-export default UserTable;
+// export default UserTable;

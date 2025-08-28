@@ -1,3 +1,4 @@
+// app/auth/callbacks.ts
 import { NextAuthConfig } from 'next-auth';
 import api from '../api/axios';
 import { AUTH_EP } from '../api/endpoints';
@@ -9,15 +10,9 @@ type Callbacks = NextAuthConfig['callbacks'];
 const callbacks: Callbacks = {
   jwt: async ({ token, account, user }) => {
     if (account && user) {
-      // First-time login
-      // get the access_token expiry time
       const decoded = jwtDecode<{ exp: number }>(user.access_token);
-      const expires_at = decoded?.exp
-        ? decoded.exp * 1000
-        : Date.now() + 60_000;
+      const expires_at = decoded?.exp ? decoded.exp * 1000 : Date.now() + 60_000;
 
-      // save the `access_token`, its expiry and the `refresh_token`
-      // and other user info
       return {
         ...token,
         access_token: user.access_token,
@@ -30,47 +25,41 @@ const callbacks: Callbacks = {
       } as JWT;
     }
 
-    // if token isn't about to expire
     if (token.expires_at && Date.now() < token.expires_at - 60_000) {
       return token;
-    } else {
-      // Subsequent logins, but the `access_token` has expired, try to refresh it
-      if (!token.refresh_token) {
-        // exit early if no refresh token
-        token.error = 'RefreshTokenError';
-        return token;
-      }
+    }
 
-      try {
-        const res = await api.post(
-          AUTH_EP.REFRESH,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token.refresh_token}`,
-            },
+    if (!token.refresh_token) {
+      token.error = 'RefreshTokenError';
+      return token;
+    }
+
+    try {
+      const res = await api.post(
+        AUTH_EP.REFRESH,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token.refresh_token}`,
           },
-        );
+        }
+      );
 
-        const decoded = jwtDecode<{ exp: number }>(res.data.access_token);
-        const expires_at = decoded?.exp
-          ? decoded.exp * 1000
-          : Date.now() + 60_000;
+      const decoded = jwtDecode<{ exp: number }>(res.data.access_token);
+      const expires_at = decoded?.exp ? decoded.exp * 1000 : Date.now() + 60_000;
 
-        return {
-          ...token,
-          access_token: res.data.access_token,
-          expires_at,
-        } as JWT;
-      } catch (error) {
-        console.error('Error refreshing access_token', error);
-        // If we fail to refresh the token, return an error so we can handle it on the page
-        token.error = 'RefreshTokenError';
-
-        return token;
-      }
+      return {
+        ...token,
+        access_token: res.data.access_token,
+        expires_at,
+      } as JWT;
+    } catch (error) {
+      console.error('Error refreshing access_token', error);
+      token.error = 'RefreshTokenError';
+      return token;
     }
   },
+
   session: async ({ session, token }) => {
     session.access_token = token.access_token;
     session.user.name = token.name;
@@ -78,7 +67,6 @@ const callbacks: Callbacks = {
     session.user.roles = token.roles;
     session.user.teams = token.teams;
     session.error = token.error;
-
     return session;
   },
 };

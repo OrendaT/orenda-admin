@@ -1,9 +1,9 @@
-import React from 'react'
+// import React from 'react'
 
-const check = () => {
-  return (
-    <div>check</div>
-  )
-}
+// const check = () => {
+//   return (
+//     <div>check</div>
+//   )
+// }
 
-export default check
+// export default check
