@@ -111,6 +111,7 @@ export default function TeamManagementPage() {
     }
   };
 
+  
   const handleInviteMember = async (newMember: {
     firstName: string;
     lastName: string;
