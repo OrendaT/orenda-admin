@@ -12,8 +12,8 @@ const CreditCardForms = async () => {
         <section className="db_section">
           <h2 className="heading">Quick Actions</h2>
           <QuickActions
-            className="flex w-full clamp-[gap,2,4] *:w-full"
-            actionClassName="!py-4 rounded-lg !clamp-[px,2,4]"
+            className="clamp-[gap,2,4] flex w-full *:w-full"
+            actionClassName="!clamp-[py,2.5,4] !clamp-[px,2,4] rounded-lg"
           />
         </section>
       </div>
