@@ -88,7 +88,7 @@ export default function TeamFilterPanel({
                       aria-hidden="true"
                       className={`flex h-4 w-4 items-center justify-center rounded-[3px] border ${
                         checked
-                          ? 'bg-[#2E0086] bg-[#2E0086]'
+                          ? 'bg-[#2E0086]'
                           : 'border-gray-400 bg-white'
                       }`}
                     >

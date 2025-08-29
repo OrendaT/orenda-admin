@@ -10,9 +10,6 @@ import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import type { TeamMember, TeamCategory, Role } from '@/types/team';
 import { useSession } from 'next-auth/react';
 
-
-
-
 interface Props {
   members: TeamMember[];
   setMembers: Dispatch<SetStateAction<TeamMember[]>>;
@@ -30,14 +27,13 @@ const teamCategories: TeamCategory[] = [
 ];
 
 export default function TeamTable({ members, setMembers, onDelete }: Props) {
-   const { axios } = useAxios();
+  const { axios } = useAxios();
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [memberToDelete, setMemberToDelete] = useState<TeamMember | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  
   const { data: session, status } = useSession();
 
   useEffect(() => {
@@ -60,9 +56,14 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
   }, [openMenuId]);
 
 const toggleTeam = async (memberId: string, team: TeamCategory) => {
+  const member = members.find((m) => m.id === memberId);
+  const isCurrentlyOnTeam = !!member?.teams?.[team];
+  const action = isCurrentlyOnTeam ? 'remove' : 'add';
+
+  // Optimistically update UI
   const updatedMembers = members.map((m) =>
     m.id === memberId
-      ? { ...m, teams: { ...m.teams, [team]: !m.teams?.[team] } }
+      ? { ...m, teams: { ...m.teams, [team]: !isCurrentlyOnTeam } }
       : m
   );
   setMembers(updatedMembers);
@@ -74,7 +75,7 @@ const toggleTeam = async (memberId: string, team: TeamCategory) => {
 
   try {
     await axios.patch(
-      `/admin/users/${memberId}/teams/add`,
+      `/admin/users/${memberId}/teams/${action}`,
       { team },
       {
         headers: {
@@ -83,7 +84,7 @@ const toggleTeam = async (memberId: string, team: TeamCategory) => {
       }
     );
   } catch (err) {
-    console.error(`Failed to update ${team} for member ${memberId}:`, err);
+    console.error(`Failed to ${action} ${team} for member ${memberId}:`, err);
     setMembers(members); // rollback
   }
 };
