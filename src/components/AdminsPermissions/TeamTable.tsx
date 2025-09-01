@@ -9,6 +9,8 @@ import DeleteConfirmationModal from '../DeleteConfirmationModal';
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import type { TeamMember, TeamCategory, Role } from '@/types/team';
 import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
+
 
 interface Props {
   members: TeamMember[];
@@ -68,6 +70,19 @@ const toggleTeam = async (memberId: string, team: TeamCategory) => {
   );
   setMembers(updatedMembers);
 
+  // ✅ Show toast
+  if (member) {
+    if (!isCurrentlyOnTeam) {
+      toast.success(
+        `${member.name || member.email} has been added to the ${team} team`
+      );
+    } else {
+      toast.error(
+        `${member.name || member.email} has been removed from the ${team} team`
+      );
+    }
+  }
+
   if (status !== 'authenticated' || !session?.access_token) {
     console.warn('Session not ready, skipping backend update');
     return;
@@ -88,6 +103,7 @@ const toggleTeam = async (memberId: string, team: TeamCategory) => {
     setMembers(members); // rollback
   }
 };
+
 
 
   const handleDeleteClick = (member: TeamMember) => {
