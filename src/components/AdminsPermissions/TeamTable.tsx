@@ -1,7 +1,6 @@
 'use client';
 
 import useAxios from '@/lib/api/axios-client';
-
 import { useEffect, useRef, useState, Dispatch, SetStateAction } from 'react';
 import ToggleSwitch from '../ui/ToggleSwitch';
 import ChangeRoleModal from '../ChangeRoleModal';
@@ -10,7 +9,7 @@ import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import type { TeamMember, TeamCategory, Role } from '@/types/team';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
-
+import Pagination from '../AdminsPermissions/Pagination'; // ✅ import your Pagination
 
 interface Props {
   members: TeamMember[];
@@ -36,6 +35,17 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
+  // ✅ Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8; // change this number for how many rows per page
+  const totalPages = Math.ceil(members.length / itemsPerPage);
+
+  // Slice members for current page
+  const paginatedMembers = members.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   const { data: session, status } = useSession();
 
   useEffect(() => {
@@ -57,56 +67,53 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
     return () => window.removeEventListener('keydown', onEsc);
   }, [openMenuId]);
 
-const toggleTeam = async (memberId: string, team: TeamCategory) => {
-  const member = members.find((m) => m.id === memberId);
-  const isCurrentlyOnTeam = !!member?.teams?.[team];
-  const action = isCurrentlyOnTeam ? 'remove' : 'add';
+  const toggleTeam = async (memberId: string, team: TeamCategory) => {
+    const member = members.find((m) => m.id === memberId);
+    const isCurrentlyOnTeam = !!member?.teams?.[team];
+    const action = isCurrentlyOnTeam ? 'remove' : 'add';
 
-  // Optimistically update UI
-  const updatedMembers = members.map((m) =>
-    m.id === memberId
-      ? { ...m, teams: { ...m.teams, [team]: !isCurrentlyOnTeam } }
-      : m
-  );
-  setMembers(updatedMembers);
+    // Optimistically update UI
+    const updatedMembers = members.map((m) =>
+      m.id === memberId
+        ? { ...m, teams: { ...m.teams, [team]: !isCurrentlyOnTeam } }
+        : m
+    );
+    setMembers(updatedMembers);
 
-  // ✅ Show toast
-  if (member) {
-    if (!isCurrentlyOnTeam) {
-      toast.success(
-        `${member.name || member.email} has been added to the ${team} team`, {
-          className: "border rounded-lg border-green-500 "
+    // ✅ Show toast
+    if (member) {
+      if (!isCurrentlyOnTeam) {
+        toast.success(
+          `${member.name || member.email} has been added to the ${team} team`,
+          { className: 'border rounded-lg border-green-500 ' }
+        );
+      } else {
+        toast.error(
+          `${member.name || member.email} has been removed from the ${team} team`
+        );
+      }
+    }
+
+    if (status !== 'authenticated' || !session?.access_token) {
+      console.warn('Session not ready, skipping backend update');
+      return;
+    }
+
+    try {
+      await axios.patch(
+        `/admin/users/${memberId}/teams/${action}`,
+        { team },
+        {
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
         }
       );
-    } else {
-      toast.error(
-        `${member.name || member.email} has been removed from the ${team} team`
-      );
+    } catch (err) {
+      console.error(`Failed to ${action} ${team} for member ${memberId}:`, err);
+      setMembers(members); // rollback
     }
-  }
-
-  if (status !== 'authenticated' || !session?.access_token) {
-    console.warn('Session not ready, skipping backend update');
-    return;
-  }
-
-  try {
-    await axios.patch(
-      `/admin/users/${memberId}/teams/${action}`,
-      { team },
-      {
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
-      }
-    );
-  } catch (err) {
-    console.error(`Failed to ${action} ${team} for member ${memberId}:`, err);
-    setMembers(members); // rollback
-  }
-};
-
-
+  };
 
   const handleDeleteClick = (member: TeamMember) => {
     setMemberToDelete(member);
@@ -135,8 +142,8 @@ const toggleTeam = async (memberId: string, team: TeamCategory) => {
   const handleRoleChangeSuccess = (memberId: string, newRoles: Role[]) => {
     setMembers((prevMembers) =>
       prevMembers.map((m) =>
-        m.id === memberId ? { ...m, roles: newRoles } : m,
-      ),
+        m.id === memberId ? { ...m, roles: newRoles } : m
+      )
     );
   };
 
@@ -159,7 +166,7 @@ const toggleTeam = async (memberId: string, team: TeamCategory) => {
           </tr>
         </thead>
         <tbody>
-          {members.map((member) => (
+          {paginatedMembers.map((member) => (
             <tr key={member.id} className="border-t">
               <td className="p-2 text-[.8rem] font-normal">
                 {member.name || member.email}
@@ -181,7 +188,7 @@ const toggleTeam = async (memberId: string, team: TeamCategory) => {
                 <button
                   onClick={() =>
                     setOpenMenuId((prev) =>
-                      prev === member.id ? null : member.id,
+                      prev === member.id ? null : member.id
                     )
                   }
                   className="inline-flex items-center rounded p-1 hover:bg-gray-100"
@@ -219,6 +226,15 @@ const toggleTeam = async (memberId: string, team: TeamCategory) => {
           ))}
         </tbody>
       </table>
+
+      {/* ✅ Pagination below the table */}
+      <div className="p-4 border-t flex justify-end">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
 
       <ChangeRoleModal
         open={isModalOpen}
