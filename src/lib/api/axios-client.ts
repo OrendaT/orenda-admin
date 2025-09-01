@@ -3,6 +3,8 @@
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef } from 'react';
 import api from './axios';
+import { toast } from 'sonner';
+import { logOut } from '@/app/actions/auth';
 
 const useAxios = () => {
   const { data: session, status, update } = useSession();
@@ -30,11 +32,19 @@ const useAxios = () => {
       (error) => Promise.reject(error),
     );
 
-    // Response interceptor to handle 401s
+    // Response interceptor to handle 401s & 403s
     const responseInterceptor = api.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
+
+        if (
+          error.response?.status === 403 &&
+          error.response?.data?.error === 'Unauthorized: Team Required'
+        ) {
+          toast.info('Please login again');
+          await logOut();
+        }
 
         if (error.response?.status === 401 && !originalRequest._retry) {
           if (isRefreshingRef.current) {
