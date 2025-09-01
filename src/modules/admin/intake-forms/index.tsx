@@ -3,7 +3,7 @@ import FormsInProgress from '@/components/shared/forms-in-progress';
 import QuickActions from '@/components/shared/quick-actions';
 import RangeSelect from '@/components/shared/range-select';
 import SearchFilter from '@/components/shared/search-filter';
-import IntakeFormsTable from './components/intake-forms-table';
+
 import Export from '@/components/shared/export';
 import { Suspense } from 'react';
 import SearchFilterSkeleton from '@/components/skeletons/search-filter-skeleton';
@@ -41,7 +41,7 @@ const IntakeForms = async () => {
           <SearchFilter />
         </Suspense>
         <Suspense fallback={<FormsTableSkeleton />}>
-          <IntakeFormsTable />
+         
         </Suspense>
       </section>
     </div>
