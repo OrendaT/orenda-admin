@@ -74,7 +74,9 @@ const toggleTeam = async (memberId: string, team: TeamCategory) => {
   if (member) {
     if (!isCurrentlyOnTeam) {
       toast.success(
-        `${member.name || member.email} has been added to the ${team} team`
+        `${member.name || member.email} has been added to the ${team} team`, {
+          className: "border rounded-lg border-green-500 "
+        }
       );
     } else {
       toast.error(
