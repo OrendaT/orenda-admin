@@ -38,6 +38,8 @@ const GeneralTab = ({ id }: { id: string }) => {
                     value={data?.sex_assigned_at_birth}
                   />
                 </div>
+                
+                <TabItem name="Race" value={data?.race} />
 
                 <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
                   <TabItem name="Address 1" value={data?.address_one} />

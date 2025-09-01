@@ -90,6 +90,7 @@ export interface IntakeFormData extends BaseFormData {
   phone: string;
   gender: string;
   date_of_birth: string;
+  race: string;
 
   address_one: string;
   address_two: string;
