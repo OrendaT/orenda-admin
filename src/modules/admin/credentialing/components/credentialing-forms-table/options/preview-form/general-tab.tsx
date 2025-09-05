@@ -29,6 +29,10 @@ const GeneralTab = ({ id }: { id: string }) => {
                   <TabItem name="Full name" value={data?.name} />
                 </div>
 
+                <TabItem
+                  name="All Names Ever Used"
+                  value={data?.all_names_used}
+                />
                 <TabItem name="Date of Birth" value={data?.date_of_birth} />
                 <TabItem
                   name="Social security number"
@@ -85,6 +89,85 @@ const GeneralTab = ({ id }: { id: string }) => {
               </section>
             )}
 
+            {/*  States of License Info  */}
+            {data?.status === 'submitted' && (
+              <section>
+                <h2 className="preview_heading">States of License</h2>
+                <div className="space-y-3">
+                  {Object.entries(data.states_of_license).map(
+                    ([state, value]) => {
+                      return (
+                        <>
+                          <h3 className="mb-4">{state}:</h3>
+                          <div className="space-y-3">
+                            <TabItem
+                              name="State of License Details"
+                              value={value.DEA_state_doc}
+                              isFile
+                            />
+                            <TabItem
+                              name="Collaborating Physician"
+                              value={value?.collaborating_physician}
+                            />
+                            <TabItem
+                              name="Collaborating Physician Name"
+                              value={value?.collaborating_physician_name}
+                            />
+                            <TabItem
+                              name="Collaborating Physician Email"
+                              value={value?.collaborating_physician_email}
+                            />
+                            <TabItem
+                              name="Collaborating Physician Phone Number"
+                              value={value?.collaborating_physician_phone}
+                            />
+                            <TabItem
+                              name="Collaborating Physician NPI"
+                              value={value?.collaborating_physician_npi}
+                            />
+                            <TabItem
+                              name="State License Document"
+                              value={value?.state_license_doc}
+                              isFile
+                            />
+                            <TabItem
+                              name="Form 4NP Document"
+                              value={value?.form_4NP_doc}
+                              isFile
+                            />
+                            <TabItem
+                              name="State DEA Number"
+                              value={value?.DEA_state_number}
+                            />
+                            <TabItem
+                              name="State DEA Document"
+                              value={value?.DEA_state_doc}
+                              isFile
+                            />
+                          </div>
+                        </>
+                      );
+                    },
+                  )}
+                </div>
+              </section>
+            )}
+
+            {/*  Identification Requirements  */}
+            {data?.status === 'submitted' && (
+              <section>
+                <h2 className="preview_heading">Identification Requirements</h2>
+                <div className="space-y-3">
+                  <TabItem name="Photo ID" value={data?.photo_ID} isFile />
+                  <TabItem
+                    name="Proof of Address ID"
+                    value={data?.proof_of_address_ID}
+                    isFile
+                  />
+                </div>
+              </section>
+            )}
+
             {/*  Other Info  */}
             {data?.status === 'submitted' && (
               <section>
@@ -98,35 +181,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                     name="Referral Source Detail"
                     value={data?.referral_source_detail}
                   />
-                  <TabItem
-                    name="Primary State of License"
-                    value={data?.primary_state_of_license}
-                  />
-                  <TabItem
-                    name="Primary State of License Details"
-                    value={data?.primary_state_of_license_details}
-                  />
-                  <TabItem
-                    name="Collaborating Physician"
-                    value={data?.collaborating_physician}
-                  />
-                  <TabItem
-                    name="Collaborating Physician Name"
-                    value={data?.collaborating_physician_name}
-                  />
-                  <TabItem
-                    name="Collaborating Physician NPI"
-                    value={data?.collaborating_physician_npi}
-                  />
-                  <TabItem
-                    name="Collaborating Physician Email"
-                    value={data?.collaborating_physician_email}
-                  />
-                  <TabItem
-                    name="Form 4NP Document"
-                    value={data?.form_4NP_doc}
-                    isFile
-                  />
+
                   <TabItem
                     name="Consent to create PECOS Account"
                     value={data?.consent_create_pecos_account}
@@ -139,46 +194,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                     name="Patient Medicare ID"
                     value={data?.PTAN_medicare_ID}
                   />
-                  <TabItem
-                    name="Primary State License Document"
-                    value={data?.primary_state_license_doc}
-                    isFile
-                  />
-                  <TabItem
-                    name="Primary State DEA Number"
-                    value={data?.primary_state_dea_number}
-                  />
-                  <TabItem
-                    name="Primary State DEA Document"
-                    value={data?.primary_state_dea_doc}
-                    isFile
-                  />
-                  <TabItem
-                    name="Has additional NP Licenses"
-                    value={data?.has_additional_np_licenses}
-                  />
-                  <TabItem
-                    name="Additional NP Licenses"
-                    value={data?.additional_np_licenses}
-                  />
-                  <TabItem
-                    name="Additional State License Document"
-                    value={data?.additional_state_license_doc}
-                    isFile
-                  />
-                  <TabItem
-                    name="Has additional DEA Registrations"
-                    value={data?.has_additional_dea_registrations}
-                  />
-                  <TabItem
-                    name="Additional DEA Registration"
-                    value={data?.additional_dea_reg}
-                  />
-                  <TabItem
-                    name="Additional DEA Document"
-                    value={data?.additional_dea_doc}
-                    isFile
-                  />
+
                   <TabItem
                     name="PMHN/BC Document"
                     value={data?.pmhnp_bc_doc}
@@ -193,8 +209,8 @@ const GeneralTab = ({ id }: { id: string }) => {
                     value={data?.additional_qualifications}
                   />
                   <TabItem
-                    name="Additional qualifications document"
-                    value={data?.additional_qualifications_doc}
+                    name="Additional qualification document"
+                    value={data?.additional_qualification_docs}
                     isFile
                   />
                   <TabItem
@@ -211,10 +227,26 @@ const GeneralTab = ({ id }: { id: string }) => {
                     name="Highest Nursing Degree"
                     value={data?.highest_nursing_degree}
                   />
-                  <TabItem name="Photo ID" value={data?.photo_ID} isFile />
                   <TabItem
-                    name="Proof of Address ID"
-                    value={data?.proof_of_address_ID}
+                    name="Nursing School"
+                    value={data?.highest_nursing_degree_other}
+                  />
+                  <TabItem
+                    name="HND Start Date"
+                    value={data?.highest_nursing_degree_start_date}
+                  />
+                  <TabItem
+                    name="HND End Date"
+                    value={data?.highest_nursing_degree_end_date}
+                  />
+                  <TabItem
+                    name="Nursing School"
+                    value={data?.highest_nursing_degree_school}
+                  />
+                  <TabItem name="Has COI Coverage" value={data?.COI_coverage} />
+                  <TabItem
+                    name="COI Coverage"
+                    value={data?.COI_coverage_doc}
                     isFile
                   />
                 </div>
@@ -233,21 +265,10 @@ const GeneralTab = ({ id }: { id: string }) => {
                       name="Patient Age Groups"
                       value={data?.patient_age_groups}
                     />
-                    <TabItem
-                      name="Follow-up Duration"
-                      value={data?.follow_up_duration}
-                    />
-                    <TabItem
-                      name="Offers therapy session"
-                      value={data?.offers_therapy_session}
-                    />
-                    <TabItem
-                      name="Therapy sessions"
-                      value={data?.therapy_session}
-                    />
+
                     <TabItem
                       name="Health conditions treated"
-                      value={data?.health_conditions_treated}
+                      value={data?.health_conditions}
                     />
                     <TabItem
                       name="Health specialties"
