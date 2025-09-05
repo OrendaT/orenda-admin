@@ -97,8 +97,8 @@ const GeneralTab = ({ id }: { id: string }) => {
                   {Object.entries(data.states_of_license).map(
                     ([state, value]) => {
                       return (
-                        <>
-                          <h3 className="mb-4">{state}:</h3>
+                        <div>
+                          <h3 className="mb-4 font-medium">{state}:</h3>
                           <div className="space-y-3">
                             <TabItem
                               name="State of License Details"
@@ -106,7 +106,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                               isFile
                             />
                             <TabItem
-                              name="Collaborating Physician"
+                              name="Collaborating Physician Status"
                               value={value?.collaborating_physician}
                             />
                             <TabItem
@@ -145,7 +145,24 @@ const GeneralTab = ({ id }: { id: string }) => {
                               isFile
                             />
                           </div>
-                        </>
+                        </div>
+                      );
+                    },
+                  )}
+
+                  <h2 className="preview_heading">States Of License Summary</h2>
+                  {Object.entries(data.states_of_license_summary).map(
+                    ([state, value]) => {
+                      return (
+                        <div>
+                          <h3 className="mb-4 font-medium">{state}:</h3>
+                          <TabItem name="License" value={value?.license} />
+                          <TabItem name="DEA" value={value?.DEA} />
+                          <TabItem
+                            name="Practice Independently"
+                            value={value?.practice_ind}
+                          />
+                        </div>
                       );
                     },
                   )}
