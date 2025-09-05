@@ -97,7 +97,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                   {Object.entries(data.states_of_license).map(
                     ([state, value]) => {
                       return (
-                        <div>
+                        <div key={state}>
                           <h3 className="mb-4 font-medium">{state}:</h3>
                           <div className="space-y-3">
                             <TabItem
@@ -154,7 +154,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                   {Object.entries(data.states_of_license_summary).map(
                     ([state, value]) => {
                       return (
-                        <div>
+                        <div key={state}>
                           <h3 className="mb-4 font-medium">{state}:</h3>
                           <TabItem name="License" value={value?.license} />
                           <TabItem name="DEA" value={value?.DEA} />
