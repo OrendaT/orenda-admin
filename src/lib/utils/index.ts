@@ -8,7 +8,7 @@ import {
 } from '@/types';
 import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
-import { format } from 'date-fns';
+import { format, startOfDay } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 import { resources } from '../data/resources';
 
@@ -19,12 +19,13 @@ export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
  *@description this takes number of days and returns the
  * date from the current date (today)
  */
-
 export const getPastDate = (daysAgo: string = '0') => {
   const days = parseInt(daysAgo);
+  const today = startOfDay(new Date());
 
-  const date = new Date();
+  const date = new Date(today);
   date.setDate(date.getDate() - (isNaN(days) ? 0 : days));
+
   return format(date, 'MM-dd-yyyy');
 };
 
