@@ -9,10 +9,6 @@ import { z } from 'zod';
 import { Status } from '@/types';
 import { LuCheck, LuCopy } from 'react-icons/lu';
 import { useClipboard } from '@/hooks/use-clipboard';
-import {
-  INTAKE_FORM_URL as intake_url,
-  BILLING_FORM_URL as cc_url,
-} from '@/lib/data';
 import useFormType from '@/hooks/use-form-type';
 import useSendEmail from '@/hooks/use-send-email';
 import { isAxiosError } from 'axios';
@@ -27,7 +23,7 @@ export default function SendNewForm({
 }: {
   setStatus: Dispatch<SetStateAction<Status>>;
 }) {
-  const { type } = useFormType();
+  const { formURL: url } = useFormType();
   const { mutateAsync: sendNewFormEmail } = useSendEmail();
   const methods = useForm({
     defaultValues: {
@@ -64,8 +60,6 @@ export default function SendNewForm({
       },
     );
   });
-
-  const url = type === 'intake' ? intake_url : cc_url;
 
   return (
     <FormProvider {...methods}>
