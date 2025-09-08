@@ -14,7 +14,8 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import api from '@/lib/api/axios';
 import { AUTH_EP } from '@/lib/api/endpoints';
-import { AxiosError } from 'axios';
+import { isAxiosError } from 'axios';
+import { toast } from 'sonner';
 
 const requirements = [
   {
@@ -43,9 +44,8 @@ const NewPasswordForm = ({ token }: { token: string }) => {
 
   const {
     handleSubmit,
-    setError,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = methods;
 
   const password = watch('password');
@@ -85,13 +85,10 @@ const NewPasswordForm = ({ token }: { token: string }) => {
 
       if (res.status === 200) setSuccess(true);
     } catch (error) {
-      setError('root', {
-        type: 'custom',
-        message:
-          error instanceof AxiosError
-            ? error.response?.data.message || 'Something went wrong'
-            : 'Something went wrong',
-      });
+      const message = isAxiosError(error)
+        ? error.response?.data.message || 'Something went wrong'
+        : 'Something went wrong';
+      toast.error(message);
     }
   });
 
@@ -137,12 +134,6 @@ const NewPasswordForm = ({ token }: { token: string }) => {
                 ))}
               </div>
             </div>
-          )}
-
-          {errors.root && (
-            <p className="error_message mt-3 text-center">
-              {errors.root.message}
-            </p>
           )}
 
           <Button
