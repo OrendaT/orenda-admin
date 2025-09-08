@@ -63,15 +63,21 @@ const MassDownload = ({
     const generatedKey = `${from_date}_${to_date}_${type}`;
     setKey(generatedKey);
 
+    console.log({ generatedKey });
+
     if (!downloads[generatedKey]) {
       const res = await massDownload({ from_date, to_date });
 
-      addTask(generatedKey, {
-        status: 'pending',
-        task_id: res.data?.task_id,
-      });
+      if (res.data.success) {
+        addTask(generatedKey, {
+          status: 'pending',
+          task_id: res.data?.task_id,
+        });
 
-      setTaskId(res.data.task_id);
+        setTaskId(res.data.task_id);
+      } else {
+        toast.error(res.data.message);
+      }
     } else if (downloads[generatedKey].task_id) {
       setTaskId(downloads[generatedKey].task_id);
     }

@@ -25,7 +25,7 @@ const Options = ({ row }: CellContext<CredentialingFormData, unknown>) => {
 
   const { mutateAsync: flagForm } = useFlagForm();
 
-  const handlePatientRemind = () =>
+  const sendReminder = () =>
     toast.promise(
       sendReminderEmail({
         data: { email, first_name: name },
@@ -69,10 +69,10 @@ const Options = ({ row }: CellContext<CredentialingFormData, unknown>) => {
           </DropdownMenuItem>
           {status === 'pending' && (
             <DropdownMenuItem
-              onClick={handlePatientRemind}
+              onClick={sendReminder}
               className="py-2 pr-8 text-sm"
             >
-              Remind Patient
+              Remind Provider
             </DropdownMenuItem>
           )}
         </DropdownMenuContent>

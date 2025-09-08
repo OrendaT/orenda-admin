@@ -40,7 +40,7 @@ const QuickActions = ({
     },
     {
       id: 'remind-patient',
-      name: 'Remind patient',
+      name: `Remind ${type === 'credentialing' ? 'provider' : 'patient'}`,
       Icon: LuBell,
       DialogContent: <RemindPatient setStatus={setStatus} />,
       successMessage: 'Reminder successfully sent',
