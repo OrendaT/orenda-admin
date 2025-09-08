@@ -187,6 +187,7 @@ export interface CredentialingFormData extends BaseFormData {
 }
 
 export interface StateLicense {
+  has_DEA: string;
   DEA_state_doc: string;
   DEA_state_number: string;
   collaborating_physician: string;

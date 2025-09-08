@@ -138,6 +138,10 @@ const GeneralTab = ({ id }: { id: string }) => {
                               isFile
                             />
                             <TabItem
+                              name="Has State DEA?"
+                              value={value?.has_DEA}
+                            />
+                            <TabItem
                               name="State DEA Number"
                               value={value?.DEA_state_number}
                             />
