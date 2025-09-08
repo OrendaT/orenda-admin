@@ -16,26 +16,20 @@ import api from '@/lib/api/axios';
 import { AUTH_EP } from '@/lib/api/endpoints';
 import { AxiosError } from 'axios';
 
-enum PasswordRequirements {
-  MIN_LENGTH = 'minLength',
-  BOTH_CASES = 'bothCases',
-  SPECIAL_CHARS = 'specialChars',
-}
-
 const requirements = [
   {
     text: 'A minimum length, typically 8 to 12 characters.',
-    type: PasswordRequirements.MIN_LENGTH,
+    type: 'minLength',
   },
   {
     text: 'A combination of uppercase and lowercase letters.',
-    type: PasswordRequirements.BOTH_CASES,
+    type: 'bothCases',
   },
   {
     text: 'Inclusion of numbers and special characters (e.g., !, @, #).',
-    type: PasswordRequirements.SPECIAL_CHARS,
+    type: 'specialChars',
   },
-];
+] as const;
 
 const NewPasswordForm = ({ token }: { token: string }) => {
   const [success, setSuccess] = useState(false);
@@ -56,14 +50,14 @@ const NewPasswordForm = ({ token }: { token: string }) => {
 
   const password = watch('password');
 
-  const checkType = (type: PasswordRequirements) => {
+  const checkType = (type: (typeof requirements)[number]['type']) => {
     if (password) {
       switch (type) {
-        case PasswordRequirements.MIN_LENGTH:
+        case 'minLength':
           return password.length >= 8;
-        case PasswordRequirements.BOTH_CASES:
+        case 'bothCases':
           return bothCasesPattern.test(password);
-        case PasswordRequirements.SPECIAL_CHARS:
+        case 'specialChars':
           return numAndSpecialPattern.test(password);
         default:
           return false;
