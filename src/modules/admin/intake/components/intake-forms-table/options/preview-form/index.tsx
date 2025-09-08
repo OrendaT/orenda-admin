@@ -24,10 +24,12 @@ const PreviewForm = ({ id, status }: { id: string; status: string }) => {
       <Tabs defaultValue="general" className="mt-4">
         <TabsList className="w-full">
           <TabsTrigger value="general">General</TabsTrigger>
-          <TabsTrigger value="cc_info">Credit Card Info</TabsTrigger>
-          {status === 'submitted' && (
-            <TabsTrigger value="signatures">Signature</TabsTrigger>
-          )}
+          <TabsTrigger value="cc_info" disabled={status !== 'submitted'}>
+            Credit Card Info
+          </TabsTrigger>
+          <TabsTrigger value="signatures" disabled={status !== 'submitted'}>
+            Signature
+          </TabsTrigger>
         </TabsList>
 
         <GeneralTab id={id} />

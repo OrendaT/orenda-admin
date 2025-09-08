@@ -43,22 +43,27 @@ const GeneralTab = ({ id }: { id: string }) => {
             </section>
 
             {/*  Address  */}
-            <section>
-              <h2 className="preview_heading">Address</h2>
+            {data?.status === 'submitted' && (
+              <section>
+                <h2 className="preview_heading">Address</h2>
 
-              <div className="space-y-3">
-                <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
-                  <TabItem name="Street Address" value={data?.street_address} />
-                  <TabItem name="Address 2" value={data?.address_two} />
+                <div className="space-y-3">
+                  <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
+                    <TabItem
+                      name="Street Address"
+                      value={data?.street_address}
+                    />
+                    <TabItem name="Address 2" value={data?.address_two} />
+                  </div>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <TabItem name="City" value={data?.city} />
+                    <TabItem name="State" value={data?.state} />
+                    <TabItem name="Zip code" value={data?.zip_code} />
+                  </div>
+                  <TabItem name="Residence" value={data?.residence} />
                 </div>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  <TabItem name="City" value={data?.city} />
-                  <TabItem name="State" value={data?.state} />
-                  <TabItem name="Zip code" value={data?.zip_code} />
-                </div>
-                <TabItem name="Residence" value={data?.residence} />
-              </div>
-            </section>
+              </section>
+            )}
 
             {/*  CAQH  */}
             {data?.status === 'submitted' && (
@@ -98,13 +103,10 @@ const GeneralTab = ({ id }: { id: string }) => {
                     ([state, value]) => {
                       return (
                         <div key={state}>
-                          <h3 className="mb-4 font-medium">{state}:</h3>
+                          <h3 className="mb-2 text-center font-medium underline underline-offset-1">
+                            {state}
+                          </h3>
                           <div className="space-y-3">
-                            <TabItem
-                              name="State of License Details"
-                              value={value.DEA_state_doc}
-                              isFile
-                            />
                             <TabItem
                               name="Collaborating Physician Status"
                               value={value?.collaborating_physician}
@@ -155,7 +157,9 @@ const GeneralTab = ({ id }: { id: string }) => {
                     ([state, value]) => {
                       return (
                         <div key={state}>
-                          <h3 className="mb-4 font-medium">{state}:</h3>
+                          <h3 className="mb-2 text-center font-medium underline underline-offset-1">
+                            {state}
+                          </h3>
                           <TabItem name="License" value={value?.license} />
                           <TabItem name="DEA" value={value?.DEA} />
                           <TabItem

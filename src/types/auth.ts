@@ -1,4 +1,4 @@
-export type UserRole = 'Admin' | 'Provider' | 'Manager';
+export type UserRole = 'Admin' | 'Provider' | 'Manager' | 'Member';
 export type TeamRole = 'Manager' | 'Member';
 
 export interface DBUser {
