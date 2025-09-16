@@ -1,21 +1,21 @@
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import { BsFiletypePdf } from 'react-icons/bs';
+import { LuFile } from 'react-icons/lu';
 
 const File = ({
-  isPdf,
+  isDoc,
   value,
   altText,
 }: {
-  isPdf?: boolean;
+  isDoc?: boolean;
   value: string;
   altText?: string;
 }) => {
-  return isPdf ? (
+  return isDoc ? (
     // when value is a pdf
     <p className="preview_data mt-1.5 mb-2 flex items-center gap-2">
-      <BsFiletypePdf className="size-5 shrink-0" />
-      PDF cannot be displayed. Download it instead
+      <LuFile className="-mt-1 size-5 shrink-0" />
+      Document cannot be displayed. Download it instead
     </p>
   ) : (
     // when value is an image
@@ -47,7 +47,12 @@ const TabItem = ({
   if (!value || !value.length) return;
 
   // check if value is a pdf
-  const isPdf = !Array.isArray(value) && isFile && value.endsWith('.pdf');
+  const isDoc =
+    !Array.isArray(value) &&
+    isFile &&
+    (value.endsWith('.pdf') ||
+      value.endsWith('.PDF') ||
+      value.endsWith('.docx'));
 
   return (
     <div className={cn(className)}>
@@ -69,11 +74,11 @@ const TabItem = ({
         // when value is an array
         <ul className="list-disc space-y-1 ps-5">
           {value.map((item, index) => {
-            const isPdf = isFile && item.endsWith('.pdf');
+            const isDoc = isFile && item.endsWith('.pdf');
             return (
               <li key={`${name}_${item}_${index}`} className="preview_data">
                 {isFile ? (
-                  <File isPdf={isPdf} value={item} altText={altText} />
+                  <File isDoc={isDoc} value={item} altText={altText} />
                 ) : (
                   item
                 )}
@@ -82,7 +87,7 @@ const TabItem = ({
           })}
         </ul>
       ) : isFile ? (
-        <File isPdf={isPdf} value={value} altText={altText} />
+        <File isDoc={isDoc} value={value} altText={altText} />
       ) : (
         // when value is a string
         <p className="preview_data">{value}</p>
