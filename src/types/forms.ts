@@ -17,6 +17,7 @@ export interface IntakeFormData extends BaseFormData {
   gender: string;
   date_of_birth: string;
   race: string;
+  preferred_pronouns: string;
 
   address_one: string;
   address_two: string;
@@ -26,6 +27,8 @@ export interface IntakeFormData extends BaseFormData {
   appointment_address: string;
   appointment_city: string;
   appointment_state: string;
+  appointment_street_address: string;
+  appointment_zip_code: string;
 
   current_occupation: string;
   education_level: string;
@@ -42,7 +45,7 @@ export interface IntakeFormData extends BaseFormData {
   personal_medical_history: string[];
   personal_medical_history_other: string;
   symptoms_past_six_months: string[];
-  symptoms_past_six_months_other: string;
+  symptoms_other: string;
 
   hospitalized_psych: string;
 

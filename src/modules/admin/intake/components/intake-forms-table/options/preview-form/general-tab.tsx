@@ -32,16 +32,6 @@ const GeneralTab = ({ id }: { id: string }) => {
                 <TabItem name="Phone" value={data?.phone} />
 
                 <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
-                  <TabItem name="Gender" value={data?.gender} />
-                  <TabItem
-                    name="Sex assigned at birth"
-                    value={data?.sex_assigned_at_birth}
-                  />
-                </div>
-                
-                <TabItem name="Race" value={data?.race} />
-
-                <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
                   <TabItem name="Address 1" value={data?.address_one} />
                   <TabItem name="Address 2" value={data?.address_two} />
                 </div>
@@ -52,23 +42,41 @@ const GeneralTab = ({ id }: { id: string }) => {
                   <TabItem name="Zip code" value={data?.zip_code} />
                 </div>
 
-                <TabItem
-                  name="Same address for appointment?"
-                  value={data?.appointment_address}
-                />
                 <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
+                  <TabItem name="Gender" value={data?.gender} />
                   <TabItem
-                    name="Appointment City"
-                    value={data?.appointment_city}
+                    name="Sex assigned at birth"
+                    value={data?.sex_assigned_at_birth}
                   />
+                </div>
+
+                <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
+                  <TabItem name="Race" value={data?.race} />
                   <TabItem
-                    name="Appointment State"
-                    value={data?.appointment_state}
+                    name="Preferred Pronouns"
+                    value={data?.preferred_pronouns}
                   />
                 </div>
 
                 <TabItem
-                  name="Appointment for a minor child:"
+                  name="Same address for appointment?"
+                  value={data?.appointment_address}
+                />
+                <TabItem
+                  name="Appt. Street Address"
+                  value={data?.appointment_street_address}
+                />
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  <TabItem name="Appt. City" value={data?.appointment_city} />
+                  <TabItem name="Appt. State" value={data?.appointment_state} />
+                  <TabItem
+                    name="Appt. Zip Code"
+                    value={data?.appointment_zip_code}
+                  />
+                </div>
+
+                <TabItem
+                  name="Appointment for a minor child?"
                   value={data?.for_minor_child}
                 />
                 <div className="flex flex-col items-center gap-4 *:w-full sm:flex-row">
@@ -103,10 +111,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                     name="Symptoms experienced in the past six months"
                     value={data?.symptoms_past_six_months}
                   />
-                  <TabItem
-                    name="Symptoms experienced in the past six months (other)"
-                    value={data?.symptoms_past_six_months_other}
-                  />
+                  <TabItem name="Other symptoms" value={data?.symptoms_other} />
                   <TabItem
                     name="Current medications and supplements being used"
                     value={data?.current_medications}
@@ -140,7 +145,7 @@ const GeneralTab = ({ id }: { id: string }) => {
                     value={data?.personal_medical_history}
                   />
                   <TabItem
-                    name="Personal medical history (other)"
+                    name="Other personal medical history"
                     value={data?.personal_medical_history_other}
                   />
                   <TabItem name="Current weight" value={data?.weight} />
