@@ -151,19 +151,13 @@ export interface CredentialingFormData extends BaseFormData {
   malpractice_insurance_doc: string;
   resume_cv_doc: string;
 
-  highest_nursing_degree: string;
-  highest_nursing_degree_other: string;
-  highest_nursing_degree_start_date: string;
-  highest_nursing_degree_end_date: string;
-  highest_nursing_degree_school: string;
-
   COI_coverage: string;
   COI_coverage_doc: string;
 
   photo_ID: string;
   proof_of_address_ID: string;
   patient_age_groups: string[];
-  health_conditions: string[];
+  health_conditions: Record<string, number>;
   health_specialties: string[];
 
   speaks_additional_lang: string;
@@ -184,9 +178,10 @@ export interface CredentialingFormData extends BaseFormData {
 
   states_of_license: Record<string, StateLicense>;
   states_of_license_summary: Record<string, StateLicenseSummary>;
+  nursing_degrees: Record<string, NursingDegree>;
 }
 
-export interface StateLicense {
+interface StateLicense {
   has_DEA: string;
   DEA_state_doc: string;
   DEA_state_number: string;
@@ -199,8 +194,14 @@ export interface StateLicense {
   state_license_doc: string;
 }
 
-export interface StateLicenseSummary {
+interface StateLicenseSummary {
   DEA: string;
   license: string;
   practice_ind: string;
+}
+
+interface NursingDegree {
+  end_date: string;
+  institution: string;
+  start_date: string;
 }
