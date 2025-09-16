@@ -133,6 +133,11 @@ const GeneralTab = ({ id }: { id: string }) => {
                                 isFile
                               />
                               <TabItem
+                                name="Collaborating Agreement Document"
+                                value={value?.collaborating_agreement_doc}
+                                isFile
+                              />
+                              <TabItem
                                 name="Has State DEA?"
                                 value={value?.has_DEA}
                               />
@@ -193,12 +198,12 @@ const GeneralTab = ({ id }: { id: string }) => {
                 <section>
                   <h2 className="preview_heading">Nursing Degrees</h2>
                   <div className="space-y-3">
-                    {data?.nursing_degrees.values ? (
+                    {Object.keys(data.nursing_degrees).length ? (
                       Object.entries(data.nursing_degrees).map(
                         ([degree, value]) => {
                           return (
                             <div key={degree}>
-                              <h3 className="mb-2 -mt-2 text-center font-medium underline underline-offset-1">
+                              <h3 className="-mt-2 mb-2 text-center font-medium underline underline-offset-1">
                                 {degree}
                               </h3>
                               <div className="space-y-3">

@@ -192,6 +192,7 @@ interface StateLicense {
   collaborating_physician_npi: string;
   form_4NP_doc: string;
   state_license_doc: string;
+  collaborating_agreement_doc: string;
 }
 
 interface StateLicenseSummary {
