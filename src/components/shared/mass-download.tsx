@@ -63,8 +63,6 @@ const MassDownload = ({
     const generatedKey = `${from_date}_${to_date}_${type}`;
     setKey(generatedKey);
 
-    console.log({ generatedKey });
-
     if (!downloads[generatedKey]) {
       const res = await massDownload({ from_date, to_date });
 

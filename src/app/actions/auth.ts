@@ -24,12 +24,14 @@ export const login = async (data: LoginSchemaType) => {
       message: 'Login successful',
     };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       error: {
         name: error instanceof AuthError ? error.name : 'Login Error',
         message:
-          error instanceof AuthError ? (error.message || 'Something went wrong') : 'Something went wrong',
+          error instanceof AuthError
+            ? error.message || 'Something went wrong'
+            : 'Something went wrong',
         custom:
           'Incorrect login details. Please check your details and try again.',
       },
