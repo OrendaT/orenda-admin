@@ -21,7 +21,7 @@ const DownloadButton = ({ row }: CellContext<IntakeFormData, unknown>) => {
         downloadFile({ name, file });
         return {
           message: 'Form downloaded successfully',
-          description: <span className="text-black">{name}</span>,
+          description: name,
           icon: null,
         };
       },
