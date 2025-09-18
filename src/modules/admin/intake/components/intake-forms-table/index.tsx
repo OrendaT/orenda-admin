@@ -7,20 +7,26 @@ import useFormsParams from '@/hooks/use-forms-params';
 import FormsTable from '@/components/shared/forms-table';
 import { INTAKE_FORMS_EP } from '@/lib/api/endpoints';
 import { IntakeFormData } from '@/types';
+import { useMemo } from 'react';
 
 const IntakeFormsTable = () => {
   const { page, search, flag, from, to, status } = useFormsParams();
+
+  const filters = useMemo(
+    () => ({
+      flag,
+      from,
+      to,
+      status,
+    }),
+    [flag, from, to, status],
+  );
 
   const { data, isPending, isError } = useAllForms<IntakeFormData>({
     url: INTAKE_FORMS_EP.ALL_FORMS,
     page,
     search,
-    filters: {
-      flag,
-      from,
-      to,
-      status,
-    },
+    filters,
     prefetchNextPages: true,
   });
 

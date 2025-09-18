@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mailchimpTransactional from '@mailchimp/mailchimp_transactional';
-import { INTAKE_FORM_URL as url } from '@/lib/data';
+import { INTAKE_FORM_URL as url, ORENDA_LOGO as logo } from '@/lib/data';
 
 // Initialize with server-side API key
 const mailchimpClient = mailchimpTransactional(
@@ -8,12 +8,8 @@ const mailchimpClient = mailchimpTransactional(
 );
 
 // HTML email template with logo and styling
-const getBaseEmailTemplate = (content: string) => {
-  const logo =
-    'https://mcusercontent.com/f49e77d8389e110b514988d07/images/bd4a6ffd-dce6-72c2-e379-2223ce4d0a6b.png';
-
-  return `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+const getBaseEmailTemplate = (content: string) =>
+  `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <!-- Logo -->
         <header style="text-align: center; margin-bottom: 30px;">
           <img src="${logo}" alt="Orenda Psychiatry" style="max-width: 180px;">
@@ -35,7 +31,6 @@ const getBaseEmailTemplate = (content: string) => {
         </footer>
       </div>
     `;
-};
 
 export async function POST(request: NextRequest) {
   try {
@@ -89,7 +84,6 @@ export async function POST(request: NextRequest) {
         <p>Thank you,<br/>The Orenda Psychiatry Team</p>
       `;
 
-      // Include the "Not interested" link for reminder emails
       html = getBaseEmailTemplate(content);
     } else {
       return NextResponse.json(

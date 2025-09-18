@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { getTeams } from '@/lib/utils';
-import CreditCardForms from '@/modules/admin/credit-card';
+import BillingForms from '@/modules/admin/billing';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: 'Credit Card Forms page',
 };
 
-export default async function CreditCardFormsPage() {
+export default async function BillingFormsPage() {
   const session = await auth();
 
   if (!session) {
@@ -20,6 +20,5 @@ export default async function CreditCardFormsPage() {
   if (!(teams.includes('Billing') || teams.includes('Intake'))) {
     notFound();
   }
-
-  return <CreditCardForms />;
+  return <BillingForms />;
 }

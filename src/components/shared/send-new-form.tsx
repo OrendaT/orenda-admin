@@ -9,13 +9,10 @@ import { z } from 'zod';
 import { Status } from '@/types';
 import { LuCheck, LuCopy } from 'react-icons/lu';
 import { useClipboard } from '@/hooks/use-clipboard';
-import {
-  INTAKE_FORM_URL as intake_url,
-  CREDIT_CARD_FORM_URL as cc_url,
-} from '@/lib/data';
 import useFormType from '@/hooks/use-form-type';
 import useSendEmail from '@/hooks/use-send-email';
 import { isAxiosError } from 'axios';
+import { toast } from 'sonner';
 
 const SendNewFormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -27,7 +24,7 @@ export default function SendNewForm({
 }: {
   setStatus: Dispatch<SetStateAction<Status>>;
 }) {
-  const { type } = useFormType();
+  const { formURL: url } = useFormType();
   const { mutateAsync: sendNewFormEmail } = useSendEmail();
   const methods = useForm({
     defaultValues: {
@@ -40,8 +37,7 @@ export default function SendNewForm({
   const {
     handleSubmit,
     reset,
-    setError,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
@@ -58,14 +54,12 @@ export default function SendNewForm({
           const errorMessage = isAxiosError(error)
             ? error.response?.data?.message
             : error.message || 'Failed. Please try again.';
-          setError('root', { message: errorMessage });
+          toast.error(errorMessage);
           console.error('Error in form submission:', errorMessage);
         },
       },
     );
   });
-
-  const url = type === 'intake' ? intake_url : cc_url;
 
   return (
     <FormProvider {...methods}>
@@ -99,10 +93,6 @@ export default function SendNewForm({
           placeholder="Enter email"
           className="mb-10"
         />
-
-        {errors.root && (
-          <p className="error_message -mt-5 mb-6 ps-2">{errors.root.message}</p>
-        )}
 
         <Button
           type="submit"

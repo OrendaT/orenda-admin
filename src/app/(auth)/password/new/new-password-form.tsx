@@ -14,28 +14,23 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import api from '@/lib/api/axios';
 import { AUTH_EP } from '@/lib/api/endpoints';
-import { AxiosError } from 'axios';
-
-enum PasswordRequirements {
-  MIN_LENGTH = 'minLength',
-  BOTH_CASES = 'bothCases',
-  SPECIAL_CHARS = 'specialChars',
-}
+import { isAxiosError } from 'axios';
+import { toast } from 'sonner';
 
 const requirements = [
   {
     text: 'A minimum length, typically 8 to 12 characters.',
-    type: PasswordRequirements.MIN_LENGTH,
+    type: 'minLength',
   },
   {
     text: 'A combination of uppercase and lowercase letters.',
-    type: PasswordRequirements.BOTH_CASES,
+    type: 'bothCases',
   },
   {
     text: 'Inclusion of numbers and special characters (e.g., !, @, #).',
-    type: PasswordRequirements.SPECIAL_CHARS,
+    type: 'specialChars',
   },
-];
+] as const;
 
 const NewPasswordForm = ({ token }: { token: string }) => {
   const [success, setSuccess] = useState(false);
@@ -49,21 +44,20 @@ const NewPasswordForm = ({ token }: { token: string }) => {
 
   const {
     handleSubmit,
-    setError,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = methods;
 
   const password = watch('password');
 
-  const checkType = (type: PasswordRequirements) => {
+  const checkType = (type: (typeof requirements)[number]['type']) => {
     if (password) {
       switch (type) {
-        case PasswordRequirements.MIN_LENGTH:
+        case 'minLength':
           return password.length >= 8;
-        case PasswordRequirements.BOTH_CASES:
+        case 'bothCases':
           return bothCasesPattern.test(password);
-        case PasswordRequirements.SPECIAL_CHARS:
+        case 'specialChars':
           return numAndSpecialPattern.test(password);
         default:
           return false;
@@ -91,13 +85,10 @@ const NewPasswordForm = ({ token }: { token: string }) => {
 
       if (res.status === 200) setSuccess(true);
     } catch (error) {
-      setError('root', {
-        type: 'custom',
-        message:
-          error instanceof AxiosError
-            ? error.response?.data.message || 'Something went wrong'
-            : 'Something went wrong',
-      });
+      const message = isAxiosError(error)
+        ? error.response?.data.message || 'Something went wrong'
+        : 'Something went wrong';
+      toast.error(message);
     }
   });
 
@@ -143,12 +134,6 @@ const NewPasswordForm = ({ token }: { token: string }) => {
                 ))}
               </div>
             </div>
-          )}
-
-          {errors.root && (
-            <p className="error_message mt-3 text-center">
-              {errors.root.message}
-            </p>
           )}
 
           <Button

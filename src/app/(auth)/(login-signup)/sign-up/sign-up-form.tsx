@@ -11,6 +11,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import GoogleAuthButton from '../_components/google-auth-button';
 import OrDivider from '../_components/or-divider';
 import { register } from '@/app/actions/auth';
+import { toast } from 'sonner';
 
 const SignUpForm = () => {
   const [success, setSuccess] = useState(false);
@@ -26,8 +27,7 @@ const SignUpForm = () => {
   });
   const {
     handleSubmit,
-    formState: { isSubmitting, errors },
-    setError,
+    formState: { isSubmitting },
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
@@ -35,10 +35,7 @@ const SignUpForm = () => {
     if (res.success) {
       setSuccess(true);
     } else {
-      setError('root', {
-        type: 'custom',
-        message: res.message,
-      });
+      toast.error(res.message);
     }
   });
 
@@ -65,8 +62,6 @@ const SignUpForm = () => {
               placeholder="Create password"
             />
           </div>
-
-          {errors.root && <p className='error_message mt-4'>{errors.root.message}</p>}
 
           <Button isLoading={isSubmitting} type="submit" className="mt-8">
             Sign up

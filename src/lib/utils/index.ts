@@ -3,14 +3,14 @@ import {
   Resource,
   ResourceFile,
   ResourceFolder,
-  UserRole,
-  Teams,
 } from '@/types';
 import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
-import { format } from 'date-fns';
+import { format, startOfDay } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 import { resources } from '../data/resources';
+
+export * from './auth';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -19,12 +19,13 @@ export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
  *@description this takes number of days and returns the
  * date from the current date (today)
  */
-
 export const getPastDate = (daysAgo: string = '0') => {
   const days = parseInt(daysAgo);
+  const today = startOfDay(new Date());
 
-  const date = new Date();
+  const date = new Date(today);
   date.setDate(date.getDate() - (isNaN(days) ? 0 : days));
+
   return format(date, 'MM-dd-yyyy');
 };
 
@@ -66,37 +67,6 @@ export const downloadFile = (
   callback?.();
 };
 
-/**
- * @function getUserRole
- * @description Determines the user's highest role based on the provided roles array.
- */
-export const getUserRole = (
-  roles?: UserRole[],
-): {
-  role: UserRole;
-  isProvider: boolean;
-  isAdmin: boolean;
-  isManager: boolean;
-} => {
-  let role: UserRole = 'Provider';
-  let isProvider = false;
-  let isAdmin = false;
-  let isManager = false;
-
-  if (roles?.some((role) => /Admin/i.test(role))) {
-    isAdmin = true;
-    role = 'Admin';
-  } else if (roles?.some((role) => /Manager/i.test(role))) {
-    isManager = true;
-    role = 'Manager';
-  } else if (roles?.some((role) => /Provider/i.test(role))) {
-    isProvider = true;
-    role = 'Provider';
-  }
-
-  return { role, isProvider, isAdmin, isManager };
-};
-
 export const findResource = (id: string) => {
   // First, check if the id matches any top-level Resource
   for (const res of resources) {
@@ -115,7 +85,7 @@ export const findResource = (id: string) => {
       }
     }
 
-    //   // Search subfolders recursively
+    // Search subfolders recursively
     //   const folder = item as ResourceFolder;
     //   if (folder.sub_folders) {
     //     const found = searchNested(folder.sub_folders, id);
@@ -176,5 +146,3 @@ export const slugify = (routes?: string[]): string => {
 
   return slug;
 };
-
-export const getTeams = (teams: Teams) => Object.keys(teams) as (keyof Teams)[];

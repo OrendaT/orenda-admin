@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import ProviderOnboardingForms from '@/modules/admin/provider-onboarding';
+import CredentialingForms from '@/modules/admin/credentialing';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   description: 'Provider Onboarding Forms page',
 };
 
-export default async function CreditCardFormsPage() {
+export default async function CredentialingFormsPage() {
   const session = await auth();
 
   if (!session) {
     redirect('/login');
   }
 
-  return <ProviderOnboardingForms />;
+  return <CredentialingForms />;
 }

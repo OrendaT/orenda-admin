@@ -36,8 +36,6 @@ const DownloadForm = ({
   open: boolean;
   forms: string[];
 }) => {
-  console.log(forms);
-
   // Dialog Functionality
   const [allowEdit, setAllowEdit] = useState(!name);
   const [status, setStatus] = useState<Status>('default');
@@ -67,7 +65,7 @@ const DownloadForm = ({
   // -------------------
   // Export Functionality
   const [isDownloading, setIsDownloading] = useState(false);
-  const { type } = useFormType();
+  const { export_key } = useFormType();
   const { mutateAsync: _export } = useExport();
   const key =
     forms.length > 1 ? `${forms[0]}_${forms[forms.length - 1]}` : forms[0];
@@ -84,9 +82,8 @@ const DownloadForm = ({
 
   // adds download task to download form store if it doesn't exist
   useEffect(() => {
-    const dataKey = type === 'intake' ? 'patients' : 'credit_cards';
     const exportForms = async () => {
-      const res = await _export({ [dataKey]: forms });
+      const res = await _export({ [export_key]: forms });
       if (res.status === 200) {
         addTask(key, {
           status: 'pending',
@@ -98,7 +95,7 @@ const DownloadForm = ({
     if (open && !downloads[key]) {
       exportForms();
     }
-  }, [open, _export, forms, name, addTask, downloads, key, type]);
+  }, [open, _export, forms, name, addTask, downloads, key, export_key]);
 
   // checks the download status (every 1s by default)
   useRetry({

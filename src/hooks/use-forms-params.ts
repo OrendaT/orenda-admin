@@ -1,18 +1,15 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
+import { useMemo } from 'react';
 
 const useFormsParams = () => {
   const params = useSearchParams();
 
-  const {
-    page = '1',
-    search,
-    flag,
-    from,
-    to,
-    status,
-  } = Object.fromEntries(params.entries());
+  // ✅ memoise the params object so it's stable
+  const entries = useMemo(() => Object.fromEntries(params.entries()), [params]);
+
+  const { page = '1', search, flag, from, to, status } = entries;
 
   return {
     page,
@@ -21,7 +18,7 @@ const useFormsParams = () => {
     from,
     to,
     status,
-    params: Object.fromEntries(params.entries()),
+    params: entries, // stable reference now
   };
 };
 export default useFormsParams;
