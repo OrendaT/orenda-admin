@@ -31,7 +31,6 @@ const useFormType = () => {
       url = CREDENTIALING_FORMS_EP.ALL_FORMS;
       formURL = onboarding_url;
       export_key = 'providers';
-
       break;
 
     default:
