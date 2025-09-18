@@ -6,6 +6,7 @@ export interface BaseFormData {
   created_at: string;
   updated_at: string;
   status: FormStatus;
+  last_accessed_at: string;
 }
 
 export interface IntakeFormData extends BaseFormData {
@@ -84,8 +85,6 @@ export interface IntakeFormData extends BaseFormData {
   sex_assigned_at_birth: string;
   height: string;
   weight: string;
-
-  last_accessed_at: string;
 }
 
 export interface CreditCardInfo {

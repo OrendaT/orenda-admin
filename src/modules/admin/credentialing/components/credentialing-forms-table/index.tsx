@@ -7,20 +7,26 @@ import useFormsParams from '@/hooks/use-forms-params';
 import FormsTable from '@/components/shared/forms-table';
 import { CREDENTIALING_FORMS_EP } from '@/lib/api/endpoints';
 import { CredentialingFormData } from '@/types';
+import { useMemo } from 'react';
 
 const CredentialingFormsTable = () => {
   const { page, search, flag, from, to, status } = useFormsParams();
+
+  const filters = useMemo(
+    () => ({
+      flag,
+      from,
+      to,
+      status,
+    }),
+    [flag, from, to, status],
+  );
 
   const { data, isPending, isError } = useAllForms<CredentialingFormData>({
     url: CREDENTIALING_FORMS_EP.ALL_FORMS,
     page,
     search,
-    filters: {
-      flag,
-      from,
-      to,
-      status,
-    },
+    filters,
     prefetchNextPages: true,
   });
 

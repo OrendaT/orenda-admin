@@ -14,9 +14,9 @@ export interface DBUser {
 }
 
 export interface Teams {
-  Billing?: TeamRole[];
-  Communication?: TeamRole[];
-  Clinical?: TeamRole[];
-  Onboarding?: TeamRole[];
-  Intake?: TeamRole[];
+  Billing?: TeamRole;
+  Communication?: TeamRole;
+  Clinical?: TeamRole;
+  Credentialing?: TeamRole;
+  Intake?: TeamRole;
 }
