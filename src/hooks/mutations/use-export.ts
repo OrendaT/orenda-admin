@@ -24,13 +24,14 @@ const useExport = () => {
         data,
       }),
     onSuccess: () => {
+      const queryKey = QUERY_KEYS.allForms({
+        page,
+        search,
+        filters: { flag, from, to },
+        url,
+      });
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.allForms({
-          page,
-          search,
-          filters: { flag, from, to },
-          url,
-        }),
+        queryKey,
       });
     },
     onError: (error: AxiosError<{ message: string }>, data) => {

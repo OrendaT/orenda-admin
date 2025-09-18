@@ -1,4 +1,8 @@
-import { BILLING_FORMS_EP, INTAKE_FORMS_EP } from '@/lib/api/endpoints';
+import {
+  BILLING_FORMS_EP,
+  CREDENTIALING_FORMS_EP,
+  INTAKE_FORMS_EP,
+} from '@/lib/api/endpoints';
 import {
   BILLING_FORM_URL as cc_url,
   CREDENTIALING_FORM_URL as onboarding_url,
@@ -24,7 +28,7 @@ const useFormType = () => {
 
     case '/provider-onboarding-forms':
       type = 'credentialing';
-      url = INTAKE_FORMS_EP.ALL_FORMS;
+      url = CREDENTIALING_FORMS_EP.ALL_FORMS;
       formURL = onboarding_url;
       export_key = 'providers';
 
