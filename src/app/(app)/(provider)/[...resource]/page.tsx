@@ -25,19 +25,13 @@ const ResourcePage = async ({ params }: ResourcePageProps) => {
   const session = await auth();
   const { isProvider } = getUserRole(session?.user.roles);
 
-  if (!isProvider) {
-    notFound();
-  }
+  if (!isProvider) notFound();
 
   const { resource } = await params;
-
   const id = slugify(resource);
 
   const foundResource = findResource(id);
-
-  if (!foundResource) {
-    notFound();
-  }
+  if (!foundResource) notFound();
 
   return <ProviderResources resource={foundResource} />;
 };

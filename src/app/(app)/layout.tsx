@@ -8,9 +8,7 @@ import { redirect } from 'next/navigation';
 const AppLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();
 
-  if (!session) {
-    redirect('/login');
-  }
+  if (!session) redirect('/login');
 
   const { isProvider } = getUserRole(session.user.roles);
   const { roles, teams } = session.user;

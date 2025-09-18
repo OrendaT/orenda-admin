@@ -19,17 +19,14 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Home() {
   const session = await auth();
 
-  if (!session) {
-    redirect('/login');
-  }
+  if (!session) redirect('/login');
 
   const { isProvider } = getUserRole(session.user.roles);
 
   const resource = findResource('/');
 
-  if (isProvider && !resource) {
-    notFound();
-  }
+  if (isProvider && !resource) notFound();
+
   return isProvider ? (
     <ProviderResources resource={resource!} />
   ) : (

@@ -1,7 +1,8 @@
 import { auth } from '@/auth';
+import { getTeams } from '@/lib/utils';
 import CredentialingForms from '@/modules/admin/credentialing';
 import { Metadata } from 'next';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Provider Onboarding Forms',
@@ -11,9 +12,10 @@ export const metadata: Metadata = {
 export default async function CredentialingFormsPage() {
   const session = await auth();
 
-  if (!session) {
-    redirect('/login');
-  }
+  if (!session) redirect('/login');
+
+  const teams = getTeams(session.user.teams);
+  if (!teams.includes('Credentialing')) notFound();
 
   return <CredentialingForms />;
 }

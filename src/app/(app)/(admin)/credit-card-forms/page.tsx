@@ -12,13 +12,10 @@ export const metadata: Metadata = {
 export default async function BillingFormsPage() {
   const session = await auth();
 
-  if (!session) {
-    redirect('/login');
-  }
+  if (!session) redirect('/login');
 
   const teams = getTeams(session.user.teams);
-  if (!(teams.includes('Billing') || teams.includes('Intake'))) {
-    notFound();
-  }
+  if (!(teams.includes('Billing') || teams.includes('Intake'))) notFound();
+
   return <BillingForms />;
 }

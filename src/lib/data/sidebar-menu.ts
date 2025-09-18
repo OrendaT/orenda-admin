@@ -39,6 +39,7 @@ export const getSidebarMenu = ({
           title: 'Onboarding Forms',
           Icon: LuUsers({}),
           href: '/provider-onboarding-forms',
+          hidden: !_teams.includes('Credentialing'),
         },
       ],
     },
