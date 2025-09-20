@@ -63,11 +63,11 @@ const RemindPatient = ({
         <Input
           label={
             <>
-              Patient&apos;s First Name <small>(optional)</small>
+              Recipient&apos;s First Name <small>(optional)</small>
             </>
           }
           name="first_name"
-          placeholder="Enter patient's first name"
+          placeholder="Enter recipient's first name"
         />
 
         <Input
