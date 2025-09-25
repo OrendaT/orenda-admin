@@ -5,33 +5,6 @@ import ProviderResources from '@/modules/provider/resources';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-// Collect all ids recursively (Resource, ResourceFolder, ResourceFile)
-function collectIds(
-  nodes: typeof resources | (typeof resources)[number]['resources'],
-): string[] {
-  const ids: string[] = [];
-
-  for (const node of nodes) {
-    if (node.id) {
-      ids.push(node.id);
-    }
-
-    if ('resources' in node && Array.isArray(node.resources)) {
-      ids.push(...collectIds(node.resources));
-    }
-  }
-
-  return ids;
-}
-
-export async function generateStaticParams() {
-  const allIds = collectIds(resources);
-
-  return allIds.map((id) => ({
-    resource: id.replace(/^\/+/, '').split('/'),
-  }));
-}
-
 interface ResourcePageProps {
   params: Promise<{ resource?: string[] }>;
 }
@@ -47,6 +20,35 @@ export async function generateMetadata({
     title,
     description: `This page includes all the resources for ${title.split(' | ')[0]}`,
   };
+}
+
+export async function generateStaticParams() {
+  // collect all ids recursively (Resource, ResourceFolder, ResourceFile)
+  function collectIds(
+    nodes: typeof resources | (typeof resources)[number]['resources'],
+  ): string[] {
+    const ids: string[] = [];
+
+    for (const node of nodes) {
+      if (node.id) {
+        ids.push(node.id);
+      }
+
+      if ('resources' in node && Array.isArray(node.resources)) {
+        ids.push(...collectIds(node.resources));
+      }
+    }
+
+    return ids;
+  }
+
+  const allIds = collectIds(resources);
+
+  return allIds
+    .filter((id) => id.trim() !== '' && id !== '/') // filter out root
+    .map((id) => ({
+      resource: id.replace(/^\/+/, '').split('/'),
+    }));
 }
 
 const ResourcePage = async ({ params }: ResourcePageProps) => {
