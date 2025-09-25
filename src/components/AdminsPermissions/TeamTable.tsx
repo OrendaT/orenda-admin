@@ -9,7 +9,7 @@ import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import type { TeamMember, TeamCategory, Role } from '@/types/team';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
-import Pagination from '../AdminsPermissions/Pagination'; // ✅ import your Pagination
+import Pagination from '../AdminsPermissions/Pagination';
 
 interface Props {
   members: TeamMember[];
@@ -35,12 +35,10 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  // ✅ Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // change this number for how many rows per page
+  const itemsPerPage = 8;
   const totalPages = Math.ceil(members.length / itemsPerPage);
 
-  // Slice members for current page
   const paginatedMembers = members.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -69,23 +67,28 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
 
   const toggleTeam = async (memberId: string, team: TeamCategory) => {
     const member = members.find((m) => m.id === memberId);
-    const isCurrentlyOnTeam = !!member?.teams?.[team];
+    const isCurrentlyOnTeam = Boolean(member?.teams?.[team]);
     const action = isCurrentlyOnTeam ? 'remove' : 'add';
 
-    // Optimistically update UI
-    const updatedMembers = members.map((m) =>
-      m.id === memberId
-        ? { ...m, teams: { ...m.teams, [team]: !isCurrentlyOnTeam } }
-        : m
+    setMembers((prev) =>
+      prev.map((m) =>
+        m.id === memberId
+          ? ({
+              ...m,
+              teams: {
+                ...(m.teams ?? {}),
+                [team]: isCurrentlyOnTeam ? undefined : 'Member',
+              },
+            } as TeamMember)
+          : m
+      )
     );
-    setMembers(updatedMembers);
 
-    // ✅ Show toast
     if (member) {
       if (!isCurrentlyOnTeam) {
         toast.success(
           `${member.name || member.email} has been added to the ${team} team`,
-          { className: 'border rounded-lg border-green-500 ' }
+          { className: 'border rounded-lg border-green-500' }
         );
       } else {
         toast.error(
@@ -102,7 +105,7 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
     try {
       await axios.patch(
         `/admin/users/${memberId}/teams/${action}`,
-        { team },
+        action === 'add' ? { team, role: 'Member' } : { team },
         {
           headers: {
             Authorization: `Bearer ${session.access_token}`,
@@ -111,7 +114,7 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
       );
     } catch (err) {
       console.error(`Failed to ${action} ${team} for member ${memberId}:`, err);
-      setMembers(members); // rollback
+      setMembers((prev) => [...members]); // rollback
     }
   };
 
@@ -178,7 +181,7 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
               {teamCategories.map((team) => (
                 <td key={team} className="p-2 text-center">
                   <ToggleSwitch
-                    isOn={!!member.teams?.[team]}
+                    isOn={Boolean(member.teams?.[team])}
                     onToggle={() => toggleTeam(member.id, team)}
                   />
                 </td>
@@ -227,7 +230,6 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
         </tbody>
       </table>
 
-      {/* ✅ Pagination below the table */}
       <div className="p-4 border-t flex justify-end">
         <Pagination
           currentPage={currentPage}

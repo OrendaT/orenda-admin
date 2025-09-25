@@ -1,4 +1,5 @@
 // src/types/team.ts
+
 export type TeamCategory =
   | 'Intake'
   | 'Billing'
@@ -13,16 +14,9 @@ export type Role = 'Admin' | 'Manager' | 'Member';
 export interface TeamMember {
   id: string;
   name: string | null;
-  email: string; // ✅ Add this line
+  email: string;
   roles?: string[];
-  teams?: Record<string, boolean>;
+  teams: Record<TeamCategory, string | undefined>; // ✅ required and fully typed
   firstName?: string;
   lastName?: string;
-  intake: boolean;
-  billing: boolean;
-  onboarding: boolean;
-  clinical: boolean;
-  comms: boolean;
-  proAuths: boolean;
-  today: boolean;
 }
