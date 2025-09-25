@@ -114,7 +114,6 @@ export default function TeamTable({ members, setMembers, onDelete }: Props) {
       );
     } catch (err) {
       console.error(`Failed to ${action} ${team} for member ${memberId}:`, err);
-      setMembers((prev) => [...members]); // rollback
     }
   };
 
