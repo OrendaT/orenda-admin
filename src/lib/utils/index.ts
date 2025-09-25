@@ -3,6 +3,7 @@ import {
   Resource,
   ResourceFile,
   ResourceFolder,
+  FoundResource,
 } from '@/types';
 import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
@@ -67,35 +68,25 @@ export const downloadFile = (
   callback?.();
 };
 
-export const findResource = (id: string) => {
-  // First, check if the id matches any top-level Resource
-  for (const res of resources) {
-    if (res.id === id) {
-      return res;
-    }
-
-    const folder = searchNested(res.resources);
-    if (folder) return folder;
-  }
-
-  function searchNested(items: ResourceFolder[] | ResourceFile[]) {
+export const findResource = (id: string): FoundResource | undefined => {
+  // Search a list of resources (top-level or nested)
+  function search(
+    items: (Resource | ResourceFolder | ResourceFile)[],
+  ): FoundResource | undefined {
     for (const item of items) {
       if (item.id === id) {
         return item;
       }
+
+      if ('resources' in item && Array.isArray(item.resources)) {
+        const found = search(item.resources);
+        if (found) return found;
+      }
     }
-
-    // Search subfolders recursively
-    //   const folder = item as ResourceFolder;
-    //   if (folder.sub_folders) {
-    //     const found = searchNested(folder.sub_folders, id);
-    //     if (found) return found;
-    //   }
-
-    //   // Also check files inside the folder
-    //   const foundFile = searchNested(folder.files, id);
-    //   if (foundFile) return foundFile;
+    return undefined;
   }
+
+  return search(resources);
 };
 
 export const convertResourcesToMenu = (

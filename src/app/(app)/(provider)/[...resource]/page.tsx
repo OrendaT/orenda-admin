@@ -1,8 +1,36 @@
 import { auth } from '@/auth';
+import { resources } from '@/lib/data';
 import { findResource, getUserRole, slugify } from '@/lib/utils';
 import ProviderResources from '@/modules/provider/resources';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+
+// Collect all ids recursively (Resource, ResourceFolder, ResourceFile)
+function collectIds(
+  nodes: typeof resources | (typeof resources)[number]['resources'],
+): string[] {
+  const ids: string[] = [];
+
+  for (const node of nodes) {
+    if (node.id) {
+      ids.push(node.id);
+    }
+
+    if ('resources' in node && Array.isArray(node.resources)) {
+      ids.push(...collectIds(node.resources));
+    }
+  }
+
+  return ids;
+}
+
+export async function generateStaticParams() {
+  const allIds = collectIds(resources);
+
+  return allIds.map((id) => ({
+    resource: id.replace(/^\/+/, '').split('/'),
+  }));
+}
 
 interface ResourcePageProps {
   params: Promise<{ resource?: string[] }>;
